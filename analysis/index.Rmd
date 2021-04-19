@@ -8,4 +8,22 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+# Curso de Bioestadística en R
+
+Miguel A. Tripp Valdez
+
+correo: tripp@cicese.edu.mx
+
+
+
+Temas:
+
+
+* [Clase 1: Introducción y comado básicos](Clase1_Basicos.html)
+
+
+
+* [Clase 2: Data frames, matrices y otros objetos](Clase2_Data_Frames.html)
+
+
+
