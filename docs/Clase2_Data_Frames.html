@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-04-12" />
+
+<title>Clase2: Data Frames</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase2: Data Frames</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-04-12</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-04-18
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongf24eb8f"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> f24eb8f </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongf24eb8f" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version f24eb8f. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/procesados/
+
+Untracked files:
+    Untracked:  Bioestadistica2021.Rproj
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  analysis/Clase1_Basicos.Rmd
+    Untracked:  data/crudos/
+
+Unstaged changes:
+    Deleted:    2021.Rproj
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase2_Data_Frames.Rmd</code>) and HTML (<code>docs/Clase2_Data_Frames.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+f24eb8f
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-04-18
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="data-frames" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Data Frames</h1>
+<p>Los data frames son estructuras de datos de dos dimensiones que pueden contener datos de diferentes tipos, por lo tanto, son heterogeneas. En terminos generales, los renglones de una data.frame representan casos, individuos u observaciones, mientras que las columnas contiene datos de un solo tipo.</p>
+<div id="creación-de-data-frames" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Creación de data frames</h2>
+<p>Genera un data.frame con los siguientes elementos:</p>
+<pre class="r"><code>Nombre &lt;- c(&quot;Alex&quot;, &quot;Lilly&quot;, &quot;Mark&quot;, &quot;Oliver&quot;, &quot;Martha&quot;, &quot;Lucas&quot;, &quot;Caroline&quot;)
+Edad &lt;- c(25, 31, 23, 52, 76, 49, 26)
+Altura &lt;- c(177, 163, 190, 179, 163, 183, 164)
+Peso &lt;- c(57, 69, 83, 75, 70, 83, 53)
+Sexo &lt;- as.factor(c(&quot;M&quot;, &quot;M&quot;, &quot;H&quot;, &quot;H&quot;, &quot;M&quot;, &quot;H&quot;, &quot;M&quot;))
+
+df &lt;- data.frame (row.names = Nombre, Edad, Altura, Peso, Sexo)</code></pre>
+<p>Esto nos produce la tabla</p>
+<pre class="r"><code>df</code></pre>
+<pre><code>         Edad Altura Peso Sexo
+Alex       25    177   57    M
+Lilly      31    163   69    M
+Mark       23    190   83    H
+Oliver     52    179   75    H
+Martha     76    163   70    M
+Lucas      49    183   83    H
+Caroline   26    164   53    M</code></pre>
+<p>Acceder a las variables del data.frame:</p>
+<ul>
+<li><p>Utilizando el symbolo <code>$</code>.</p></li>
+<li><p>Utilizando indices <code>[F, C]</code>.</p></li>
+</ul>
+<p>para obtener los pesos:</p>
+<pre class="r"><code>df$Peso</code></pre>
+<pre><code>[1] 57 69 83 75 70 83 53</code></pre>
+<p>Para obtener las edades</p>
+<pre class="r"><code>df[,2]</code></pre>
+<pre><code>[1] 177 163 190 179 163 183 164</code></pre>
+<p>Otra opción:</p>
+<pre class="r"><code>df[, &quot;Edad&quot;]</code></pre>
+<pre><code>[1] 25 31 23 52 76 49 26</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio:</em></strong> ¿como puedo acceder a toda la información de Mark?</p>
+</blockquote>
+<pre class="r"><code>df[&quot;Mark&quot;,]</code></pre>
+<pre><code>     Edad Altura Peso Sexo
+Mark   23    190   83    H</code></pre>
+<p>*Para que esto funcione, nuestra tabla tiene que tener colnames y rownames</p>
+<p>Ahora, deseamos agregar una columna <code>trabajo</code> con la siguiente información</p>
+<table>
+<thead>
+<tr class="header">
+<th>Nombre</th>
+<th>Trabaja</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alex</td>
+<td>si</td>
+</tr>
+<tr class="even">
+<td>Lilly</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>Mark</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Oliver</td>
+<td>si</td>
+</tr>
+<tr class="odd">
+<td>Martha</td>
+<td>si</td>
+</tr>
+<tr class="even">
+<td>Lucas</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>Caroline</td>
+<td>si</td>
+</tr>
+</tbody>
+</table>
+<p>En la clase anterior, vimos que se puede agregar una columna nueva usando el operador <code>$</code>.</p>
+<p>Otra forma de agregar elementos nuevos a una tabla es mediante el uso de <code>cbind</code> y <code>rbind</code>.</p>
+<pre class="r"><code>Trabajo &lt;- c(&quot;si&quot;,&quot;no&quot;,&quot;no&quot;,&quot;si&quot;,&quot;si&quot;,&quot;no&quot;,&quot;si&quot;)
+
+df2 &lt;- data.frame(row.names  = Nombre,Trabajo) 
+
+df2</code></pre>
+<p>Ahora añade esta nueva columna a df.</p>
+<ol style="list-style-type: lower-alpha">
+<li>¿Cuantas filas y columnas tiene la tiene tabla?</li>
+<li>¿Que tipod de dato (clase) esta en cada columna</li>
+</ol>
+<pre class="r"><code>df_bind &lt;- cbind(df, df2)</code></pre>
+<p>Verificar las dimensiones de la tabla con <code>dim()</code></p>
+<pre class="r"><code>dim(df)</code></pre>
+<pre><code>[1] 7 4</code></pre>
+<pre class="r"><code>dim(df2)</code></pre>
+<pre><code>[1] 7 1</code></pre>
+<pre class="r"><code>dim(df_bind)</code></pre>
+<pre><code>[1] 7 5</code></pre>
+</div>
+</div>
+<div id="matrices-y-arreglos" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Matrices y arreglos</h1>
+<p>Las matrices y arrays pueden ser definidos como vectores multidimencionales. Especificamente las matrices poseen dos dimensiones y unicamente pueden contener datos de un solo tipo.</p>
+<div id="creación-de-matrices" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Creación de matrices</h2>
+<p>Para crear una matriz se usa la función <code>matrix()</code>, la cual usa los argumentos <code>nrow</code> y <code>ncol</code>. Con ellos se especifica el número de renglones y columnas que tendrá nuestra matriz.</p>
+<pre class="r"><code>#matriz sin especificar renglones ni columnas
+matrix(1:12)</code></pre>
+<pre><code>      [,1]
+ [1,]    1
+ [2,]    2
+ [3,]    3
+ [4,]    4
+ [5,]    5
+ [6,]    6
+ [7,]    7
+ [8,]    8
+ [9,]    9
+[10,]   10
+[11,]   11
+[12,]   12</code></pre>
+<p>Ahora usamos la misma serie de números pero definiendo 3 filas y 4 columnas</p>
+<pre class="r"><code>matrix(1:12, nrow = 3, ncol = 4)</code></pre>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12</code></pre>
+<p>Ahora usando la misma serie de números pero con 4 filas y 3 columnas</p>
+<pre class="r"><code>matrix(1:12, nrow = 4, ncol = 3)</code></pre>
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    5    9
+[2,]    2    6   10
+[3,]    3    7   11
+[4,]    4    8   12</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>¿Que pasa si definimos un menor número de filas y columnas que el número de elementos?</li>
+<li>¿Que pasa si usamos un número mayor de filas y columnas que el número total de elementos</li>
+</ol>
+<p>Al igual que como lo vimos con las data frame, es posible unir vectores con las funciones:</p>
+<ul>
+<li><code>cbind()</code></li>
+<li><code>rbind()</code></li>
+</ul>
+<p>De este modo podemos generar una matriz a partir de varios vectores</p>
+<pre class="r"><code>vec1 &lt;- 1:4
+vec2 &lt;- 5:8
+vec3 &lt;- 9:12
+vec4 &lt;- 13:16</code></pre>
+<p>Ahora une los vectores usando <code>rbind</code> y <code>cbind</code>. ¿cual es la diferencia?</p>
+<p>Genera los siguientes vectores:</p>
+<pre class="r"><code>vec1 &lt;- 1:2
+vec2 &lt;- 1:3
+vec3 &lt;- 1:5</code></pre>
+<p>Trata de unir los vectores como en el ejercicio anterior. ¿cual es la diferencia?</p>
+</div>
+<div id="convertir-matrices-a-data-frames-y-viceversa" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Convertir matrices a data frames y viceversa</h2>
+<p>Para convertir una matriz a data frame, se usa la función <code>as.data.frame()</code> mientras que para el caso contrario se usa <code>as.matrix()</code>. Es importante tomar en cuenta la naturaleza de cada estructura: las matrices solo aceptan un solo tipo de dato</p>
+<p>Por ejeplo, tenemos la matriz:</p>
+<pre class="r"><code>matriz &lt;- matrix(1:12, 3,4)
+matriz</code></pre>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12</code></pre>
+<p>se convierte a data.frame</p>
+<pre class="r"><code>matriz_df &lt;- as.data.frame(matriz)
+matriz_df</code></pre>
+<pre><code>  V1 V2 V3 V4
+1  1  4  7 10
+2  2  5  8 11
+3  3  6  9 12</code></pre>
+<p>Ahora trataremos de convertir la tabla df_bind a una matriz.</p>
+<pre class="r"><code>df_matriz &lt;- as.matrix(df_bind)
+df_matriz</code></pre>
+<pre><code>         Edad Altura Peso Sexo Trabajo
+Alex     &quot;25&quot; &quot;177&quot;  &quot;57&quot; &quot;M&quot;  &quot;si&quot;   
+Lilly    &quot;31&quot; &quot;163&quot;  &quot;69&quot; &quot;M&quot;  &quot;no&quot;   
+Mark     &quot;23&quot; &quot;190&quot;  &quot;83&quot; &quot;H&quot;  &quot;no&quot;   
+Oliver   &quot;52&quot; &quot;179&quot;  &quot;75&quot; &quot;H&quot;  &quot;si&quot;   
+Martha   &quot;76&quot; &quot;163&quot;  &quot;70&quot; &quot;M&quot;  &quot;si&quot;   
+Lucas    &quot;49&quot; &quot;183&quot;  &quot;83&quot; &quot;H&quot;  &quot;no&quot;   
+Caroline &quot;26&quot; &quot;164&quot;  &quot;53&quot; &quot;M&quot;  &quot;si&quot;   </code></pre>
+<ul>
+<li><p>¿que tipo de dato contiene la matriz?</p></li>
+<li><p>¿como podemos generar una matriz solamente con datos númericos?</p></li>
+</ul>
+</div>
+<div id="arreglos" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Arreglos</h2>
+<p>son similares a las matrices pero pueden contener 2 o mas dimensiones</p>
+<pre class="r"><code>arreglo &lt;- array(1:24, dim = c(2,3,4))
+arreglo</code></pre>
+<pre><code>, , 1
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12
+
+, , 3
+
+     [,1] [,2] [,3]
+[1,]   13   15   17
+[2,]   14   16   18
+
+, , 4
+
+     [,1] [,2] [,3]
+[1,]   19   21   23
+[2,]   20   22   24</code></pre>
+</div>
+</div>
+<div id="factores" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Factores</h1>
+<p>Regresando a nuestra tabla df_bind, despliega la columna de "Sexo:</p>
+<pre class="r"><code>df_bind$Sexo</code></pre>
+<pre><code>[1] M M H H M H M
+Levels: H M</code></pre>
+<p>Los factores, son vectores que contienen información categorica la cual es de utilidad para agrupar los valores de la data frame.</p>
+<hr />
+<p><strong>Nota</strong> Para hacer cambios puntuales a una tabla se puede usar la función <code>fix()</code>.</p>
+<hr />
+</div>
+<div id="importar-un-archivo-de-texto" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Importar un archivo de texto</h1>
+<p>La forma mas sencilla de transferir datos hacia R es mediante un archivo sin formato (<em>plain text</em>). Estos puede ser:</p>
+<ul>
+<li>Archivos separados por comma (.csv)</li>
+<li>Archivos separados por tabulación (.txt)</li>
+<li>Data iterchange format (.dif)</li>
+</ul>
+<p>Estos tipos de archivos son de gran utilidad ya que pueden ser leidos por na gran variedad de bases y paquetes estadisticos.</p>
+<p>Para importar una base de datos a R se pueden utilizar la funcion <code>read.table()</code>.</p>
+<p>A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta <code>database</code></p>
+<pre class="r"><code>tabla = read.table(&quot;data/crudos/Tabla1_Muestreo.txt&quot;, sep = &quot;\t&quot;, header = TRUE)</code></pre>
+<p><strong>Exploracdión general de los datos</strong></p>
+<p>usar la funcion <code>head()</code> o <code>tail</code> para tener una visualización de los datos</p>
+<pre class="r"><code>head(tabla)</code></pre>
+<pre><code>  Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
+1         1 Bahia La Paz   Verano    H  Superficie       30.27
+2         2 Bahia La Paz   Verano    M  Superficie       35.50
+3         3 Bahia La Paz   Verano    H  Superficie       30.36
+4         4 Bahia La Paz   Verano    H  Superficie       24.86
+5         5 Bahia La Paz   Verano    M  Superficie       31.81
+6         6 Bahia La Paz   Verano    H  Superficie       29.51</code></pre>
+<pre class="r"><code>tail(tabla)</code></pre>
+<pre><code>    Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
+139       139 Todos Santos Invierno    H       Fondo       16.12
+140       140 Todos Santos Invierno    H       Fondo       30.14
+141       141 Todos Santos Invierno    H       Fondo        6.20
+142       142 Todos Santos Invierno    H       Fondo       23.01
+143       143 Todos Santos Invierno    H       Fondo       19.09
+144       144 Todos Santos Invierno    M       Fondo       18.12</code></pre>
+<p>Podemos ver la estructura de la tabla con la función <code>str()</code></p>
+<pre class="r"><code>str(tabla)</code></pre>
+<pre><code>&#39;data.frame&#39;:   144 obs. of  6 variables:
+ $ Individuo  : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Sitio      : chr  &quot;Bahia La Paz&quot; &quot;Bahia La Paz&quot; &quot;Bahia La Paz&quot; &quot;Bahia La Paz&quot; ...
+ $ Estacion   : chr  &quot;Verano&quot; &quot;Verano&quot; &quot;Verano&quot; &quot;Verano&quot; ...
+ $ Sexo       : chr  &quot;H&quot; &quot;M&quot; &quot;H&quot; &quot;H&quot; ...
+ $ Profundidad: chr  &quot;Superficie&quot; &quot;Superficie&quot; &quot;Superficie&quot; &quot;Superficie&quot; ...
+ $ Longitud_mm: num  30.3 35.5 30.4 24.9 31.8 ...</code></pre>
+<p>Ademas podemos ver el resumen general de los datos con <code>summary()</code></p>
+<pre class="r"><code>summary(tabla)</code></pre>
+<pre><code>   Individuo         Sitio             Estacion             Sexo          
+ Min.   :  1.00   Length:144         Length:144         Length:144        
+ 1st Qu.: 36.75   Class :character   Class :character   Class :character  
+ Median : 72.50   Mode  :character   Mode  :character   Mode  :character  
+ Mean   : 72.50                                                           
+ 3rd Qu.:108.25                                                           
+ Max.   :144.00                                                           
+ Profundidad         Longitud_mm   
+ Length:144         Min.   : 6.20  
+ Class :character   1st Qu.:21.45  
+ Mode  :character   Median :29.43  
+                    Mean   :28.97  
+                    3rd Qu.:35.89  
+                    Max.   :56.93  </code></pre>
+<blockquote>
+<p><strong><em>Ejercicio:</em></strong> Usando lo que vimos en la lección pasada: (1) calcula la longitud promedio de todas las estaciones. (2) crea un nuevo vector que contenga solamente las longitudes con el nombre de cada individuo.</p>
+</blockquote>
+</div>
+<div id="filtrar-o-rearreglar-variables" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Filtrar o rearreglar variables</h1>
+<p>CUando se tiene un set de datos bastante grande, resulta conveniente remover o filtrar aquellas variables innecesarias y arreglar el restos de las variables de manera práctica.</p>
+<p>La función <code>subset()</code> permite seleccionar un subset de datos que cumplen determinadas condiciones, mientras que <code>select</code> permite definir cuales variables mantener.</p>
+<p>De nuetra tabla, vamos a generar una nueva tabla que contenga solamente los individuos, sitios y longitudes.</p>
+<pre class="r"><code>tabla1 &lt;- subset(tabla, select=c(Individuo, Sitio, Longitud_mm))</code></pre>
+<p>Ahora vamos a generar una nueva tabla que contenga <strong>solamente</strong> los individuos de <em>verano</em></p>
+<pre class="r"><code>tabla_verano &lt;- subset(tabla, Estacion == &quot;Verano&quot;)
+head(tabla_verano)</code></pre>
+<pre><code>  Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
+1         1 Bahia La Paz   Verano    H  Superficie       30.27
+2         2 Bahia La Paz   Verano    M  Superficie       35.50
+3         3 Bahia La Paz   Verano    H  Superficie       30.36
+4         4 Bahia La Paz   Verano    H  Superficie       24.86
+5         5 Bahia La Paz   Verano    M  Superficie       31.81
+6         6 Bahia La Paz   Verano    H  Superficie       29.51</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio:</em></strong> Crea una nueva tabla que contenga (1) <strong>solamente</strong> los organismos de superfice, (2) los individuos que tengan una longitud mayor al promedio total. ¿Cuantos individuos tienen una longitud mayor al promedio total?</p>
+</blockquote>
+<p>Es posible seleccionar varios parametros simultaneamente usando el simbolor <code>&amp;</code>.</p>
+<p>Por ejemplo: seleccionar a los individuos de superficie y verano</p>
+<pre class="r"><code>tabla_sup_ver &lt;- subset(tabla, Estacion == &quot;Verano&quot; &amp; Profundidad == &quot;Superficie&quot;)
+head(tabla_sup_ver)</code></pre>
+<pre><code>  Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
+1         1 Bahia La Paz   Verano    H  Superficie       30.27
+2         2 Bahia La Paz   Verano    M  Superficie       35.50
+3         3 Bahia La Paz   Verano    H  Superficie       30.36
+4         4 Bahia La Paz   Verano    H  Superficie       24.86
+5         5 Bahia La Paz   Verano    M  Superficie       31.81
+6         6 Bahia La Paz   Verano    H  Superficie       29.51</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio:</em></strong> Crea una nueva tabla que contenga los individuos que NO sean de Bahia de La Paz y que tengan una longitud mayor o igual a 20 mm.</p>
+</blockquote>
+<p>Tambien es posible generar subsets de datos usando indicies <code>[]</code>. Recuerda que se aplica es mismo principio [filas, columnas].</p>
+<p>Ahora queremos recrear la tabla <em>tabla_verano</em>. Primero verificamos cuales individuos tienen la etiqueta “Verano”:</p>
+<pre class="r"><code>tabla$Estacion == &quot;Verano&quot;</code></pre>
+<pre><code>  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [13]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [49]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [61]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+ [73] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+[121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>Esto nos genera un vector con las filas que contienen la etiqueta (TRUE), con lo que podemos usar <code>[]</code> para fitrar las filas TRUE con todas las columnas</p>
+<pre class="r"><code>tabla_verano2 &lt;- tabla[tabla$Estacion==&quot;Verano&quot;, ]
+head(tabla_verano2)</code></pre>
+<pre><code>  Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
+1         1 Bahia La Paz   Verano    H  Superficie       30.27
+2         2 Bahia La Paz   Verano    M  Superficie       35.50
+3         3 Bahia La Paz   Verano    H  Superficie       30.36
+4         4 Bahia La Paz   Verano    H  Superficie       24.86
+5         5 Bahia La Paz   Verano    M  Superficie       31.81
+6         6 Bahia La Paz   Verano    H  Superficie       29.51</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio</em></strong> Utilizando indices, genera un vector solamente con los valores de longitud de los indivuos de verano. Agrega las etiquetas de individuos</p>
+</blockquote>
+<blockquote>
+<p><strong><em>Ejercicio</em></strong> (1) ¿Cual individuo tiene la mayor longitud?. (2)¿Cuantos individuos tienen una longitud igual o menor al promedio total?. (3) ¿Cual es el la longitud promedio de los Individuos de Verano?</p>
+</blockquote>
+</div>
+<div id="exportar-una-base-de-datos" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Exportar una base de datos</h1>
+<p>Pära exportar un tabla, por ejemplo nuestro objeto <strong>tabla_verano2</strong> se usa la funcion <code>write.table()</code></p>
+<pre class="r"><code>write.table(tabla_verano2, &quot;Tabla_subset-verano.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE)</code></pre>
+</div>
+<div id="flujo-de-trabajo-rutas-relativas-y-absolutas" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Flujo de trabajo: rutas relativas y absolutas</h1>
+<p>R posee el poderoso concepto de directorio de trabajo (working directory en inglés). Aquí es donde R busca los archivos que le pides que lea y donde colocará todos los archivos que le pidas que guarde. RStudio muestra tu directorio de trabajo actual en la parte superior de la consola.</p>
+<p>Puedes imprimir esto en código de R ejecutando el comando <code>getwd()</code> (en inglés get working directory, que significa obtener directorio de trabajo):</p>
+<pre class="r"><code>getwd()</code></pre>
+<p>Pero también es posible definir el directorio de trabajo desde R:</p>
+<pre class="r"><code>setwd(&quot;data/&quot;)</code></pre>
+<p>Ahora, nuuestro directorio de trabajo es <code>~/data</code>, por lo que cualquier cosa que guardemos, se hara en este directorio.</p>
+<p>Ahora regresemos a nuestro directorio principal y lo definimos nuevamente como nuestro directorio de trabajo; esto tambien se puede realizar directamente desde la ventana de Rstudio en <code>more: Set as working directory</code>.</p>
+<p>Tomando el ejemplo de cuando guardamos la tabla:</p>
+<pre class="r"><code>write.table(tabla_verano2, &quot;data/Tabla_subset-verano.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE)</code></pre>
+<p>Al hacer esto, cada que guardamos o importamos algo estamos usando una <strong>ruta relativa</strong>, ya que solo definimos la ruta a partir de nuestro directorio de trabajo. Sin embargo es posible usar una <strong>ruta absoluta</strong> para exportar o importar un archivo. Por ejemplo</p>
+<pre class="r"><code>write.table(tabla_verano2, &quot;/cloud/project/data_editados/Tabla_subset-verano.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE)</code></pre>
+</div>
+<div id="uso-de-projecto-en-rstudio" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Uso de projecto en Rstudio</h1>
+<p>Usar proeyectos dentro de Rstudio soluciona el problema de rutas “fragiles”. Cuando estas trabajando dentro de un projecto (.Rproj), el directorio de trabajo corresponde al directorio raiz.</p>
+<p><img src="https://i0.wp.com/raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png?w=456&ssl=1"></p>
+</div>
+<div id="ejercicio" class="section level1" number="9">
+<h1 number="9"><span class="header-section-number">9</span> Ejercicio</h1>
+<p>Dentro de tu projecto, en la carpeta <code>data</code>hay cuatro archivos los cuales contienen los resultados de la actividad enzimatica de la lactado deshidrogenasa (<em>LDH</em>), citrato sintqasa (<em>CS</em>) y tauropina deshidrogenasa (<em>TDH</em>). Estas enzimas se analizaron en cuatro experimentos diferentes (Experimento1, Experimento2, Experimento3 y Experimento4).</p>
+<p>Usando lo que hemos visto hasta ahora, realiza lo siguiente</p>
+<ol style="list-style-type: decimal">
+<li>Importa cada archivo como data.frame</li>
+<li>Une todas los data frames en uno solo,</li>
+<li>Filtra todas las mediciones con <em>Meas_Temp</em> igual a 18°C</li>
+<li>Para cada enzima, genera un subconjunto preservando solamente las columnas <code>ExpNum</code> <code>TreatTemp</code>, y la actividad correspondiente a cada enzima <code>Activityxxx</code></li>
+<li>Dentro de la carpeta de<code>output</code>Crea un nuevo directorio de trabajo llamado <code>datos_enzimas</code> y guarda cada subconjunto como archivo separado por comas <code>csv</code>.</li>
+</ol>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5      whisker_0.4     knitr_1.30      magrittr_2.0.1 
+ [5] R6_2.5.0        rlang_0.4.10    fansi_0.4.1     stringr_1.4.0  
+ [9] tools_4.0.5     xfun_0.20       utf8_1.1.4      git2r_0.27.1   
+[13] htmltools_0.5.0 ellipsis_0.3.1  rprojroot_2.0.2 yaml_2.2.1     
+[17] digest_0.6.27   tibble_3.0.4    lifecycle_1.0.0 crayon_1.4.1   
+[21] later_1.1.0.1   vctrs_0.3.6     promises_1.1.1  fs_1.5.0       
+[25] glue_1.4.2      evaluate_0.14   rmarkdown_2.6   stringi_1.5.3  
+[29] compiler_4.0.5  pillar_1.6.0    httpuv_1.5.4    pkgconfig_2.0.3</code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
