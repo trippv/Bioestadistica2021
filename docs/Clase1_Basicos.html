@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-04-12" />
+
+<title>Clase 1: Comandos Basicos</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 1: Comandos Basicos</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-04-12</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-04-18
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree8c50c3988fe60c23d8d967b7cf63842865aff3e3targetblank8c50c39a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/8c50c3988fe60c23d8d967b7cf63842865aff3e3" target="_blank">8c50c39</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree8c50c3988fe60c23d8d967b7cf63842865aff3e3targetblank8c50c39a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/8c50c3988fe60c23d8d967b7cf63842865aff3e3" target="_blank">8c50c39</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/procesados/
+
+Untracked files:
+    Untracked:  Bioestadistica2021.Rproj
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  data/crudos/
+
+Unstaged changes:
+    Deleted:    2021.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase1_Basicos.Rmd</code>) and HTML (<code>docs/Clase1_Basicos.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/8c50c3988fe60c23d8d967b7cf63842865aff3e3/analysis/Clase1_Basicos.Rmd" target="_blank">8c50c39</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-04-18
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="uso-como-calculadora-en-la-linea-de-comandos" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Uso como calculadora en la linea de comandos</h1>
+<p>operaciones basicas:</p>
+<pre class="r"><code>1 + 2 #suma</code></pre>
+<pre><code>[1] 3</code></pre>
+<pre class="r"><code>4 - 3 #resta</code></pre>
+<pre><code>[1] 1</code></pre>
+<pre class="r"><code>5 * 5 #multiplicación</code></pre>
+<pre><code>[1] 25</code></pre>
+<pre class="r"><code>4 / 2 #división</code></pre>
+<pre><code>[1] 2</code></pre>
+<pre class="r"><code>4 ^ 2 #Exponente</code></pre>
+<pre><code>[1] 16</code></pre>
+<pre class="r"><code>4 ** 2 #Exponente</code></pre>
+<pre><code>[1] 16</code></pre>
+<p><strong>!! ¿por qué hay un [1] en cada resultado?</strong></p>
+<p>El resultado es un vector, aunque solo consista en un elemento. Por lo tanto, R indica que este el primer [1] elemento de un vector</p>
+<p>Operadores en R:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Operador</th>
+<th align="center">significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">*</td>
+<td align="center">Multiplicación</td>
+</tr>
+<tr class="even">
+<td align="center">-</td>
+<td align="center">Resta</td>
+</tr>
+<tr class="odd">
+<td align="center">+</td>
+<td align="center">Suma</td>
+</tr>
+<tr class="even">
+<td align="center">^</td>
+<td align="center">Elevar a potencia</td>
+</tr>
+<tr class="odd">
+<td align="center">/</td>
+<td align="center">División</td>
+</tr>
+<tr class="even">
+<td align="center">&lt;</td>
+<td align="center">Menor que</td>
+</tr>
+<tr class="odd">
+<td align="center">&gt;</td>
+<td align="center">Mayor que</td>
+</tr>
+<tr class="even">
+<td align="center">&lt;=</td>
+<td align="center">Menor o igual que</td>
+</tr>
+<tr class="odd">
+<td align="center">&gt;=</td>
+<td align="center">Mayor o igual que</td>
+</tr>
+<tr class="even">
+<td align="center">==</td>
+<td align="center">Exactamente igual</td>
+</tr>
+<tr class="odd">
+<td align="center">!=</td>
+<td align="center">Distinto</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="uso-de-objetos" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Uso de objetos</h1>
+<p>Para crear un nuevo objeto se puede usar “=” o “&lt;-”. Este nuevo objeto, se almacenará en la memoria y se puede usar para otras operaciones.</p>
+<pre class="r"><code>x &lt;- 2 #asignar a la variable x el valor de 2
+x
+
+y = 3 #asignar a la variable y el valor de 3
+y
+
+#resultado de la suma x + y
+x + y
+
+z &lt;- x + y#asiganr el resultado de x + y  a la variable z
+z
+
+#uso de c para incluir mas de un elemento
+
+numeros &lt;- c(1,2,3,4,5)
+numeros
+
+variables &lt;- c(x,y,z)
+variables
+
+variables_mas &lt;- variables + 1
+variables_mas
+
+variables_expo &lt;- variables ^2
+
+2 ^ variables -&gt; expo_variables 
+
+variables_numero &lt;- variables * numeros
+
+#¿que pasara aqui?</code></pre>
+<p>Las variables no solo puede contener números, sino caracteres, listas o incluso graficas</p>
+<pre class="r"><code>caracter &lt;- &quot;siete&quot;
+caracter</code></pre>
+<pre><code>[1] &quot;siete&quot;</code></pre>
+<pre class="r"><code>mix &lt;- c(1,2,&quot;tres&quot;)
+mix</code></pre>
+<pre><code>[1] &quot;1&quot;    &quot;2&quot;    &quot;tres&quot;</code></pre>
+<hr />
+<ul>
+<li><p>¿cual serial el resultado de multiplicar la variable <em>mix</em> x 3?</p></li>
+<li><p>¿Cuales de estas formas de definir una variables es incorrecta?</p></li>
+<li><p><code>mi.variable &lt;-</code></p></li>
+<li><p><code>mi_variable &lt;-</code></p></li>
+<li><p><code>mi variable &lt;-</code></p></li>
+<li><p><code>mi-variable &lt;-</code></p></li>
+</ul>
+<hr />
+</div>
+<div id="tipos-y-estructura-de-datos-classes" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Tipos y estructura de datos (Classes)</h1>
+<p>R tiene los siguientes tipos de datos basicos:</p>
+<ul>
+<li><code>logical:</code> valores lógicos, pueden ser <em>TRUE</em> o <em>FALSE</em></li>
+<li><code>numeric:</code> numeros reales</li>
+<li><code>character:</code>caracteres (letras y/o númoeros). Delimitados por ""</li>
+<li><code>interger:</code>valores enteros</li>
+<li><code>NA:</code> dato no disponible</li>
+<li><code>NaN:</code>no es un número (not a number)</li>
+</ul>
+<p>Las estructuras de datos son:</p>
+<p><img src="http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png"></p>
+<p>fuente: <a href="http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png" class="uri">http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png</a></p>
+<hr />
+<p>Si no sabes que tipo de dato contiene una variable, se puede sar la funcions <code>class()</code></p>
+<pre class="r"><code>class(numeros)      </code></pre>
+<pre><code>[1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(caracter)     </code></pre>
+<pre><code>[1] &quot;character&quot;</code></pre>
+<pre class="r"><code>class(numeros)</code></pre>
+<pre><code>[1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(mix)</code></pre>
+<pre><code>[1] &quot;character&quot;</code></pre>
+<p>R utiliza <strong>funciones</strong> para realizar operaciones, por ejemplo <code>class()</code>. Para utilizar una función deben especificarse determiandos argumentos, los cuales se escriben dentro del parentesis.</p>
+<p>Por ejemplo, en la función <code>round()</code>, la ayuda nos dice que debemos especificar <code>round(x, digits = 0)</code> donde x es el objecto (número o vector) y digits es el número de decimales.</p>
+<div id="trabajando-con-vectores" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Trabajando con vectores</h2>
+<p><strong>Ejercicio:</strong></p>
+<p>Supon que tienes un cultivo de abulones y tienes que revisarlo todos los dias y contar los organismos muertos. Despues de una semana tienes el siguiente resultado:</p>
+<ul>
+<li>lunes: 4</li>
+<li>martes: 6</li>
+<li>miercoles: 0</li>
+<li>jueves: 10</li>
+<li>viernes: 12</li>
+<li>sabado: 8</li>
+<li>domingo: 4</li>
+</ul>
+<p>1: crea un vector con los valores diarios 2: nombre cada valor con el dia de la semana usando la funcion <code>names()</code></p>
+<pre class="r"><code>mortalidad &lt;- c(4,6,0,10,12,8,4)
+mortalidad</code></pre>
+<pre><code>[1]  4  6  0 10 12  8  4</code></pre>
+<pre class="r"><code>names(mortalidad) &lt;-  c(&quot;Lunes&quot;, &quot;Martes&quot;, &quot;Miercoles&quot;, &quot;Jueves&quot;, &quot;Viernes&quot;, &quot;Sabado&quot;, &quot;Domingo&quot;)
+
+mortalidad</code></pre>
+<pre><code>    Lunes    Martes Miercoles    Jueves   Viernes    Sabado   Domingo 
+        4         6         0        10        12         8         4 </code></pre>
+<pre class="r"><code>#nombrar la mortalidad con la funcion names</code></pre>
+<p>Operaciones basicas con vectores</p>
+<table>
+<thead>
+<tr class="header">
+<th>Función</th>
+<th>significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>min()</td>
+<td>Minimo</td>
+</tr>
+<tr class="even">
+<td>max()</td>
+<td>Máximo</td>
+</tr>
+<tr class="odd">
+<td>length()</td>
+<td>longitud</td>
+</tr>
+<tr class="even">
+<td>range()</td>
+<td>intervalo de valores</td>
+</tr>
+<tr class="odd">
+<td>sort()</td>
+<td>Ordena de menor a mayor</td>
+</tr>
+<tr class="even">
+<td>unique()</td>
+<td>Valores unicos</td>
+</tr>
+<tr class="odd">
+<td>mean()</td>
+<td>Promedio</td>
+</tr>
+<tr class="even">
+<td>sum()</td>
+<td>suma</td>
+</tr>
+<tr class="odd">
+<td>which()</td>
+<td>proporciona los indices TRUE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ejercicio:</strong> Contesta lo siguiente:</p>
+<ul>
+<li>¿cual fue el valor minimo y el maximo?</li>
+<li>¿cuantos abulones murieron esa semana?</li>
+</ul>
+</div>
+</div>
+<div id="indices" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Indices</h1>
+<p>Una tarea común al trabajar con vectores de datos es el de aislar uno o varios valores que cumplen con algún criterio.</p>
+<p>Mostrar el primer valor del vector</p>
+<pre class="r"><code>mortalidad[1]</code></pre>
+<pre><code>Lunes 
+    4 </code></pre>
+<p>Mostrar todos los valores <em>excepto</em> el segundo</p>
+<pre class="r"><code>mortalidad[-2]</code></pre>
+<pre><code>    Lunes Miercoles    Jueves   Viernes    Sabado   Domingo 
+        4         0        10        12         8         4 </code></pre>
+<p>Se puede obtener multiples series de elementos al mismo tiempo usando <code>c()</code></p>
+<pre class="r"><code>mortalidad[c(1,2:4)]</code></pre>
+<pre><code>    Lunes    Martes Miercoles    Jueves 
+        4         6         0        10 </code></pre>
+<p>o si por el contrario queremos eliminar estos elementos se usa <code>c(-)</code></p>
+<pre class="r"><code>mortalidad[-c(1,2:4)]</code></pre>
+<pre><code>Viernes  Sabado Domingo 
+     12       8       4 </code></pre>
+<p>Obtener los dias en donde la mortalidad fue mayor a 5</p>
+<pre class="r"><code>mortalidad &gt; 5</code></pre>
+<pre><code>    Lunes    Martes Miercoles    Jueves   Viernes    Sabado   Domingo 
+    FALSE      TRUE     FALSE      TRUE      TRUE      TRUE     FALSE </code></pre>
+<pre class="r"><code>#Mostrar solo los dias donde la mortalidad fue &gt; 5
+mortalidad[mortalidad &gt; 5]</code></pre>
+<pre><code> Martes  Jueves Viernes  Sabado 
+      6      10      12       8 </code></pre>
+<pre class="r"><code>#Mediante una variable
+mor_5 &lt;- mortalidad &gt; 5 
+mortalidad[mor_5]</code></pre>
+<pre><code> Martes  Jueves Viernes  Sabado 
+      6      10      12       8 </code></pre>
+<p><strong>Ejercicio</strong></p>
+<p>Identificar:</p>
+<ul>
+<li>¿En que dia se observó la menor mortalidad?</li>
+<li>¿Que dias tuvieron una mortalidad igual a 12?</li>
+<li>¿Que dias tuvieron una mortalidad menor al promedio?</li>
+</ul>
+<div id="enistar-y-borrar-objectos" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Enistar y borrar objectos</h2>
+<p>Las funciones <code>ls()</code>y <code>objects()</code>hacen lo mismo: enlistan los objetos que hemos definido en la sesión.</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code> [1] &quot;caracter&quot;         &quot;expo_variables&quot;   &quot;mix&quot;              &quot;mor_5&quot;           
+ [5] &quot;mortalidad&quot;       &quot;numeros&quot;          &quot;variables&quot;        &quot;variables_expo&quot;  
+ [9] &quot;variables_mas&quot;    &quot;variables_numero&quot; &quot;x&quot;                &quot;y&quot;               
+[13] &quot;z&quot;               </code></pre>
+<p>Y si queremos borrar objectos, se usa la funcion <code>rm()</code> Si quieremos borrrar todos los objectos del ambiente, se ejecuta <code>rm(list=ls())</code>.</p>
+</div>
+</div>
+<div id="trabajando-con-tablas" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Trabajando con tablas</h1>
+<p>Ahora supongamos que tienes que revisar tus estanques por otra semana. Sin embargo, el jueves de la tercera semana no pudiste ir, por lo que no tienes valores para ese dia. Estos son los resultados.</p>
+<ul>
+<li>lunes: 16</li>
+<li>martes: 12</li>
+<li>miercoles: 8</li>
+<li>jueves: no hay dato</li>
+<li>viernes: 14</li>
+<li>sabado: 4</li>
+<li>domingo: 10</li>
+</ul>
+<p><strong>Ejercicio:</strong> Construye un vector para la semana 2 con el nombre <code>semana2</code>.</p>
+<p>De que forma podriamos nombrar cada dia de la semana en <code>semana2</code>?</p>
+</div>
+<div id="crear-una-tabla-con-data.frame" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Crear una tabla con <code>data.frame</code></h1>
+<pre class="r"><code>dia_sem &lt;- c(&quot;Lunes&quot;, &quot;Martes&quot;, &quot;Miercoles&quot;, &quot;Jueves&quot;, &quot;Viernes&quot;, &quot;Sabado&quot;, &quot;Domingo&quot;)
+
+tabla &lt;- data.frame(dia = dia_sem, semana1 = mortalidad, semana2 = semana2)
+tabla # los dias de la semana aparecen doble</code></pre>
+<pre><code>                dia semana1 semana2
+Lunes         Lunes       4      16
+Martes       Martes       6      12
+Miercoles Miercoles       0       8
+Jueves       Jueves      10      NA
+Viernes     Viernes      12      14
+Sabado       Sabado       8       4
+Domingo     Domingo       4      10</code></pre>
+<pre class="r"><code>tabla &lt;- data.frame(row.names = dia_sem, semana1 = mortalidad, semana2 = semana2)
+
+tabla</code></pre>
+<pre><code>          semana1 semana2
+Lunes           4      16
+Martes          6      12
+Miercoles       0       8
+Jueves         10      NA
+Viernes        12      14
+Sabado          8       4
+Domingo         4      10</code></pre>
+<p><strong>¿Que tipo de dato es el objecto <code>tabla</code>?</strong></p>
+<p><strong>Ejercicio:</strong> Para cada semana, busca el valor minimo, maximo y promedio. Con estos valores crea un vector para cada semana y nombralos <code>Semana1_sum</code> y <code>Semana2_sum</code>.</p>
+<p>Para esto es posible seguir dos aproximaciones:</p>
+<ul>
+<li>usando indices: <code>tabla[filas , columnas]</code></li>
+<li>con el operado <code>$</code>: <code>tabla$columna</code></li>
+</ul>
+<pre class="r"><code>max(tabla$semana1)</code></pre>
+<pre><code>[1] 12</code></pre>
+<pre class="r"><code>min(tabla[,2])</code></pre>
+<pre><code>[1] NA</code></pre>
+<pre class="r"><code>mean(tabla$semana2, na.rm = TRUE)</code></pre>
+<pre><code>[1] 10.66667</code></pre>
+<div id="estructura-de-una-tabla" class="section level2" number="6.1">
+<h2 number="6.1"><span class="header-section-number">6.1</span> Estructura de una tabla</h2>
+<pre class="r"><code>#muestra las primeras n filas de la tabla
+head(tabla)</code></pre>
+<pre><code>          semana1 semana2
+Lunes           4      16
+Martes          6      12
+Miercoles       0       8
+Jueves         10      NA
+Viernes        12      14
+Sabado          8       4</code></pre>
+<pre class="r"><code>#muestra el numero de filas
+nrow(tabla)</code></pre>
+<pre><code>[1] 7</code></pre>
+<pre class="r"><code>#muestra el numero de columnas
+ncol(tabla)</code></pre>
+<pre><code>[1] 2</code></pre>
+<pre class="r"><code>#muestra el nombre de las columnas
+colnames(tabla)</code></pre>
+<pre><code>[1] &quot;semana1&quot; &quot;semana2&quot;</code></pre>
+<pre class="r"><code>#muestra el nombre de las filsa
+rownames(tabla)</code></pre>
+<pre><code>[1] &quot;Lunes&quot;     &quot;Martes&quot;    &quot;Miercoles&quot; &quot;Jueves&quot;    &quot;Viernes&quot;   &quot;Sabado&quot;   
+[7] &quot;Domingo&quot;  </code></pre>
+<p>otras operaciones utiles para data.frames:</p>
+<p><code>colSums ()</code></p>
+<p><code>rowSums ()</code></p>
+<p><code>colMeans()</code></p>
+<p><code>rowMeans()</code></p>
+<p><strong>Ejercicio:</strong> En el objetvo <code>tabla</code>, crea una columan con el promedio de organismos muertos por dia</p>
+<p><strong>Ejercicio:</strong> Te diste cuenta que esta nueva columna no te sirve. ¿como la eliminas?</p>
+<p><em>pista</em>: Puedes usar indices o <code>NULL</code></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5      whisker_0.4     knitr_1.30      magrittr_2.0.1 
+ [5] R6_2.5.0        rlang_0.4.10    fansi_0.4.1     stringr_1.4.0  
+ [9] tools_4.0.5     xfun_0.20       utf8_1.1.4      git2r_0.27.1   
+[13] htmltools_0.5.0 ellipsis_0.3.1  rprojroot_2.0.2 yaml_2.2.1     
+[17] digest_0.6.27   tibble_3.0.4    lifecycle_1.0.0 crayon_1.4.1   
+[21] later_1.1.0.1   vctrs_0.3.6     promises_1.1.1  fs_1.5.0       
+[25] glue_1.4.2      evaluate_0.14   rmarkdown_2.6   stringi_1.5.3  
+[29] compiler_4.0.5  pillar_1.6.0    httpuv_1.5.4    pkgconfig_2.0.3</code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
