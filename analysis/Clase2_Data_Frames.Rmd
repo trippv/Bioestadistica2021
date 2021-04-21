@@ -222,6 +222,41 @@ Para hacer cambios puntuales a una tabla se puede usar la función `fix()`.
 
 ***
 
+# Flujo de trabajo: rutas relativas y absolutas
+
+R posee el poderoso concepto de directorio de trabajo (working directory en inglés). Aquí es donde R busca los archivos que le pides que lea y donde colocará todos los archivos que le pidas que guarde. RStudio muestra tu directorio de trabajo actual en la parte superior de la consola.
+
+Puedes imprimir esto en código de R ejecutando el comando `getwd()` (en inglés get working directory, que significa obtener directorio de trabajo):
+```{r, results= FALSE, eval= FALSE}
+getwd()
+```
+
+Pero también es posible definir el directorio de trabajo desde R:
+
+```{r}
+setwd("data/")
+```
+
+Ahora, nuuestro directorio de trabajo es `~/data`, por lo que cualquier cosa que guardemos, se hara en este directorio.
+
+Ahora regresemos a nuestro directorio principal y lo definimos nuevamente como nuestro directorio de trabajo; esto tambien se puede realizar directamente desde la ventana de Rstudio en `more: Set as working directory`.
+
+```{r, echo= FALSE}
+setwd("../")
+```
+
+
+# Uso de projecto en Rstudio
+
+Usar proeyectos dentro de Rstudio soluciona el problema de rutas "fragiles". Cuando estas trabajando dentro de un projecto (.Rproj), el directorio de trabajo corresponde al directorio raiz.  
+
+
+
+<img src="https://i0.wp.com/raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png?w=456&ssl=1">
+
+
+
+
 # Importar un archivo de texto
 
 La forma mas sencilla de transferir datos hacia R es mediante un archivo sin formato (_plain text_). Estos puede ser:
@@ -329,52 +364,6 @@ Pära exportar un tabla, por ejemplo nuestro objeto **tabla_verano2** se usa la 
 ```{r, eval= FALSE}
 write.table(tabla_verano2, "Tabla_subset-verano.txt", sep = "\t", row.names = FALSE)
 ```
-
-# Flujo de trabajo: rutas relativas y absolutas
-
-R posee el poderoso concepto de directorio de trabajo (working directory en inglés). Aquí es donde R busca los archivos que le pides que lea y donde colocará todos los archivos que le pidas que guarde. RStudio muestra tu directorio de trabajo actual en la parte superior de la consola.
-
-Puedes imprimir esto en código de R ejecutando el comando `getwd()` (en inglés get working directory, que significa obtener directorio de trabajo):
-```{r, results= FALSE, eval= FALSE}
-getwd()
-```
-
-Pero también es posible definir el directorio de trabajo desde R:
-
-```{r}
-setwd("data/")
-```
-
-Ahora, nuuestro directorio de trabajo es `~/data`, por lo que cualquier cosa que guardemos, se hara en este directorio.
-
-Ahora regresemos a nuestro directorio principal y lo definimos nuevamente como nuestro directorio de trabajo; esto tambien se puede realizar directamente desde la ventana de Rstudio en `more: Set as working directory`.
-
-```{r, echo= FALSE}
-setwd("../")
-```
-
-
-Tomando el ejemplo de cuando guardamos la tabla:
-
-```{r, eval= FALSE}
-write.table(tabla_verano2, "data/Tabla_subset-verano.txt", sep = "\t", row.names = FALSE)
-```
-
-
-Al hacer esto, cada que guardamos o importamos algo estamos usando una **ruta relativa**, ya que solo definimos la ruta a partir de nuestro directorio de trabajo. Sin embargo es posible usar una **ruta absoluta** para exportar o importar un archivo. Por ejemplo
-
-
-```{r, eval= FALSE}
-write.table(tabla_verano2, "/cloud/project/data_editados/Tabla_subset-verano.txt", sep = "\t", row.names = FALSE)
-```
-
-# Uso de projecto en Rstudio
-
-Usar proeyectos dentro de Rstudio soluciona el problema de rutas "fragiles". Cuando estas trabajando dentro de un projecto (.Rproj), el directorio de trabajo corresponde al directorio raiz.  
-
-
-
-<img src="https://i0.wp.com/raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png?w=456&ssl=1">
 
 
 # Ejercicio

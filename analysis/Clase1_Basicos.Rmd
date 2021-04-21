@@ -4,7 +4,6 @@ author: "Miguel Tripp"
 date: "2021-04-12"
 output: 
   workflowr::wflow_html:
-    
     toc: true
     number_section: true
     theme: cerulean 
@@ -193,6 +192,7 @@ mortalidad
 
 ```
 
+
 Operaciones basicas con vectores
 
 |Función  	| significado 	|
@@ -267,7 +267,7 @@ Identificar:
   + ¿Que dias tuvieron una mortalidad menor al promedio?
   
   
-## Enistar y borrar objectos
+# Enlistar y borrar objectos
 
 Las funciones `ls()`y `objects()`hacen lo mismo: enlistan los objetos que hemos definido en la sesión.
 
@@ -345,7 +345,7 @@ mean(tabla$semana2, na.rm = TRUE)
 
 ```
 
-## Estructura de una tabla
+# Estructura de una tabla
 ```{r table estructure, echo=TRUE}
 #muestra las primeras n filas de la tabla
 head(tabla)
