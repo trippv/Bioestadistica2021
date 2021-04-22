@@ -274,7 +274,7 @@ Para importar una base de datos a R se pueden utilizar la funcion `read.table()`
 A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta `database`
 
 ```{r}
-tabla = read.table("data/crudos/Tabla1_Muestreo.txt", sep = "\t", header = TRUE)
+tabla = read.table("data/Tabla1_Muestreo.txt", sep = "\t", header = TRUE)
 ```
 
 **Exploracdión general de los datos**
@@ -307,7 +307,7 @@ summary(tabla)
 
 # Filtrar o rearreglar variables
 
-CUando se tiene un set de datos bastante grande, resulta conveniente remover o filtrar aquellas variables innecesarias y arreglar el restos de las variables de manera práctica. 
+Cuando se tiene un set de datos bastante grande, resulta conveniente remover o filtrar aquellas variables innecesarias y arreglar el restos de las variables de manera práctica. 
 
 La función `subset()` permite seleccionar un subset de datos que cumplen determinadas condiciones, mientras que `select` permite definir cuales variables mantener.
 
