@@ -426,7 +426,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-22
+<strong>Last updated:</strong> 2021-04-25
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -517,16 +517,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treecd132b5fa486a650b50fa6587a5e4293abd3d036targetblankcd132b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/cd132b5fa486a650b50fa6587a5e4293abd3d036" target="_blank">cd132b5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree7d0111c0e1a10dab8ceab4a801d08db523858c6dtargetblank7d0111ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/7d0111c0e1a10dab8ceab4a801d08db523858c6d" target="_blank">7d0111c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treecd132b5fa486a650b50fa6587a5e4293abd3d036targetblankcd132b5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree7d0111c0e1a10dab8ceab4a801d08db523858c6dtargetblank7d0111ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/cd132b5fa486a650b50fa6587a5e4293abd3d036" target="_blank">cd132b5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/7d0111c0e1a10dab8ceab4a801d08db523858c6d" target="_blank">7d0111c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -543,11 +543,13 @@ Untracked files:
     Untracked:  Diapositivas/
     Untracked:  README.html
     Untracked:  Resources/
+    Untracked:  analysis/images/
     Untracked:  data/Data_enzimas_Experimento1.txt
     Untracked:  data/Data_enzimas_Experimento2.txt
     Untracked:  data/Data_enzimas_Experimento3.txt
     Untracked:  data/Data_enzimas_Experimento4.txt
     Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/penguins_size.csv
 
 </code></pre>
 <p>
@@ -586,6 +588,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/7d0111c0e1a10dab8ceab4a801d08db523858c6d/analysis/Clase2_Data_Frames.Rmd" target="_blank">7d0111c</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-04-25
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/b237a5e925a45518d13034891526d524468042d5/docs/Clase2_Data_Frames.html" target="_blank">b237a5e</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-04-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1005,8 +1041,8 @@ Levels: H M</code></pre>
 </ul>
 <p>Estos tipos de archivos son de gran utilidad ya que pueden ser leidos por na gran variedad de bases y paquetes estadisticos.</p>
 <p>Para importar una base de datos a R se pueden utilizar la funcion <code>read.table()</code>.</p>
-<p>A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta <code>database</code></p>
-<pre class="r"><code>tabla = read.table(&quot;data/Tabla1_Muestreo.txt&quot;, sep = &quot;\t&quot;, header = TRUE)</code></pre>
+<p>A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta <code>data</code></p>
+<pre class="r"><code>tabla &lt;- read.table(&quot;data/Tabla1_Muestreo.txt&quot;, sep = &quot;\t&quot;, header = TRUE)</code></pre>
 <p><strong>Exploracdión general de los datos</strong></p>
 <p>usar la funcion <code>head()</code> o <code>tail</code> para tener una visualización de los datos</p>
 <pre class="r"><code>head(tabla)</code></pre>
@@ -1053,9 +1089,24 @@ Levels: H M</code></pre>
 <blockquote>
 <p><strong><em>Ejercicio:</em></strong> Usando lo que vimos en la lección pasada: (1) calcula la longitud promedio de todas las estaciones. (2) crea un nuevo vector que contenga solamente las longitudes con el nombre de cada individuo.</p>
 </blockquote>
+<p>Tambien es posible usar <code>read.table</code> o <code>read.csv</code> para abrir datos remotos usando la URL</p>
+<pre class="r"><code>url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Datos_metabolitos.csv&quot;
+
+metabolitos &lt;- read.csv(url)
+
+head(metabolitos)</code></pre>
+<pre><code>  ID  Lipidos Carbohidratos Proteinas    Valina   Leucina Isoleucina
+1  1 5.136842      5.421053 187.46842 0.6815789  9.634211   8.197368
+2  2 3.592593      3.651852 224.55185 0.4703704  9.448148   6.777778
+3  3 2.383673      4.306122 142.19796 0.7040816  6.228571   4.553061
+4  4 7.003571      8.196429 479.80357 0.5964286 16.857143  16.450000
+5  5 1.132143      2.407143  98.78571 0.4000000  5.946429   3.514286
+6  6 3.268182      9.154545 408.42727 1.8818182  9.836364  13.377273</code></pre>
 </div>
 <div id="filtrar-o-rearreglar-variables" class="section level1" number="7">
 <h1 number="7"><span class="header-section-number">7</span> Filtrar o rearreglar variables</h1>
+<div id="función-subset" class="section level2" number="7.1">
+<h2 number="7.1"><span class="header-section-number">7.1</span> Función <code>subset()</code></h2>
 <p>Cuando se tiene un set de datos bastante grande, resulta conveniente remover o filtrar aquellas variables innecesarias y arreglar el restos de las variables de manera práctica.</p>
 <p>La función <code>subset()</code> permite seleccionar un subset de datos que cumplen determinadas condiciones, mientras que <code>select</code> permite definir cuales variables mantener.</p>
 <p>De nuetra tabla, vamos a generar una nueva tabla que contenga solamente los individuos, sitios y longitudes.</p>
@@ -1087,6 +1138,9 @@ head(tabla_sup_ver)</code></pre>
 <blockquote>
 <p><strong><em>Ejercicio:</em></strong> Crea una nueva tabla que contenga los individuos que NO sean de Bahia de La Paz y que tengan una longitud mayor o igual a 20 mm.</p>
 </blockquote>
+</div>
+<div id="indices" class="section level2" number="7.2">
+<h2 number="7.2"><span class="header-section-number">7.2</span> Indices</h2>
 <p>Tambien es posible generar subsets de datos usando indicies <code>[]</code>. Recuerda que se aplica es mismo principio [filas, columnas].</p>
 <p>Ahora queremos recrear la tabla <em>tabla_verano</em>. Primero verificamos cuales individuos tienen la etiqueta “Verano”:</p>
 <pre class="r"><code>tabla$Estacion == &quot;Verano&quot;</code></pre>
@@ -1118,6 +1172,7 @@ head(tabla_verano2)</code></pre>
 <blockquote>
 <p><strong><em>Ejercicio</em></strong> (1) ¿Cual individuo tiene la mayor longitud?. (2)¿Cuantos individuos tienen una longitud igual o menor al promedio total?. (3) ¿Cual es el la longitud promedio de los Individuos de Verano?</p>
 </blockquote>
+</div>
 </div>
 <div id="exportar-una-base-de-datos" class="section level1" number="8">
 <h1 number="8"><span class="header-section-number">8</span> Exportar una base de datos</h1>
