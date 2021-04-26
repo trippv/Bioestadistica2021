@@ -271,10 +271,10 @@ Para importar una base de datos a R se pueden utilizar la funcion `read.table()`
 
 
 
-A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta `database`
+A continuación vamos a abrir un archivo de texto que esta dentro de la carpeta `data`
 
 ```{r}
-tabla = read.table("data/Tabla1_Muestreo.txt", sep = "\t", header = TRUE)
+tabla <- read.table("data/Tabla1_Muestreo.txt", sep = "\t", header = TRUE)
 ```
 
 **Exploracdión general de los datos**
@@ -305,7 +305,23 @@ summary(tabla)
 (1) calcula la longitud promedio de todas las estaciones.
 (2) crea un nuevo vector que contenga solamente las longitudes con el nombre de cada individuo.
 
+
+
+
+Tambien es posible usar `read.table` o `read.csv` para abrir datos remotos usando la URL
+
+```{r}
+url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Datos_metabolitos.csv"
+
+metabolitos <- read.csv(url)
+
+head(metabolitos)
+```
+
+
 # Filtrar o rearreglar variables
+
+## Función `subset()`
 
 Cuando se tiene un set de datos bastante grande, resulta conveniente remover o filtrar aquellas variables innecesarias y arreglar el restos de las variables de manera práctica. 
 
@@ -337,6 +353,8 @@ head(tabla_sup_ver)
 
 >**_Ejercicio:_** Crea una nueva tabla que contenga los individuos que NO sean de Bahia de La Paz y que tengan una longitud mayor o igual a 20 mm.
 
+
+## Indices
 
 Tambien es posible generar subsets de datos usando indicies `[]`. Recuerda que se aplica es mismo principio [filas, columnas].
 

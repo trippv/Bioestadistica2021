@@ -1,0 +1,390 @@
+---
+title: "Clase3 Graficos Base"
+author: "Miguel Tripp"
+date: "2021-04-25"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+Uno de los aspectos mas poderosos de R es su capacidad de producir una gran variedad de gráficos los cuales pueden ser reproducibles, modificables y publicables con solo unos poco comandos.
+
+R puede producir gráficos utilizando tres paquetes principales: ggplot, lattice y gráficos base. En esta sección nos enfocaremos a los gráficos base.
+
+Para estos ejercicios, utilizaremos la base de datos de pingünos del Archipielago de Palmer la cual se encuentra disponible en la carpeta `data`
+
+```{r}
+penguins <- read.table("data/penguins_size.csv", sep = ",", na.strings = "NA", header = TRUE, as.is = FALSE)
+penguins <- penguins[complete.cases(penguins), ]
+```
+
+El archivo `penguins_size.csv` contiene las variables:
+
+-   `species`: Especies de pingüino (Chnstrap, Adelie o Gentoo)
+-   `culmen_length_mm`: longitud del culmen (mm)
+-   `culmen_depth_mm`: profundidad del culmen
+-   `flipper_length_mm`: longitud de la aleta (mm)
+-   `body_mass_g`: masa corporal (g)
+-   `island`: nombre de la isla (Dream, Torgersen o Biscoe)
+-   `sex`: sexo
+
+**Los pingüinos:**
+
+```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
+knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/lter_penguins.png")
+```
+
+
+```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
+knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/culmen_depth.png")
+```
+
+
+
+## 1: Histograma `hist()`
+
+Para crear un histograma usamos la función `hist()`, que siempre nos pide como argumento _x_ un vector numérico. El resto de los argumentos de esta función son opcionales. Si damos un vector no numérico, se nos devolverá un error.
+
+Para obtener un hitograma de frecuencias del peso corporal _body_mass_g_ de todos los pingüinos, se ejecuta el siguiente comando:
+
+```{r, include=TRUE}
+hist(x = penguins$body_mass_g)
+```
+
+Para la longitud del culmen _culmen_lengh_mm_:
+
+```{r, include = TRUE}
+hist(x = penguins$culmen_length_mm)
+```
+
+Vamos a cambiar el título del gráfico con el argumento `main`, y el nombre de los ejes x y Y con `xlab` y  `ylab`, respectivamente.
+
+
+```{r, include = TRUE}
+hist(x = penguins$culmen_length_mm,
+     
+     #colora el titulo principal
+     main = "histograma de longitud del culmen (mm)",
+     
+     #etiqueta del eje x
+     xlab = "longitud (mm)",
+     
+     #etiqueta del eje y
+     ylab = "Frecuencia")
+```
+
+La funcion hist auntomaticamente selecciona el número de intervales ("_breaks_") mas adecuado. Pero es posible definirlos manualmente con el parametro "breaks"
+
+```{r, include = TRUE}
+hist(x = penguins$culmen_length_mm,
+     breaks = 20)
+```
+
+```{r, include = TRUE}
+hist(x = penguins$culmen_length_mm,
+     breaks = 30)
+```
+
+Probemos cambiando el color de las barras del histograma agregando el argumento col. Este argumento acepta nombres de colores genéricos en inglés como “red”, “blue” o “purple”; y también acepta colores hexadecimales, como “#00FFFF”, “#08001a” o “#1c48b5”.
+
+```{r, include =TRUE}
+hist(x = penguins$culmen_length_mm,
+     main = "histograma de longitud total (mm)",
+     xlab = "longitud (mm)",
+     ylab = "Frecuencia",
+     col = "lightblue")
+```
+
+
+Y finalmente podemos añadir dos histogramas en una sola grafica. Para esto, baso a aplicar lo que hemos visto hasta ahora para generar un subset con los datos de longitud del culmen _culmen_length_mm_ de los machos y otro de las hembras
+
+Posteriormente, se llama la función `hist()` para cada subset, pero al segundo se le debe añadir el parametro: `add = TRUE`
+
+```{r}
+
+#generar el subset de dato de los machos
+male_peng <- penguins[penguins$sex == "MALE", "culmen_length_mm"]
+
+#subset de datos de hembrsa
+female_peng <- penguins[penguins$sex == "FEMALE","culmen_length_mm" ]
+
+
+#generar el primer histograma
+hist(male_peng, breaks = 25, col = "lightblue",
+     main = "histograma de frecuencias por sexo",
+     ylab = "Frecuencia",
+     xlab = "Longitud (mm)")
+
+hist(female_peng, breaks = 25, col = "salmon", add = TRUE)
+
+```
+
+
+
+## 2:Función `plot()`
+Esta función tiene un comportamiento especial, pues dependiendo del tipo de dato que le demos como argumento, generará diferentes tipos de gráfica. Además, para cada tipo de gráfico, podremos ajustar diferentes parámetros que controlan su aspecto, dentro de esta misma función.
+
+Dependiendo del tipo de dato que demos a x y y será el gráfico que obtendremos, de acuerdo a las siguientes reglas:
+
+|x	|y	|Gráfico|
+|---|---|----|
+|Continuo|	Continuo|	Diagrama de dispersión (Scatterplot)|
+|Continuo|	Discreto	|Diagrama de dispersión, y coercionada a numérica|
+|Continuo|	Ninguno|	Diagrama de dispersión, por número de renglón|
+|Discreto|	Continuo|	Diagrama de caja (Box plot)|
+|Discreto|	Discreto|	Gráfico de mosaico (Diagrama de Kinneman)|
+|Discreto|	Ninguno	|Gráfica de barras|
+|Ninguno|	Cualquiera|	Error|
+
+por ejemplo, si graficamos solamente la longitud del culmen (continuo + Ninguno):
+```{r}
+plot(penguins$culmen_length_mm)
+```
+
+pero si graficamos longitud del culmen por la masa corporal (continuo + continuo)
+
+```{r, include =TRUE}
+plot(x = penguins$culmen_length_mm, y = penguins$body_mass_g)
+```
+
+ahora si graficamos Longitud total x Sitio (continuo x discreto)
+
+```{r}
+plot(penguins$culmen_length_mm, penguins$species)
+```
+
+si graficamos la especies (discreto x niunguno)
+```{r}
+plot(penguins$species)
+```
+
+Ahora si graficamos isla x sexo (discreto x discreto)
+```{r}
+plot(penguins$island, penguins$sex)
+```
+
+ahora si graficamos isla y longitud total (discreto x continuo)
+```{r}
+plot(penguins$island,  penguins$culmen_length_mm)
+```
+
+
+La función plot es particularmente util para graficar series de tiempo. Para visualizar esto, vamos a generar un vector con una serie de 31 años, desde 1990 hasta el 2020 usando la función `seq()` y  `rnorm()`
+
+```{r}
+year <- seq(1990,2020,1)
+value <- rnorm(31)
+
+plot(year, value)
+```
+
+
+Para controlar el tipo de grafico dentre de esta función, usamos el parametro `type" donde puede ser:
+
+  + "l" = linea
+  + "o" = puntos
+  + "b" = ambos
+  
+```{r}
+plot(year, value, type = "l")
+```
+
+```{r}
+plot(year, value, type ="b")
+```
+
+Al igual que con `hist()` es posible cambiar el color de una grafica, asi como los nombres usando los parametros `main`, `col` y `xlab`, `ylab`
+
+```{r}
+plot(year, value, type="l", col ="red", main = "gráfico anual", xlab = "Año", ylab = "anomalia")
+```
+
+## 3:Boxplots  `boxplot()`
+
+Los diagrams de caja, o boxplots, son gráficos que muestra la distribución de una variable usando cuartiles, de modo que de manera visual podemos inferir algunas cosas sobre su dispersión, ubicación y simetría.
+
+Una gráfica de este tipo dibuja un rectángulo cruzado por una línea recta horizontal. Esta linea recta representa la **mediana**, el segundo cuartil, su base representa el pimer cuartil y su parte superior el tercer cuartil. Al rango entre el primer y tercer cuartil se le conoce como **intercuartílico**.
+
+EN la sección anterior vimos como generar un boxplot usando la funcion `plot()`. Una alternativa es utilizar la función  `boxplot()`. 
+
+En la segunda manera necesitamos dar dos argumentos:
+
+  + formula: Para esta función las fórmulas tienen el formato y ~ x, donde x es el nombre de la variable continua a graficar, y la x es la variable que usaremos como agrupación.
+  + data: Es el data frame del que serántomadas las variable
+
+Por ejemplo, para generar diagramas de la longitud total por sitio de colecta, se ejecuta el comando:
+
+```{r}
+boxplot(culmen_length_mm ~ island, data = penguins)
+```
+
+Esta opción nos permite generar graficos con interacción. Por ejemplo, si quieremos graficar la longitud total en función del sitio de colecta y del sexo, ejecutamos:
+
+```{r, fig.width= 10}
+boxplot(culmen_length_mm ~ sex * island, data = penguins)
+```
+
+
+Para facilitar la lectura de la gráfica, se le puede asignar un color difente a cada grupo
+
+```{r, fig.width= 10}
+boxplot(culmen_length_mm ~ sex * island, data = penguins, col = c("tomato", "lightblue"))
+```
+
+
+## 4:Edición
+
+Asignar un color de acuerdo a una variable con el parametro `col`
+```{r}
+plot(x = penguins$culmen_length_mm, 
+     y = penguins$body_mass_g, 
+     col = penguins$sex)
+```
+
+
+Cambiar el tamaño del simbolo o forma del simbolo:
+
+```{r}
+plot(x = penguins$culmen_length_mm, 
+     y = penguins$body_mass_g, 
+     col = penguins$sex,
+     pch = 16,
+     cex = 2)
+```
+
+En donde `pch()` indica el simbolo, mientras que `cex()`el tamaño.
+
+Aqui encontraras una lista con los valores de cada simbolo:
+<img src="http://www.sthda.com/sthda/RDoc/figure/graphs/r-plot-pch-symbols-points-in-r.png">
+
+Para los simbolos de 21 a 25, es necesario especificar el color del borde (`col=`) asi como del relleno (`bg=`)
+
+
+CUando usamos `plot()` es posible unir dos series diferentes. Para esto, primero se gráfica la primera serie, que en este caso es "value" y posteriormente se añada la segunda serie usando la funciones `lines()`. Por ejemplo, generamos un segundo vector con 31 datos:
+
+```{r}
+value2 <- rnorm(31)
+```
+
+
+Ahora podemos unir ambos vectores en la misma gráfica de la siguiente forma:
+```{r}
+plot(year, value, type = "l", col ="tomato", lwd=2, ylim = c(-5,5))
+lines(year, value2, col = "lightblue", lwd = 2, lty= "dashed")
+```
+
+Entre los parametros que se pueden modificar tenemos:
+
+  + `lwd` = grosor de la linea
+  + `lty` = tipo de linea ("dashed", "solid", "dotted" y "longdash")
+  + `ylim` = limites del eje Y. Este es en forma de vector numerico 
+
+
+Para añadir una leyenda, se usa la función `legend()` despues del gráfico.
+
+```{r}
+plot(year, value, type = "l", col ="tomato", lwd=2, ylim = c(-5,5))
+lines(year, value2, col = "lightblue", lwd = 2, lty= "dashed")
+legend("topleft", legend = c("value1", "value2"),
+       col=c("tomato", "lightblue"),
+       lty = c("solid", "dashed"))
+```
+
+
+
+Para unir dos o mas gráficos es posible ajustar el área de gráfico con la funcion `par()`
+
+```{r}
+par(mfrow=c(1,2)) #numero de filas, numero de columnas
+
+plot(year, value, type = "l", col ="tomato", lwd=2, ylim = c(-5,5))
+
+plot(year, value2, type = "l", col ="lightblue", lwd=2, ylim = c(-5,5))
+
+dev.off() #limpia el area de gráfico
+```
+
+
+```{r}
+par(mfrow=c(2,1)) #numero de filas, numero de columnas
+
+plot(year, value, type = "l", col ="tomato", lwd=2, ylim = c(-5,5))
+
+plot(year, value2, type = "l", col ="lightblue", lwd=2, ylim = c(-5,5))
+
+dev.off()
+```
+
+Finalmente, es posible usar la función `mtext()` para agregar titulo a una serie de gráficas.
+
+```{r}
+par(mfrow=c(1,3), oma = c(0, 0, 2, 0)) #numero de filas, numero de columnas
+
+# Grafico de dispersión
+plot(x = penguins$culmen_length_mm, 
+     y = penguins$body_mass_g, 
+     col = penguins$sex,
+     type = "p",
+     main = "Relacion entre longitud del culmen y masa corporal",
+     pch = 15,
+     ylab = "Masa corporal (g)",
+     xlab = "Longitud del culmen (mm)")
+
+
+# Boxplot
+
+boxplot(culmen_length_mm ~ island, data = penguins, main = "Longitud del culmen por sitio")
+
+# Histograma
+hist(penguins$culmen_length_mm, main="Histograma Logitud del culmen (mm)")
+
+mtext("Datos de longitud del culmen", outer = TRUE)
+
+dev.off() #limpia el area de gráfico
+```
+
+Observa que para que se despliegue el texto en la parte superior, es necesario ajustar el espacio del gráfico, es decir, incrementar el margen
+
+Los margenes de una figura se ajustan con los parametros `mar()`, para los margenes internos, y `omar()`para los margenes externos, tal como se muestra en la siguiente figura:
+
+
+<img src="https://www.r-graph-gallery.com/74-margin-and-oma-cheatsheet_files/figure-html/thecode-1.png">
+
+Para ambos parametros, se asignan cuatro valores para indicar el espacio abajo, izquierda, arriba, derecha. 
+
+---
+## Ejercicio:
+>**Ejercicio:** Usando todos tus conocimientos adquiridos hasta este punto, recrea esta gráfica:
+
+
+
+```{r, echo= FALSE}
+
+Biscoe = penguins[penguins$island == "Biscoe", ]
+
+Dream = penguins[penguins$island == "Dream", ]
+
+Torgersen = penguins[penguins$island == "Torgersen", ]
+
+
+ylab = "Longitud del culmen total (mm)"
+ylim = c(0, 80)
+
+par(mfrow=c(1,3), oma = c(0, 0, 2, 0))
+
+boxplot(culmen_length_mm ~ sex, data = Biscoe, col = "tomato", main ="Biscoe", ylab = ylab, ylim = ylim)
+points(Biscoe$sex, Biscoe$culmen_length_mm, col= "grey25",pch = 16)
+
+
+
+boxplot(culmen_length_mm ~ sex, data = Dream, col = "lightblue", main = "Dream", ylab = ylab, ylim = ylim)
+points(Dream$sex, Dream$culmen_length_mm, col= "grey25",pch = 16)
+
+
+boxplot(culmen_length_mm ~ sex, data = Torgersen, col = "yellow", main = "Torgersen", ylab = ylab, ylim = ylim)
+points(Torgersen$sex, Torgersen$culmen_length_mm, col= "grey25",pch = 16)
+
+mtext("Diferencias en la longitud del culmen por sexo en cada isla", outer = TRUE)
+dev.off()
+
+```
