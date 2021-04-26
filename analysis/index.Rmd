@@ -23,6 +23,9 @@ correo: [tripp\@cicese.edu.mx](mailto:tripp@cicese.edu.mx){.email}
 
 Temas:
 
+
+## PARTE I: Intorducción a R
+
 -   [Clase 1: Introducción y comado básicos](Clase1_Basicos.html)
 
 -   [Clase 2: Data frames, matrices y otros objetos](Clase2_Data_Frames.html)
