@@ -1,0 +1,794 @@
+---
+title: "Clase 4: Dplyr y Tidyverse"
+author: "Miguel Tripp"
+date: "2021-04-26"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+# Introducción a Dplyr
+
+
+**DPLYR** Es una libreria orientada a la manipulación de datos
+
+Cada función de esta libreria realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.
+
+dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerias que forman parte de este. 
+
+En esta intrducción nos vamos a enfocar a las funciones:
+
+  + `filter()`
+  + `select()`
+  + `arrange`
+  + `mutate()`
+  + `summarise()`
+  + `%>%`
+
+
+
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("https://www.databentobox.com/2019/11/01/dplyr-with-string/featured_hub3fe62e60f0ee255ad23a6fe895bd4cc_207241_720x0_resize_lanczos_2.png")
+```
+
+
+En esta clase, usaremos dplyr asi como readxl para importar y modificar una tabla
+
+Ambos paquetes pueden instalarse de manera individual utilizando la función `install.package()`. Sin embargo, como Dplyr es parte de Tidyverse, se puede instalar solamente este ultimo. 
+
+```{r, eval=FALSE, warning=FALSE}
+install.packages("tidyverse")
+install.packages("readxl")
+```
+
+
+Una vez instalados, es necesario cargar las ambas librerias a nuestro ambiente de trabajo
+
+```{r, results=FALSE, include=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+# Los Datos
+
+
+
+```{r, echo=FALSE, out.width = '75%'}
+knitr::include_graphics("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/87044f58-c765-43c5-bc51-8613e3ac7ab1/ddew4m7-c69a2c41-518f-48ca-ba35-8ab1895464e0.png")
+```
+
+
+Para esta sección utilizaremos la base de datos de POKEMON de [KAGGLE](https://www.kaggle.com/rounakbanik/pokemon). Este set de datos incluye 721 pokemons con su *nombre*, *tipo* en primer y segunto nivel, *HP*, *Ataque*, *Defensa*, *Ataque especial*, *Defensa especial*, *velocidad* y si es *legendario* o no.
+
+
+  * ID: ID for each pokemon
+  * Name: Name of each pokemon
+  * Type 1: Each pokemon has a type, this determines weakness/resistance to attacks
+  * Type 2: Some pokemon are dual type and have 2
+  * Total: sum of all stats that come after this, a general guide to how strong a pokemon is
+  * HP: hit points, or health, defines how much damage a pokemon can withstand before fainting
+  * Attack: the base modifier for normal attacks (eg. Scratch, Punch)
+  * Defense: the base damage resistance against normal attacks
+  * SP Atk: special attack, the base modifier for special attacks (e.g. fire blast, bubble beam)
+  * SP Def: the base damage resistance against special attacks
+  * Speed: determines which pokemon attacks first each round
+
+
+```{r}
+pokemon <- read_excel("data/datasets_Pokemon.xls", sheet = "pokemon")
+pokemon
+```
+
+usa **?read_excel** para ver todas las opciones para importar datos
+
+
+Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Los **tibbles** son data frames, pero modifican algunas características antiguas para hacernos la vida más fácil.
+
+Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().
+
+Si ya te has familiarizado con data.frame(), es importante que tomes en cuenta que tibble() hace menos cosas: nunca cambia el tipo de los inputs (p. ej., ¡nunca convierte caracteres en factores!), nunca cambia el nombre de las variables y nunca asigna nombres a las filas.
+
+Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un caracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```
+
+# Dplyr
+
+
+El paquete incluye un conjunto de comandos que coinciden con las acciones más comunes que se realizan sobre un conjunto de datos (filtrar filas `filter()`, seleccionar columnas `select()`, ordenar `arrange()`, transformar o añadir nuevas variables `mutate()`, resumir mediante alguna medida numérica `summarise()`). Lo que hace que la sintaxis sea especialmente clara es la correspondencia tan nítida entre el comando y la acción. Para llevar a cabo estas acciones debemos tener en cuenta algunas características comunes:
+
+  + El primer argumento siempre es un tibble o data.frame
+  + El resto de los argumentos indican los parametros de lo que queremos hacer
+  + El resultado siempre tiene tambien estructura de tibble o data frame
+
+## `select()`
+
+Permite seleccionar una o un set de varias columnas
+
+Por ejemplo: seleccionar las columnas _Name_ y _Attack_
+
+
+```{r}
+select(pokemon, Name, Attack)
+```
+
+
+Al igual que en ejemplo anteriores, podemos seleccionar todo _excepto_ una clumna especifica usando el operador "-" (resta)
+
+```{r}
+select(pokemon, -Attack)
+```
+
+Para seleccionar un intervalo de columnas, se puede usar el operador `:`
+
+```{r}
+select(pokemon, Name, Type1:HP)
+```
+
+De igual manera, se puede usar el operados `:` para descartar un intervalo de columnas
+
+```{r}
+select(pokemon, -(Defense:Legendary))
+```
+
+
+Se puede seleccionar las columnas que empiezar con un determinado caracter con la función `starts_with()`; por ejemplo, si queremos enfocarnos a las columnas con del tipoe (Type):
+
+```{r}
+select(pokemon, Name, starts_with("Type"))
+```
+
+Algunos operadores que funcionan de manera similar son:
+
++ `ends_with()` = Selecciona las columnas que terminan con una cadena de caracteres
++ `contains()` = Selecciona las columnas que contienen una cadena de caracteres.
+
+```{r}
+select(pokemon, Name, contains("Sp_"))
+```
+
+
+Con la función `evrything()` se puede seleccionar todo, y con esto es factible cambiar el order de las columnas. Por ejemplo, si quieremos que la primera columna sea "Type1" ejecutamos:
+
+```{r}
+select(pokemon, Type1, everything())
+```
+
+## `filter()`
+
+Esta función nos permite seleccionar las **filas** que cumplan con las condiciones que especifiquemos
+
+Por ejemplo, filtrar los pokemon con un nivel de ataque _Attack_ superior  a 100
+
+```{r}
+filter(pokemon, Attack > 100)
+```
+
+
+Filtrar los pokemon que tengan un nivel de ataque mayor a 100 **y** que sean de tipo fuego
+```{r}
+filter(pokemon, Attack > 100, Type1 == "Fire")
+```
+
+Filtrar los pokemons que tengan nivel de ataque mayor a 100 **y** que sean de tipo fuego **y** que sean de la primera generación
+
+```{r}
+filter(pokemon, Attack > 100,
+       Type1 == "Fire",
+       Generation == 1)
+```
+
+
+Ahora queremos filtrar los pokemon que tengan un nivel de ataque mayor a 100 **o** que sean de tipo fuego
+```{r}
+filter(pokemon, Attack > 100 | Type1 == "Fire")
+```
+
+
+Si queremos filtrar distintas condiciones en una misma variable podemos usar el operador `%in%` por ejemplo para filtrar lo pokemons que sea de tipo1 de Fuego y Agua
+
+```{r}
+filter(pokemon, Type1 %in% c("Fire", "Water"))
+```
+
+
+
+Es posible filtrar un intervalo de valores utilizando el argumento `between()`. Por ejemplo, para filtrar los pokemon que tengan un nivel de ataque mayor a 100 pero menor a 150
+
+```{r}
+  filter(pokemon, 
+         between(Attack,100,150))
+```
+
+para hacer la selección opuesta, se puede agregar el operador `!`
+
+```{r}
+filter(pokemon, !between(Attack, 100, 150))
+
+```
+
+```{r}
+filter(pokemon, 
+       between(Attack, 0, 50),
+       between(Speed, 20, 30))
+```
+
+
+Tambien es posible filtrar una variable a partir de un caracter en especifico usando la funcion `str_detect()` *. Por ejemplo podemos buscar la informacion de Pikachu
+
+
+* `str_detect()` es parte del paquete **Stringr** pero es compatible con el uso de Dplyr
+
+```{r}
+filter(pokemon, str_detect(Name, "Pikachu"))
+```
+
+
+> Ejercicio: ¿Quien es ese pokemon?
+
+
+```{r, echo=FALSE, out.width = '50%'}
+knitr::include_graphics("https://aaronpeyton.github.io/webDev1/pokemon/jigglypuff.png")
+```
+
+
+
+Nuestro pokemon tiene un valor de HP entre 100 y 200; valor de velocidad menor a 50; es del tipo1 Normal; tiene un valor de defensa menor a 40 y pertenece a la 1er generación
+
+```{r, class.source = 'fold-hide', eval= FALSE}
+filter(pokemon, 
+       between(HP, 100, 200),
+       Speed < 50, 
+       Type1 == "Normal",
+       Defense < 40, 
+       Generation == 1,
+       )
+```
+
+
+## `mutate()`
+
+
+
+```{r, echo=FALSE, out.width = '75%', fig.align='left'}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png")
+```
+
+
+
+La función mutate nos permite crear nuevas variables que contengan cálculos a partir de las que ya tenemos, añadir una nueva variable o transformar una variable ya existente
+
+Por ejemplo, podemos generar una nueva columna llamada "At_Df_ratio" con la propoción de los valors de Ataque sobre Defensa
+
+```{r}
+mutate(pokemon, At_df_ratio = Attack / Defense)
+```
+
+De igual manera se pueden generar diversas nuevas columnas, separadas por comas. 
+
+```{r}
+mutate(pokemon, At_df_ratio = Attack / Defense,
+       
+       #En porcentage
+       At_df_per = At_df_ratio * 100,
+       
+       #Añadir una nueva columna con el nombre de los datos
+       data = "Pokemon")
+```
+
+con mutate, tambien es posible cambiar el tipo de dato de cada columna. Por ejemplo, cambiar la columna "Type1" de carácter a factor:
+
+```{r}
+pokemon_fct <- mutate(pokemon, Type1 = factor(Type1))
+```
+
+Si vemos el tipo de datos, veremos la diferencia:
+```{r}
+str(pokemon_fct)
+```
+
+
+
+## `rename()`
+
+Te permite cambiar el nombre de una variable
+
+```{r}
+rename(pokemon,
+       Nombre = Name, Tipo1 = Type1)
+```
+
+
+## `arrange()`
+
+La función arrange nos permite order los datos en función a los valores de otra variable
+
+Si queremos mostrar ordenados de menor a mayor los valores de nuestro
+conjunto de datos en función al valor de ataque:
+
+```{r}
+arrange(pokemon, Attack)
+```
+
+Este ordenara los datos de menor a mayor, si se quiere ordenar de mayor a menor se debe agregar el operador `-` o `desc()`
+
+```{r}
+arrange(pokemon, desc(Attack))
+
+arrange(pokemon, -Attack)
+```
+
+
+Tambien es posible ordernar caracteres
+```{r}
+arrange(pokemon, Name)
+```
+
+## pipes `%>%`
+
+
+```{r, echo=FALSE, out.width = '50%', fig.align='left'}
+knitr::include_graphics("https://magrittr.tidyverse.org/logo.png")
+```
+
+
+El operador `%>%` nos permite encadenar funciones sin tener que ir creando variables para uso temporal o sin tener que anidar funciones.
+
+Dplyr importa este operador de otro paquete (_magrittr_). De manera general, el operador permite unir el resultado de una función a la entrada de otra función. 
+
+Por ejemplo, si yo quiere filtrar los pokemon con valor de ataque mayor a 100, seleccionar las columnas Name y Attack y posteriormente mostrar solo las primeras seis filas (head) tendria que correr la siguiente linea:
+
+```{r}
+head(
+  select(
+    filter(pokemon, Attack <100),
+    Name, Attack)
+  )
+```
+
+Lo podemos reescribir de la siguiente manera:
+
+```{r}
+pokemon %>%
+  filter(Attack < 100) %>% 
+  select(Name, Attack) %>%
+  head
+```
+
+De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar los ordenes
+
+```{r}
+pokemon %>%
+  select(Name, Type1, Attack) %>%
+  arrange(desc(Type1), -Attack) %>%
+  head(10)
+```
+
+Los resultados de una cadena pueden asignarse a un nuevo objeto.
+
+```{r}
+poke_pipe <- pokemon %>%
+  select(Name, Type1, Attack) %>%
+  arrange(desc(Type1), -Attack) %>%
+  head(10)
+
+poke_pipe
+```
+
+
+
+>**Ejercicio 1:** A partir de la tabla `pokemon` crea una **nueva** tabla que contenga:
+
+1. una columna llamada `Atack_ratio` con la proporción de Sp_Atk / Attack
+2. seleccionando solamente  las columnas "Name", "Type1" y "Atack_ratio"
+3. filtrando las especies con una Attack_ratio > 2
+4. ordenados de forma descendente. 
+
+
+```{r Ejercicio1, class.source = 'fold-hide'}
+pokemon_Attack_ratio <- pokemon %>% 
+  mutate(Attack_ratio = Sp_Atk / Attack) %>% 
+  select(Name, Type1, Attack_ratio) %>% 
+  filter(Attack_ratio > 2) %>% 
+  arrange(desc(Attack_ratio))
+```
+
+
+>**Ejercicio 2:** Crea una nueva tabla que contenga:
+
+1. Seleccionar Name, Type1, Total, y ambos valores de Sp_
+2. _Sin generar una columna nueva_ transforma los valores en Sp_Atk y SP_Def en porcentaje
+3. Ordena la tabla en función de los valores descendentes del % de Sp_Atk
+5. los primeros 10 valores 
+
+
+```{r Ejercicio2, class.source = 'fold-hide'}
+pokemon_pct <- pokemon %>% 
+  select(Name, Type1, Total, contains("Sp_")) %>% 
+  mutate(Sp_Atk = (Sp_Atk * 100) / Total, 
+         Sp_Def = (Sp_Def * 100) / Total) %>% 
+  arrange(desc(Sp_Atk)) %>% 
+  head(10)
+```
+
+
+
+## `summarise()`
+
+La función summarise() nos permite crear resúmenes estadísticos para nuestrs datos a partir de una determinada columna. Para esto, podemos usar las funciones ya conocidas, tales como `mean()`, `min()`, `max()`, `sd()`,`n()`. Por ejemplo
+
+```{r}
+pokemon %>%
+  summarise(promedio = mean(Attack),
+            minimo = min(Attack),
+            maximo = max(Attack),
+            N = n())
+```
+
+## Operaciones de grupo usando `group_by()`
+
+El verbo `group_by()` permite "separar" agrupar la tabla en función a una o mas variables y aplicar la funcion summarise().
+
+```{r}
+pokemon %>%
+  group_by(Type1) %>%
+  summarise(promedio = mean(Attack),
+            desvest = sd(Attack),
+            N = n())
+```
+
+
+```{r}
+pokemon %>% 
+  group_by(Type1, Type2) %>% 
+  summarise(promedio = mean(Attack),
+            desvest = sd(Attack),
+            N = n())
+```
+
+Esto tambien nos permite generar una nueva columna con información relevante
+
+```{r}
+pokemon %>% 
+  group_by(Type1, Type2) %>% 
+  mutate(promedio_grupo = mean(Attack))
+```
+
+
+## `summarise_all()`
+
+La función `summarise_all()` requiere una función como argumento, la cual aplica a todas las columnas de la tabla. En este ejemplo se agrego el argumento `na.rm = TRUE` el cual ignora los NAs
+
+```{r warning=FALSE}
+pokemon %>%
+  group_by(Type1) %>%
+  summarise_all(mean, na.rm =TRUE)
+```
+
+
+Como puedes ver, la función calcula el promedio de todas las variables, y cuando encuentra variables no numericas, devuelve **NA**
+
+Esto se puede solucionar usando una combinación de `across` y `where`; donde across the permite seleccionar un intervalo de variables y where, especificar una cualidad
+
+```{r}
+pokemon %>% 
+  group_by(Type1) %>% 
+  summarise(across(5:8, mean))
+```
+
+
+Calcular el promedio solamente en las variables numericas
+```{r}
+pokemon %>% 
+  group_by(Type1) %>% 
+  summarise(
+    across(where(is.numeric), mean, na.rm = TRUE)
+  )
+```
+
+
+Hacer calculo en variables especificas
+```{r}
+pokemon %>% 
+  group_by(Type1) %>% 
+  summarise(
+    across(contains("Sp_"), mean, na.rm = TRUE)
+  )
+```
+
+
+>**Ejercicio 3:** Crea una nueva tabla en donde le restes el valor de ataque de cada individuo al valor total del grupo Type1
+
+
+```{r Ejercicio3, class.source = 'fold-hide'}
+pokemon_grp <- pokemon %>% 
+  group_by(Type1) %>% 
+  mutate(Promedio_grupo = mean(Attack, na.rm = TRUE),
+         Attack_dif = Promedio_grupo - Attack) 
+```
+
+
+
+>**Ejercicio 4 Activida de LDH:** Usando los valores de actividad enzimática que se encuentran en el directorio `data/`:
+
+1. abre cada tibble  y unelos en una sola con la función `rbind()`
+2. selecciona las columnas `ExpNum`,`TreatTemp`, `Meas_Temp` y `ActivityLDH`
+3. convierte la columna `ExpNum` y `Meas_Temp`en factores
+4. agrupa la tabla de acuerdo a esta columna 
+5. calcula el promedio, desviación estandar y N para los valores de activtidad de LDH
+6. guarda esta nueva tabla en el directorio de resultados
+
+
+
+```{r Ejercicio4, class.source = 'fold-hide', eval= FALSE}
+tbl <-
+    list.files(path = "data", pattern = "Data_enzimas*", full.names = TRUE) %>% 
+    map_df(~read.table(., sep = "\t", h = TRUE))
+
+tbl %>% 
+  tibble(.) %>% 
+  select(ExpNum, TreatTemp, Meas_Temp, ActivityLDH) %>% 
+  mutate(ExpNum = factor(ExpNum)) %>% 
+  group_by(ExpNum, Meas_Temp) %>% 
+  summarise(PromedioLDH = mean(ActivityLDH, na.rm = TRUE),
+            DesvLDH = sd(ActivityLDH, na.rm = TRUE),
+            N = n())
+```
+
+
+## `count()`
+
+La función `count()` nos permite saber cuantas observaciones hay en una variable especifica. Al agregar el argumento `sort = TRUE`devuelve una tabla descendiente con el número de observaciones.
+
+Por ejemplo, para saber cuantos miembros de cada tipo hay en nuestra lista de pokemon:
+
+```{r}
+pokemon %>%
+  count(Type1, sort = TRUE, name = "Numero")
+```
+
+
+## `ifelse()`
+
+La función `ifelse()` es utilizada en muchos contextos en los lenguajes de programación en donde se tiene la sintaxis:
+
+ifelse(condicion, resultado positivo, regulado negativo)
+
+por ejemplo
+
+```{r}
+x = 20
+
+ifelse(x == 20, "Si es", "no es")
+```
+
+
+Entonces es posible utilizar la función `ifelse` dentro de mutate para transformar ciertas variables. 
+
+```{r}
+pokemon %>% 
+  mutate(Tipo = ifelse(Type1 == "Grass", "Planta", Type1)) %>% 
+  mutate(Rapidez = ifelse(Speed >= 100, "Muy rapido", "lento"))
+```
+
+
+## Unir dos o mas tablas
+
+### Unir dos tablas con el mismo número de dimensiones
+
+Para este ejercicio, vamos a generar dos tibbles sencillos:
+
+
+```{r}
+x <- tibble(x1 = c("A", "B", "C"),
+            x2 = c(1, 2, 3))
+
+x
+```
+
+```{r}
+y <- tibble(x1 = c("B", "C", "D"),
+            x2 = c(2,3,4))
+y
+```
+
+Unir las columnas con `bind_cols()`
+
+```{r}
+bind_cols(x, y)
+```
+
+
+Unir las filas con `bind_rows()`
+
+```{r}
+bind_rows(x, y)
+```
+
+Unir los elementos en común con `union()`
+```{r}
+union(x, y)
+```
+
+`intersect()`toma las filas que aparecen en ambas tablas
+```{r}
+intersect(x,y)
+```
+
+### Unir dos tablas con diferentes dimensiones
+
+La sintaxis para estas funciones es la misma `xxxx_join(x1 = tabla1, x2 = tabla2, by = "columna en común")`
+
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("https://statisticsglobe.com/wp-content/uploads/2019/04/dplyr-data-join-functions-overview_inner_join-left_join-right_join-full_join-semi_join-anti_join.png")
+```
+
+Para esto, vamos a construir otro par de tibbles
+
+```{r}
+canciones <- tibble(cancion = c("I´am the warlus",
+                                "Come together",
+                                "Yesterday",
+                                "Why"),
+                    autor = c("John", 
+                              "John",
+                              "Paul",
+                              "Yoko"))
+
+canciones
+```
+
+```{r}
+artista <- tibble(autor = c("George",
+                             "John",
+                             "Paul",
+                             "Ringo"),
+                  instrumento = c("sitara",
+                                  "guitarra",
+                                  "bajo",
+                                  "bateria"))
+artista
+```
+
+
+`inner_join()`
+```{r}
+inner_join(canciones, artista, by = "autor")
+```
+
+
+`left_join()`
+```{r}
+left_join(canciones, artista, by = "autor")
+```
+
+`right_join()`
+```{r}
+
+right_join(canciones, artista, by = "autor")
+```
+
+`full_join()`
+
+```{r}
+full_join(canciones, artista, by = "autor")
+```
+
+
+`semi_join()`
+```{r}
+semi_join(canciones, artista, by = "autor")
+```
+
+`anti_join()`
+```{r}
+anti_join(canciones, artista, by = "autor")
+```
+
+
+> Ejercicio: Utiliza la función `read_csv()` para abrir el archivo **pokemon_extended.csv**. Posteriormente, genera una nueva tabla donde en una sola cadena unas la información del peso y altura de cada pokemon con el el resto de la tabla original, conservando solamente aquellos individuos presentes en ambas tablas, selecciona solamente las columnas Name, Type1, Total, HP, height_m, weight_gk y filtrar aquellos pokemon que tengan un peso superior al promedio global
+
+
+
+
+```{r Ejercicio5, class.source = 'fold-hide', eval= FALSE}
+pokemon_ext <- read_csv("data/pokemon_extended.csv")
+
+pokemon_E5 <- pokemon %>% 
+  
+  # Unir ambas tablas con inner join
+  inner_join(pokemon_ext, by = "Name") %>% 
+  
+  #seleccionar las columnas de interes
+  select(Name, Type1, Total, HP, height_m, weight_kg) %>% 
+  
+  #filtrar los individuos con peso mayor al promedio
+  filter(weight_kg > mean(weight_kg, na.rm = TRUE))
+```
+
+
+> Ejercicio: Utilizando `read_csv()` genero un par de objetos nuevos con las tablas **Trancriptome_DGE.csv** y **Transcriptome_Anotacion.csv**. En una sola cadena, une ambas tablas de manera que cada transcrito de la tabla DGE tenga su anotación; filtra aquellos transcritos que tuvieron un valor de logFC mayor a 0; y genera una tabla con el numero de organismos de cada genero (genus). 
+
+```{r Ejercicio6, class.source = 'fold-hide', eval= FALSE}
+expresion <- read_csv("data/Transcriptome_DGE.csv")
+expresion
+
+
+anotacion <- read_csv("data/Transcriptome_Anotacion.csv")
+
+
+expresion %>% 
+  inner_join(anotacion, by = "transcript") %>% 
+  filter(logFC > 0) %>% 
+  count(genus, sort = TRUE)
+```
+
+
+
+## Cambio de formato long y wide con `pivot_longer()` y `pivot_wider()`
+
+
+Para entender la diferencia entre el formato ancho y largo, usemos la siguiente tabla con los datos de consumo de oxígeno de 10 individuos a lo largo de seis días:
+```{r}
+MO2 <- read_csv("data/Consumo_oxigeno_wide.csv")
+
+MO2
+```
+
+En este caso, los individuos estan en filas y cada dia en una columna diferentes.
+Para transformar en formato largo, usando la funcion `pivot_longer()`
+
+
+
+
+```{r, echo=FALSE, out.width = '75%', fig.cap= "imagen tomada de: thinkr.fr/wp-content/uploads/wide_long.png"}
+knitr::include_graphics("https://thinkr.fr/wp-content/uploads/wide_long.png")
+```
+
+
+
+La sintaxis para utilizar estas funciones es la siguiente:
+
+pivot_longer( data, cols, names_to = "NNN", values_to = "NNN")
+
+en donde: 
+
+  * **data:** Corresponde a la tabla (no es necesario especificar si viene de una cadena)
+  * **cols:** cuales son las columnas que se desea transformar. Si se desea mantener solo una variable fija, se puede espeficicar con `-variable`
+  * **names_to:** Nombre de la columna que contiene las *columnas* proporcionadas
+  * **values_to:** Nombre de la variable que contiene los valores asociados a las *columnas* proporcionadas
+
+
+```{r}
+MO2_long = MO2 %>%
+  pivot_longer(-individuo, names_to = "Dia", values_to = "MO2")
+
+MO2_long
+```
+
+
+
+Por el contrario, podemos usar `pivot_wider()`para realizar la operación opuesta
+
+
+
+```{r, echo=FALSE, out.width = '75%', fig.cap="imagen tomada de:thinkr.fr/wp-content/uploads/long_wide.png" }
+knitr::include_graphics("https://thinkr.fr/wp-content/uploads/long_wide.png")
+```
+
+
+
+```{r}
+MO2_wide = MO2_long %>%
+ pivot_wider(individuo, names_from = Dia, values_from = MO2)
+
+MO2_wide
+```
+
+
