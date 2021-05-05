@@ -31,3 +31,5 @@ Temas:
 -   [Clase 2: Data frames, matrices y otros objetos](Clase2_Data_Frames.html)
 
 -   [Clase 3: Gráficos base](Clase3_GraficosBase.html)
+
+-   [Clase 4: Dplyr y Tidyverse](CLase4_Dplyr.Rmd)
