@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-04-26" />
+
+<title>Clase 4: Dplyr y Tidyverse</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 4: Dplyr y Tidyverse</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-04-26</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-05-04
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treef504feade4ae3e146fd568ef4c3b59b161550a6etargetblankf504feaa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/f504feade4ae3e146fd568ef4c3b59b161550a6e" target="_blank">f504fea</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treef504feade4ae3e146fd568ef4c3b59b161550a6etargetblankf504feaa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/f504feade4ae3e146fd568ef4c3b59b161550a6e" target="_blank">f504fea</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  analysis/images/
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/CLase4_Dplyr.Rmd</code>) and HTML (<code>docs/CLase4_Dplyr.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/f504feade4ae3e146fd568ef4c3b59b161550a6e/analysis/CLase4_Dplyr.Rmd" target="_blank">f504fea</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-04
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introducción-a-dplyr" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Introducción a Dplyr</h1>
+<p><strong>DPLYR</strong> Es una libreria orientada a la manipulación de datos</p>
+<p>Cada función de esta libreria realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.</p>
+<p>dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerias que forman parte de este.</p>
+<p>En esta intrducción nos vamos a enfocar a las funciones:</p>
+<ul>
+<li><code>filter()</code></li>
+<li><code>select()</code></li>
+<li><code>arrange</code></li>
+<li><code>mutate()</code></li>
+<li><code>summarise()</code></li>
+<li><code>%&gt;%</code></li>
+</ul>
+<p><img src="https://www.databentobox.com/2019/11/01/dplyr-with-string/featured_hub3fe62e60f0ee255ad23a6fe895bd4cc_207241_720x0_resize_lanczos_2.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>En esta clase, usaremos dplyr asi como readxl para importar y modificar una tabla</p>
+<p>Ambos paquetes pueden instalarse de manera individual utilizando la función <code>install.package()</code>. Sin embargo, como Dplyr es parte de Tidyverse, se puede instalar solamente este ultimo.</p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
+install.packages(&quot;readxl&quot;)</code></pre>
+<p>Una vez instalados, es necesario cargar las ambas librerias a nuestro ambiente de trabajo</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)</code></pre>
+</div>
+<div id="los-datos" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Los Datos</h1>
+<p><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/87044f58-c765-43c5-bc51-8613e3ac7ab1/ddew4m7-c69a2c41-518f-48ca-ba35-8ab1895464e0.png" width="75%" style="display: block; margin: auto;" /></p>
+<p>Para esta sección utilizaremos la base de datos de POKEMON de <a href="https://www.kaggle.com/rounakbanik/pokemon">KAGGLE</a>. Este set de datos incluye 721 pokemons con su <em>nombre</em>, <em>tipo</em> en primer y segunto nivel, <em>HP</em>, <em>Ataque</em>, <em>Defensa</em>, <em>Ataque especial</em>, <em>Defensa especial</em>, <em>velocidad</em> y si es <em>legendario</em> o no.</p>
+<ul>
+<li>ID: ID for each pokemon</li>
+<li>Name: Name of each pokemon</li>
+<li>Type 1: Each pokemon has a type, this determines weakness/resistance to attacks</li>
+<li>Type 2: Some pokemon are dual type and have 2</li>
+<li>Total: sum of all stats that come after this, a general guide to how strong a pokemon is</li>
+<li>HP: hit points, or health, defines how much damage a pokemon can withstand before fainting</li>
+<li>Attack: the base modifier for normal attacks (eg. Scratch, Punch)</li>
+<li>Defense: the base damage resistance against normal attacks</li>
+<li>SP Atk: special attack, the base modifier for special attacks (e.g. fire blast, bubble beam)</li>
+<li>SP Def: the base damage resistance against special attacks</li>
+<li>Speed: determines which pokemon attacks first each round</li>
+</ul>
+<pre class="r"><code>pokemon &lt;- read_excel(&quot;data/datasets_Pokemon.xls&quot;, sheet = &quot;pokemon&quot;)
+pokemon</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>usa <strong>?read_excel</strong> para ver todas las opciones para importar datos</p>
+<p>Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Los <strong>tibbles</strong> son data frames, pero modifican algunas características antiguas para hacernos la vida más fácil.</p>
+<p>Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().</p>
+<p>Si ya te has familiarizado con data.frame(), es importante que tomes en cuenta que tibble() hace menos cosas: nunca cambia el tipo de los inputs (p. ej., ¡nunca convierte caracteres en factores!), nunca cambia el nombre de las variables y nunca asigna nombres a las filas.</p>
+<p>Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un caracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```</p>
+</div>
+<div id="dplyr" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Dplyr</h1>
+<p>El paquete incluye un conjunto de comandos que coinciden con las acciones más comunes que se realizan sobre un conjunto de datos (filtrar filas <code>filter()</code>, seleccionar columnas <code>select()</code>, ordenar <code>arrange()</code>, transformar o añadir nuevas variables <code>mutate()</code>, resumir mediante alguna medida numérica <code>summarise()</code>). Lo que hace que la sintaxis sea especialmente clara es la correspondencia tan nítida entre el comando y la acción. Para llevar a cabo estas acciones debemos tener en cuenta algunas características comunes:</p>
+<ul>
+<li>El primer argumento siempre es un tibble o data.frame</li>
+<li>El resto de los argumentos indican los parametros de lo que queremos hacer</li>
+<li>El resultado siempre tiene tambien estructura de tibble o data frame</li>
+</ul>
+<div id="select" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> <code>select()</code></h2>
+<p>Permite seleccionar una o un set de varias columnas</p>
+<p>Por ejemplo: seleccionar las columnas <em>Name</em> y <em>Attack</em></p>
+<pre class="r"><code>select(pokemon, Name, Attack)</code></pre>
+<pre><code># A tibble: 800 x 2
+   Name                      Attack
+   &lt;chr&gt;                      &lt;dbl&gt;
+ 1 Bulbasaur                     49
+ 2 Ivysaur                       62
+ 3 Venusaur                      82
+ 4 VenusaurMega Venusaur        100
+ 5 Charmander                    52
+ 6 Charmeleon                    64
+ 7 Charizard                     84
+ 8 CharizardMega Charizard X    130
+ 9 CharizardMega Charizard Y    104
+10 Squirtle                      48
+# ... with 790 more rows</code></pre>
+<p>Al igual que en ejemplo anteriores, podemos seleccionar todo <em>excepto</em> una clumna especifica usando el operador “-” (resta)</p>
+<pre class="r"><code>select(pokemon, -Attack)</code></pre>
+<pre><code># A tibble: 800 x 12
+      ID Name     Type1 Type2 Total    HP Defense Sp_Atk Sp_Def Speed Generation
+   &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+ 1     1 Bulbasa~ Grass Pois~   318    45      49     65     65    45          1
+ 2     2 Ivysaur  Grass Pois~   405    60      63     80     80    60          1
+ 3     3 Venusaur Grass Pois~   525    80      83    100    100    80          1
+ 4     3 Venusau~ Grass Pois~   625    80     123    122    120    80          1
+ 5     4 Charman~ Fire  &lt;NA&gt;    309    39      43     60     50    65          1
+ 6     5 Charmel~ Fire  &lt;NA&gt;    405    58      58     80     65    80          1
+ 7     6 Chariza~ Fire  Flyi~   534    78      78    109     85   100          1
+ 8     6 Chariza~ Fire  Drag~   634    78     111    130     85   100          1
+ 9     6 Chariza~ Fire  Flyi~   634    78      78    159    115   100          1
+10     7 Squirtle Water &lt;NA&gt;    314    44      65     50     64    43          1
+# ... with 790 more rows, and 1 more variable: Legendary &lt;lgl&gt;</code></pre>
+<p>Para seleccionar un intervalo de columnas, se puede usar el operador <code>:</code></p>
+<pre class="r"><code>select(pokemon, Name, Type1:HP)</code></pre>
+<pre><code># A tibble: 800 x 5
+   Name                      Type1 Type2  Total    HP
+   &lt;chr&gt;                     &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 Bulbasaur                 Grass Poison   318    45
+ 2 Ivysaur                   Grass Poison   405    60
+ 3 Venusaur                  Grass Poison   525    80
+ 4 VenusaurMega Venusaur     Grass Poison   625    80
+ 5 Charmander                Fire  &lt;NA&gt;     309    39
+ 6 Charmeleon                Fire  &lt;NA&gt;     405    58
+ 7 Charizard                 Fire  Flying   534    78
+ 8 CharizardMega Charizard X Fire  Dragon   634    78
+ 9 CharizardMega Charizard Y Fire  Flying   634    78
+10 Squirtle                  Water &lt;NA&gt;     314    44
+# ... with 790 more rows</code></pre>
+<p>De igual manera, se puede usar el operados <code>:</code> para descartar un intervalo de columnas</p>
+<pre class="r"><code>select(pokemon, -(Defense:Legendary))</code></pre>
+<pre><code># A tibble: 800 x 7
+      ID Name                      Type1 Type2  Total    HP Attack
+   &lt;dbl&gt; &lt;chr&gt;                     &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1     1 Bulbasaur                 Grass Poison   318    45     49
+ 2     2 Ivysaur                   Grass Poison   405    60     62
+ 3     3 Venusaur                  Grass Poison   525    80     82
+ 4     3 VenusaurMega Venusaur     Grass Poison   625    80    100
+ 5     4 Charmander                Fire  &lt;NA&gt;     309    39     52
+ 6     5 Charmeleon                Fire  &lt;NA&gt;     405    58     64
+ 7     6 Charizard                 Fire  Flying   534    78     84
+ 8     6 CharizardMega Charizard X Fire  Dragon   634    78    130
+ 9     6 CharizardMega Charizard Y Fire  Flying   634    78    104
+10     7 Squirtle                  Water &lt;NA&gt;     314    44     48
+# ... with 790 more rows</code></pre>
+<p>Se puede seleccionar las columnas que empiezar con un determinado caracter con la función <code>starts_with()</code>; por ejemplo, si queremos enfocarnos a las columnas con del tipoe (Type):</p>
+<pre class="r"><code>select(pokemon, Name, starts_with(&quot;Type&quot;))</code></pre>
+<pre><code># A tibble: 800 x 3
+   Name                      Type1 Type2 
+   &lt;chr&gt;                     &lt;chr&gt; &lt;chr&gt; 
+ 1 Bulbasaur                 Grass Poison
+ 2 Ivysaur                   Grass Poison
+ 3 Venusaur                  Grass Poison
+ 4 VenusaurMega Venusaur     Grass Poison
+ 5 Charmander                Fire  &lt;NA&gt;  
+ 6 Charmeleon                Fire  &lt;NA&gt;  
+ 7 Charizard                 Fire  Flying
+ 8 CharizardMega Charizard X Fire  Dragon
+ 9 CharizardMega Charizard Y Fire  Flying
+10 Squirtle                  Water &lt;NA&gt;  
+# ... with 790 more rows</code></pre>
+<p>Algunos operadores que funcionan de manera similar son:</p>
+<ul>
+<li><code>ends_with()</code> = Selecciona las columnas que terminan con una cadena de caracteres</li>
+<li><code>contains()</code> = Selecciona las columnas que contienen una cadena de caracteres.</li>
+</ul>
+<pre class="r"><code>select(pokemon, Name, contains(&quot;Sp_&quot;))</code></pre>
+<pre><code># A tibble: 800 x 3
+   Name                      Sp_Atk Sp_Def
+   &lt;chr&gt;                      &lt;dbl&gt;  &lt;dbl&gt;
+ 1 Bulbasaur                     65     65
+ 2 Ivysaur                       80     80
+ 3 Venusaur                     100    100
+ 4 VenusaurMega Venusaur        122    120
+ 5 Charmander                    60     50
+ 6 Charmeleon                    80     65
+ 7 Charizard                    109     85
+ 8 CharizardMega Charizard X    130     85
+ 9 CharizardMega Charizard Y    159    115
+10 Squirtle                      50     64
+# ... with 790 more rows</code></pre>
+<p>Con la función <code>evrything()</code> se puede seleccionar todo, y con esto es factible cambiar el order de las columnas. Por ejemplo, si quieremos que la primera columna sea “Type1” ejecutamos:</p>
+<pre class="r"><code>select(pokemon, Type1, everything())</code></pre>
+<pre><code># A tibble: 800 x 13
+   Type1    ID Name         Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 Grass     1 Bulbasaur    Pois~   318    45     49      49     65     65    45
+ 2 Grass     2 Ivysaur      Pois~   405    60     62      63     80     80    60
+ 3 Grass     3 Venusaur     Pois~   525    80     82      83    100    100    80
+ 4 Grass     3 VenusaurMeg~ Pois~   625    80    100     123    122    120    80
+ 5 Fire      4 Charmander   &lt;NA&gt;    309    39     52      43     60     50    65
+ 6 Fire      5 Charmeleon   &lt;NA&gt;    405    58     64      58     80     65    80
+ 7 Fire      6 Charizard    Flyi~   534    78     84      78    109     85   100
+ 8 Fire      6 CharizardMe~ Drag~   634    78    130     111    130     85   100
+ 9 Fire      6 CharizardMe~ Flyi~   634    78    104      78    159    115   100
+10 Water     7 Squirtle     &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+</div>
+<div id="filter" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> <code>filter()</code></h2>
+<p>Esta función nos permite seleccionar las <strong>filas</strong> que cumplan con las condiciones que especifiquemos</p>
+<p>Por ejemplo, filtrar los pokemon con un nivel de ataque <em>Attack</em> superior a 100</p>
+<pre class="r"><code>filter(pokemon, Attack &gt; 100)</code></pre>
+<pre><code># A tibble: 170 x 13
+      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     6 CharizardM~ Fire   Drag~   634    78    130     111    130     85   100
+ 2     6 CharizardM~ Fire   Flyi~   634    78    104      78    159    115   100
+ 3     9 BlastoiseM~ Water  &lt;NA&gt;    630    79    103     120    135    115    78
+ 4    15 BeedrillMe~ Bug    Pois~   495    65    150      40     15     80   145
+ 5    34 Nidoking    Poison Grou~   505    81    102      77     85     75    85
+ 6    57 Primeape    Fight~ &lt;NA&gt;    455    65    105      60     60     70    95
+ 7    59 Arcanine    Fire   &lt;NA&gt;    555    90    110      80    100     80    95
+ 8    68 Machamp     Fight~ &lt;NA&gt;    505    90    130      80     65     85    55
+ 9    71 Victreebel  Grass  Pois~   490    80    105      65    100     70    70
+10    76 Golem       Rock   Grou~   495    80    120     130     55     65    45
+# ... with 160 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Filtrar los pokemon que tengan un nivel de ataque mayor a 100 <strong>y</strong> que sean de tipo fuego</p>
+<pre class="r"><code>filter(pokemon, Attack &gt; 100, Type1 == &quot;Fire&quot;)</code></pre>
+<pre><code># A tibble: 13 x 13
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 2     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+ 3    59 Arcanine     Fire  &lt;NA&gt;    555    90    110      80    100     80    95
+ 4   136 Flareon      Fire  &lt;NA&gt;    525    65    130      60     95    110    65
+ 5   244 Entei        Fire  &lt;NA&gt;    580   115    115      85     90     75   100
+ 6   250 Ho-oh        Fire  Flyi~   680   106    130      90    110    154    90
+ 7   257 Blaziken     Fire  Figh~   530    80    120      70    110     70    80
+ 8   257 BlazikenMeg~ Fire  Figh~   630    80    160      80    130     80   100
+ 9   323 CameruptMeg~ Fire  Grou~   560    70    120     100    145    105    20
+10   392 Infernape    Fire  Figh~   534    76    104      71    104     71   108
+11   500 Emboar       Fire  Figh~   528   110    123      65    100     65    65
+12   555 DarmanitanS~ Fire  &lt;NA&gt;    480   105    140      55     30     55    95
+13   721 Volcanion    Fire  Water   600    80    110     120    130     90    70
+# ... with 2 more variables: Generation &lt;dbl&gt;, Legendary &lt;lgl&gt;</code></pre>
+<p>Filtrar los pokemons que tengan nivel de ataque mayor a 100 <strong>y</strong> que sean de tipo fuego <strong>y</strong> que sean de la primera generación</p>
+<pre class="r"><code>filter(pokemon, Attack &gt; 100,
+       Type1 == &quot;Fire&quot;,
+       Generation == 1)</code></pre>
+<pre><code># A tibble: 4 x 13
+     ID Name          Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+  &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1     6 CharizardMeg~ Fire  Drag~   634    78    130     111    130     85   100
+2     6 CharizardMeg~ Fire  Flyi~   634    78    104      78    159    115   100
+3    59 Arcanine      Fire  &lt;NA&gt;    555    90    110      80    100     80    95
+4   136 Flareon       Fire  &lt;NA&gt;    525    65    130      60     95    110    65
+# ... with 2 more variables: Generation &lt;dbl&gt;, Legendary &lt;lgl&gt;</code></pre>
+<p>Ahora queremos filtrar los pokemon que tengan un nivel de ataque mayor a 100 <strong>o</strong> que sean de tipo fuego</p>
+<pre class="r"><code>filter(pokemon, Attack &gt; 100 | Type1 == &quot;Fire&quot;)</code></pre>
+<pre><code># A tibble: 209 x 13
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 2     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 3     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 4     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 5     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+ 6     9 BlastoiseMe~ Water &lt;NA&gt;    630    79    103     120    135    115    78
+ 7    15 BeedrillMeg~ Bug   Pois~   495    65    150      40     15     80   145
+ 8    34 Nidoking     Pois~ Grou~   505    81    102      77     85     75    85
+ 9    37 Vulpix       Fire  &lt;NA&gt;    299    38     41      40     50     65    65
+10    38 Ninetales    Fire  &lt;NA&gt;    505    73     76      75     81    100   100
+# ... with 199 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Si queremos filtrar distintas condiciones en una misma variable podemos usar el operador <code>%in%</code> por ejemplo para filtrar lo pokemons que sea de tipo1 de Fuego y Agua</p>
+<pre class="r"><code>filter(pokemon, Type1 %in% c(&quot;Fire&quot;, &quot;Water&quot;))</code></pre>
+<pre><code># A tibble: 164 x 13
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 2     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 3     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 4     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 5     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+ 6     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+ 7     8 Wartortle    Water &lt;NA&gt;    405    59     63      80     65     80    58
+ 8     9 Blastoise    Water &lt;NA&gt;    530    79     83     100     85    105    78
+ 9     9 BlastoiseMe~ Water &lt;NA&gt;    630    79    103     120    135    115    78
+10    37 Vulpix       Fire  &lt;NA&gt;    299    38     41      40     50     65    65
+# ... with 154 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Es posible filtrar un intervalo de valores utilizando el argumento <code>between()</code>. Por ejemplo, para filtrar los pokemon que tengan un nivel de ataque mayor a 100 pero menor a 150</p>
+<pre class="r"><code>  filter(pokemon, 
+         between(Attack,100,150))</code></pre>
+<pre><code># A tibble: 192 x 13
+      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     3 VenusaurMe~ Grass  Pois~   625    80    100     123    122    120    80
+ 2     6 CharizardM~ Fire   Drag~   634    78    130     111    130     85   100
+ 3     6 CharizardM~ Fire   Flyi~   634    78    104      78    159    115   100
+ 4     9 BlastoiseM~ Water  &lt;NA&gt;    630    79    103     120    135    115    78
+ 5    15 BeedrillMe~ Bug    Pois~   495    65    150      40     15     80   145
+ 6    28 Sandslash   Ground &lt;NA&gt;    450    75    100     110     45     55    65
+ 7    34 Nidoking    Poison Grou~   505    81    102      77     85     75    85
+ 8    57 Primeape    Fight~ &lt;NA&gt;    455    65    105      60     60     70    95
+ 9    59 Arcanine    Fire   &lt;NA&gt;    555    90    110      80    100     80    95
+10    67 Machoke     Fight~ &lt;NA&gt;    405    80    100      70     50     60    45
+# ... with 182 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>para hacer la selección opuesta, se puede agregar el operador <code>!</code></p>
+<pre class="r"><code>filter(pokemon, !between(Attack, 100, 150))</code></pre>
+<pre><code># A tibble: 608 x 13
+      ID Name       Type1 Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur  Grass Poison   318    45     49      49     65     65    45
+ 2     2 Ivysaur    Grass Poison   405    60     62      63     80     80    60
+ 3     3 Venusaur   Grass Poison   525    80     82      83    100    100    80
+ 4     4 Charmander Fire  &lt;NA&gt;     309    39     52      43     60     50    65
+ 5     5 Charmeleon Fire  &lt;NA&gt;     405    58     64      58     80     65    80
+ 6     6 Charizard  Fire  Flying   534    78     84      78    109     85   100
+ 7     7 Squirtle   Water &lt;NA&gt;     314    44     48      65     50     64    43
+ 8     8 Wartortle  Water &lt;NA&gt;     405    59     63      80     65     80    58
+ 9     9 Blastoise  Water &lt;NA&gt;     530    79     83     100     85    105    78
+10    10 Caterpie   Bug   &lt;NA&gt;     195    45     30      35     20     20    45
+# ... with 598 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<pre class="r"><code>filter(pokemon, 
+       between(Attack, 0, 50),
+       between(Speed, 20, 30))</code></pre>
+<pre><code># A tibble: 30 x 13
+      ID Name       Type1  Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1    11 Metapod    Bug    &lt;NA&gt;     205    50     20      55     25     25    30
+ 2    39 Jigglypuff Normal Fairy    270   115     45      20     45     25    20
+ 3    43 Oddish     Grass  Poison   320    45     50      55     75     65    30
+ 4   161 Sentret    Normal &lt;NA&gt;     215    35     46      34     35     45    20
+ 5   175 Togepi     Fairy  &lt;NA&gt;     245    35     20      65     40     65    20
+ 6   191 Sunkern    Grass  &lt;NA&gt;     180    30     30      30     30     30    30
+ 7   218 Slugma     Fire   &lt;NA&gt;     250    40     40      40     70     40    20
+ 8   219 Magcargo   Fire   Rock     410    50     50     120     80     80    30
+ 9   265 Wurmple    Bug    &lt;NA&gt;     195    45     45      35     20     30    20
+10   270 Lotad      Water  Grass    220    40     30      30     40     50    30
+# ... with 20 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Tambien es posible filtrar una variable a partir de un caracter en especifico usando la funcion <code>str_detect()</code> *. Por ejemplo podemos buscar la informacion de Pikachu</p>
+<ul>
+<li><code>str_detect()</code> es parte del paquete <strong>Stringr</strong> pero es compatible con el uso de Dplyr</li>
+</ul>
+<pre class="r"><code>filter(pokemon, str_detect(Name, &quot;Pikachu&quot;))</code></pre>
+<pre><code># A tibble: 1 x 13
+     ID Name    Type1    Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1    25 Pikachu Electric &lt;NA&gt;    320    35     55      40     50     50    90
+# ... with 2 more variables: Generation &lt;dbl&gt;, Legendary &lt;lgl&gt;</code></pre>
+<blockquote>
+<p>Ejercicio: ¿Quien es ese pokemon?</p>
+</blockquote>
+<p><img src="https://aaronpeyton.github.io/webDev1/pokemon/jigglypuff.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>Nuestro pokemon tiene un valor de HP entre 100 y 200; valor de velocidad menor a 50; es del tipo1 Normal; tiene un valor de defensa menor a 40 y pertenece a la 1er generación</p>
+<pre class="r fold-hide"><code>filter(pokemon, 
+       between(HP, 100, 200),
+       Speed &lt; 50, 
+       Type1 == &quot;Normal&quot;,
+       Defense &lt; 40, 
+       Generation == 1,
+       )</code></pre>
+</div>
+<div id="mutate" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> <code>mutate()</code></h2>
+<p><img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png" width="75%" style="display: block; margin: auto auto auto 0;" /></p>
+<p>La función mutate nos permite crear nuevas variables que contengan cálculos a partir de las que ya tenemos, añadir una nueva variable o transformar una variable ya existente</p>
+<p>Por ejemplo, podemos generar una nueva columna llamada “At_Df_ratio” con la propoción de los valors de Ataque sobre Defensa</p>
+<pre class="r"><code>mutate(pokemon, At_df_ratio = Attack / Defense)</code></pre>
+<pre><code># A tibble: 800 x 14
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 3 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;, At_df_ratio &lt;dbl&gt;</code></pre>
+<p>De igual manera se pueden generar diversas nuevas columnas, separadas por comas.</p>
+<pre class="r"><code>mutate(pokemon, At_df_ratio = Attack / Defense,
+       
+       #En porcentage
+       At_df_per = At_df_ratio * 100,
+       
+       #Añadir una nueva columna con el nombre de los datos
+       data = &quot;Pokemon&quot;)</code></pre>
+<pre><code># A tibble: 800 x 16
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 5 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;, At_df_ratio &lt;dbl&gt;, At_df_per &lt;dbl&gt;, data &lt;chr&gt;</code></pre>
+<p>con mutate, tambien es posible cambiar el tipo de dato de cada columna. Por ejemplo, cambiar la columna “Type1” de carácter a factor:</p>
+<pre class="r"><code>pokemon_fct &lt;- mutate(pokemon, Type1 = factor(Type1))</code></pre>
+<p>Si vemos el tipo de datos, veremos la diferencia:</p>
+<pre class="r"><code>str(pokemon_fct)</code></pre>
+<pre><code>tibble [800 x 13] (S3: tbl_df/tbl/data.frame)
+ $ ID        : num [1:800] 1 2 3 3 4 5 6 6 6 7 ...
+ $ Name      : chr [1:800] &quot;Bulbasaur&quot; &quot;Ivysaur&quot; &quot;Venusaur&quot; &quot;VenusaurMega Venusaur&quot; ...
+ $ Type1     : Factor w/ 18 levels &quot;Bug&quot;,&quot;Dark&quot;,&quot;Dragon&quot;,..: 10 10 10 10 7 7 7 7 7 18 ...
+ $ Type2     : chr [1:800] &quot;Poison&quot; &quot;Poison&quot; &quot;Poison&quot; &quot;Poison&quot; ...
+ $ Total     : num [1:800] 318 405 525 625 309 405 534 634 634 314 ...
+ $ HP        : num [1:800] 45 60 80 80 39 58 78 78 78 44 ...
+ $ Attack    : num [1:800] 49 62 82 100 52 64 84 130 104 48 ...
+ $ Defense   : num [1:800] 49 63 83 123 43 58 78 111 78 65 ...
+ $ Sp_Atk    : num [1:800] 65 80 100 122 60 80 109 130 159 50 ...
+ $ Sp_Def    : num [1:800] 65 80 100 120 50 65 85 85 115 64 ...
+ $ Speed     : num [1:800] 45 60 80 80 65 80 100 100 100 43 ...
+ $ Generation: num [1:800] 1 1 1 1 1 1 1 1 1 1 ...
+ $ Legendary : logi [1:800] FALSE FALSE FALSE FALSE FALSE FALSE ...</code></pre>
+</div>
+<div id="rename" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> <code>rename()</code></h2>
+<p>Te permite cambiar el nombre de una variable</p>
+<pre class="r"><code>rename(pokemon,
+       Nombre = Name, Tipo1 = Type1)</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Nombre       Tipo1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+</div>
+<div id="arrange" class="section level2" number="3.5">
+<h2 number="3.5"><span class="header-section-number">3.5</span> <code>arrange()</code></h2>
+<p>La función arrange nos permite order los datos en función a los valores de otra variable</p>
+<p>Si queremos mostrar ordenados de menor a mayor los valores de nuestro conjunto de datos en función al valor de ataque:</p>
+<pre class="r"><code>arrange(pokemon, Attack)</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Name     Type1   Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1   113 Chansey  Normal  &lt;NA&gt;     450   250      5       5     35    105    50
+ 2   440 Happiny  Normal  &lt;NA&gt;     220   100      5       5     15     65    30
+ 3   129 Magikarp Water   &lt;NA&gt;     200    20     10      55     15     20    80
+ 4   213 Shuckle  Bug     Rock     505    20     10     230     10    230     5
+ 5   242 Blissey  Normal  &lt;NA&gt;     540   255     10      10     75    135    55
+ 6   349 Feebas   Water   &lt;NA&gt;     200    20     15      20     10     55    80
+ 7    11 Metapod  Bug     &lt;NA&gt;     205    50     20      55     25     25    30
+ 8    63 Abra     Psychic &lt;NA&gt;     310    25     20      15    105     55    90
+ 9   165 Ledyba   Bug     Flying   265    40     20      30     40     80    55
+10   175 Togepi   Fairy   &lt;NA&gt;     245    35     20      65     40     65    20
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Este ordenara los datos de menor a mayor, si se quiere ordenar de mayor a menor se debe agregar el operador <code>-</code> o <code>desc()</code></p>
+<pre class="r"><code>arrange(pokemon, desc(Attack))</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1   150 MewtwoMega~ Psych~ Figh~   780   106    190     100    154    100   130
+ 2   214 HeracrossM~ Bug    Figh~   600    80    185     115     40    105    75
+ 3   383 GroudonPri~ Ground Fire    770   100    180     160    150     90    90
+ 4   384 RayquazaMe~ Dragon Flyi~   780   105    180     100    180    100   115
+ 5   386 DeoxysAtta~ Psych~ &lt;NA&gt;    600    50    180      20    180     20   150
+ 6   445 GarchompMe~ Dragon Grou~   700   108    170     115    120     95    92
+ 7   646 KyuremBlac~ Dragon Ice     700   125    170     100    120     90    95
+ 8   354 BanetteMeg~ Ghost  &lt;NA&gt;    555    64    165      75     93     83    75
+ 9   409 Rampardos   Rock   &lt;NA&gt;    495    97    165      60     65     50    58
+10   475 GalladeMeg~ Psych~ Figh~   618    68    165      95     65    115   110
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<pre class="r"><code>arrange(pokemon, -Attack)</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1   150 MewtwoMega~ Psych~ Figh~   780   106    190     100    154    100   130
+ 2   214 HeracrossM~ Bug    Figh~   600    80    185     115     40    105    75
+ 3   383 GroudonPri~ Ground Fire    770   100    180     160    150     90    90
+ 4   384 RayquazaMe~ Dragon Flyi~   780   105    180     100    180    100   115
+ 5   386 DeoxysAtta~ Psych~ &lt;NA&gt;    600    50    180      20    180     20   150
+ 6   445 GarchompMe~ Dragon Grou~   700   108    170     115    120     95    92
+ 7   646 KyuremBlac~ Dragon Ice     700   125    170     100    120     90    95
+ 8   354 BanetteMeg~ Ghost  &lt;NA&gt;    555    64    165      75     93     83    75
+ 9   409 Rampardos   Rock   &lt;NA&gt;    495    97    165      60     65     50    58
+10   475 GalladeMeg~ Psych~ Figh~   618    68    165      95     65    115   110
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+<p>Tambien es posible ordernar caracteres</p>
+<pre class="r"><code>arrange(pokemon, Name)</code></pre>
+<pre><code># A tibble: 800 x 13
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1   460 Abomasnow    Grass Ice     494    90     92      75     92     85    60
+ 2   460 AbomasnowMe~ Grass Ice     594    90    132     105    132    105    30
+ 3    63 Abra         Psyc~ &lt;NA&gt;    310    25     20      15    105     55    90
+ 4   359 Absol        Dark  &lt;NA&gt;    465    65    130      60     75     60    75
+ 5   359 AbsolMega A~ Dark  &lt;NA&gt;    565    65    150      60    115     60   115
+ 6   617 Accelgor     Bug   &lt;NA&gt;    495    80     70      40    100     60   145
+ 7   681 AegislashBl~ Steel Ghost   520    60    150      50    150     50    60
+ 8   681 AegislashSh~ Steel Ghost   520    60     50     150     50    150    60
+ 9   142 Aerodactyl   Rock  Flyi~   515    80    105      65     60     75   130
+10   142 AerodactylM~ Rock  Flyi~   615    80    135      85     70     95   150
+# ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;</code></pre>
+</div>
+<div id="pipes" class="section level2" number="3.6">
+<h2 number="3.6"><span class="header-section-number">3.6</span> pipes <code>%&gt;%</code></h2>
+<p><img src="https://magrittr.tidyverse.org/logo.png" width="50%" style="display: block; margin: auto auto auto 0;" /></p>
+<p>El operador <code>%&gt;%</code> nos permite encadenar funciones sin tener que ir creando variables para uso temporal o sin tener que anidar funciones.</p>
+<p>Dplyr importa este operador de otro paquete (<em>magrittr</em>). De manera general, el operador permite unir el resultado de una función a la entrada de otra función.</p>
+<p>Por ejemplo, si yo quiere filtrar los pokemon con valor de ataque mayor a 100, seleccionar las columnas Name y Attack y posteriormente mostrar solo las primeras seis filas (head) tendria que correr la siguiente linea:</p>
+<pre class="r"><code>head(
+  select(
+    filter(pokemon, Attack &lt;100),
+    Name, Attack)
+  )</code></pre>
+<pre><code># A tibble: 6 x 2
+  Name       Attack
+  &lt;chr&gt;       &lt;dbl&gt;
+1 Bulbasaur      49
+2 Ivysaur        62
+3 Venusaur       82
+4 Charmander     52
+5 Charmeleon     64
+6 Charizard      84</code></pre>
+<p>Lo podemos reescribir de la siguiente manera:</p>
+<pre class="r"><code>pokemon %&gt;%
+  filter(Attack &lt; 100) %&gt;% 
+  select(Name, Attack) %&gt;%
+  head</code></pre>
+<pre><code># A tibble: 6 x 2
+  Name       Attack
+  &lt;chr&gt;       &lt;dbl&gt;
+1 Bulbasaur      49
+2 Ivysaur        62
+3 Venusaur       82
+4 Charmander     52
+5 Charmeleon     64
+6 Charizard      84</code></pre>
+<p>De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar los ordenes</p>
+<pre class="r"><code>pokemon %&gt;%
+  select(Name, Type1, Attack) %&gt;%
+  arrange(desc(Type1), -Attack) %&gt;%
+  head(10)</code></pre>
+<pre><code># A tibble: 10 x 3
+   Name                  Type1 Attack
+   &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt;
+ 1 GyaradosMega Gyarados Water    155
+ 2 SwampertMega Swampert Water    150
+ 3 KyogrePrimal Kyogre   Water    150
+ 4 SharpedoMega Sharpedo Water    140
+ 5 Kingler               Water    130
+ 6 Gyarados              Water    125
+ 7 Sharpedo              Water    120
+ 8 Crawdaunt             Water    120
+ 9 Palkia                Water    120
+10 Swampert              Water    110</code></pre>
+<p>Los resultados de una cadena pueden asignarse a un nuevo objeto.</p>
+<pre class="r"><code>poke_pipe &lt;- pokemon %&gt;%
+  select(Name, Type1, Attack) %&gt;%
+  arrange(desc(Type1), -Attack) %&gt;%
+  head(10)
+
+poke_pipe</code></pre>
+<pre><code># A tibble: 10 x 3
+   Name                  Type1 Attack
+   &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt;
+ 1 GyaradosMega Gyarados Water    155
+ 2 SwampertMega Swampert Water    150
+ 3 KyogrePrimal Kyogre   Water    150
+ 4 SharpedoMega Sharpedo Water    140
+ 5 Kingler               Water    130
+ 6 Gyarados              Water    125
+ 7 Sharpedo              Water    120
+ 8 Crawdaunt             Water    120
+ 9 Palkia                Water    120
+10 Swampert              Water    110</code></pre>
+<blockquote>
+<p><strong>Ejercicio 1:</strong> A partir de la tabla <code>pokemon</code> crea una <strong>nueva</strong> tabla que contenga:</p>
+</blockquote>
+<ol style="list-style-type: decimal">
+<li>una columna llamada <code>Atack_ratio</code> con la proporción de Sp_Atk / Attack</li>
+<li>seleccionando solamente las columnas “Name”, “Type1” y “Atack_ratio”</li>
+<li>filtrando las especies con una Attack_ratio &gt; 2</li>
+<li>ordenados de forma descendente.</li>
+</ol>
+<pre class="r fold-hide"><code>pokemon_Attack_ratio &lt;- pokemon %&gt;% 
+  mutate(Attack_ratio = Sp_Atk / Attack) %&gt;% 
+  select(Name, Type1, Attack_ratio) %&gt;% 
+  filter(Attack_ratio &gt; 2) %&gt;% 
+  arrange(desc(Attack_ratio))</code></pre>
+<blockquote>
+<p><strong>Ejercicio 2:</strong> Crea una nueva tabla que contenga:</p>
+</blockquote>
+<ol style="list-style-type: decimal">
+<li>Seleccionar Name, Type1, Total, y ambos valores de Sp_</li>
+<li><em>Sin generar una columna nueva</em> transforma los valores en Sp_Atk y SP_Def en porcentaje</li>
+<li>Ordena la tabla en función de los valores descendentes del % de Sp_Atk</li>
+<li>los primeros 10 valores</li>
+</ol>
+<pre class="r fold-hide"><code>pokemon_pct &lt;- pokemon %&gt;% 
+  select(Name, Type1, Total, contains(&quot;Sp_&quot;)) %&gt;% 
+  mutate(Sp_Atk = (Sp_Atk * 100) / Total, 
+         Sp_Def = (Sp_Def * 100) / Total) %&gt;% 
+  arrange(desc(Sp_Atk)) %&gt;% 
+  head(10)</code></pre>
+</div>
+<div id="summarise" class="section level2" number="3.7">
+<h2 number="3.7"><span class="header-section-number">3.7</span> <code>summarise()</code></h2>
+<p>La función summarise() nos permite crear resúmenes estadísticos para nuestrs datos a partir de una determinada columna. Para esto, podemos usar las funciones ya conocidas, tales como <code>mean()</code>, <code>min()</code>, <code>max()</code>, <code>sd()</code>,<code>n()</code>. Por ejemplo</p>
+<pre class="r"><code>pokemon %&gt;%
+  summarise(promedio = mean(Attack),
+            minimo = min(Attack),
+            maximo = max(Attack),
+            N = n())</code></pre>
+<pre><code># A tibble: 1 x 4
+  promedio minimo maximo     N
+     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
+1     79.0      5    190   800</code></pre>
+</div>
+<div id="operaciones-de-grupo-usando-group_by" class="section level2" number="3.8">
+<h2 number="3.8"><span class="header-section-number">3.8</span> Operaciones de grupo usando <code>group_by()</code></h2>
+<p>El verbo <code>group_by()</code> permite “separar” agrupar la tabla en función a una o mas variables y aplicar la funcion summarise().</p>
+<pre class="r"><code>pokemon %&gt;%
+  group_by(Type1) %&gt;%
+  summarise(promedio = mean(Attack),
+            desvest = sd(Attack),
+            N = n())</code></pre>
+<pre><code># A tibble: 18 x 4
+   Type1    promedio desvest     N
+   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
+ 1 Bug          71.0    37.0    69
+ 2 Dark         88.4    25.8    31
+ 3 Dragon      112.     33.7    32
+ 4 Electric     69.1    23.8    44
+ 5 Fairy        61.5    29.8    17
+ 6 Fighting     96.8    28.3    27
+ 7 Fire         84.8    28.8    52
+ 8 Flying       78.8    37.5     4
+ 9 Ghost        73.8    29.6    32
+10 Grass        73.2    25.4    70
+11 Ground       95.8    33.1    32
+12 Ice          72.8    27.3    24
+13 Normal       73.5    30.3    98
+14 Poison       74.7    19.6    28
+15 Psychic      71.5    42.3    57
+16 Rock         92.9    35.3    44
+17 Steel        92.7    30.4    27
+18 Water        74.2    28.4   112</code></pre>
+<pre class="r"><code>pokemon %&gt;% 
+  group_by(Type1, Type2) %&gt;% 
+  summarise(promedio = mean(Attack),
+            desvest = sd(Attack),
+            N = n())</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Type1&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code># A tibble: 154 x 5
+# Groups:   Type1 [18]
+   Type1 Type2    promedio desvest     N
+   &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
+ 1 Bug   Electric     62      21.2     2
+ 2 Bug   Fighting    155      42.4     2
+ 3 Bug   Fire         72.5    17.7     2
+ 4 Bug   Flying       70.1    35.4    14
+ 5 Bug   Ghost        90      NA       1
+ 6 Bug   Grass        73.8    20.4     6
+ 7 Bug   Ground       62      24.0     2
+ 8 Bug   Poison       68.3    34.3    12
+ 9 Bug   Rock         56.7    43.1     3
+10 Bug   Steel       115.     27.8     7
+# ... with 144 more rows</code></pre>
+<p>Esto tambien nos permite generar una nueva columna con información relevante</p>
+<pre class="r"><code>pokemon %&gt;% 
+  group_by(Type1, Type2) %&gt;% 
+  mutate(promedio_grupo = mean(Attack))</code></pre>
+<pre><code># A tibble: 800 x 14
+# Groups:   Type1, Type2 [154]
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 3 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;, promedio_grupo &lt;dbl&gt;</code></pre>
+</div>
+<div id="summarise_all" class="section level2" number="3.9">
+<h2 number="3.9"><span class="header-section-number">3.9</span> <code>summarise_all()</code></h2>
+<p>La función <code>summarise_all()</code> requiere una función como argumento, la cual aplica a todas las columnas de la tabla. En este ejemplo se agrego el argumento <code>na.rm = TRUE</code> el cual ignora los NAs</p>
+<pre class="r"><code>pokemon %&gt;%
+  group_by(Type1) %&gt;%
+  summarise_all(mean, na.rm =TRUE)</code></pre>
+<pre><code># A tibble: 18 x 13
+   Type1       ID  Name Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 Bug       334.    NA    NA  379.  56.9   71.0    70.7   53.9   64.8  61.7
+ 2 Dark      461.    NA    NA  446.  66.8   88.4    70.2   74.6   69.5  76.2
+ 3 Dragon    474.    NA    NA  551.  83.3  112.     86.4   96.8   88.8  83.0
+ 4 Electric  364.    NA    NA  443.  59.8   69.1    66.3   90.0   73.7  84.5
+ 5 Fairy     450.    NA    NA  413.  74.1   61.5    65.7   78.5   84.7  48.6
+ 6 Fighting  364.    NA    NA  416.  69.9   96.8    65.9   53.1   64.7  66.1
+ 7 Fire      327.    NA    NA  458.  69.9   84.8    67.8   89.0   72.2  74.4
+ 8 Flying    678.    NA    NA  485   70.8   78.8    66.2   94.2   72.5 102. 
+ 9 Ghost     486.    NA    NA  440.  64.4   73.8    81.2   79.3   76.5  64.3
+10 Grass     345.    NA    NA  421.  67.3   73.2    70.8   77.5   70.4  61.9
+11 Ground    356.    NA    NA  438.  73.8   95.8    84.8   56.5   62.8  63.9
+12 Ice       424.    NA    NA  433.  72     72.8    71.4   77.5   76.3  63.5
+13 Normal    319.    NA    NA  402.  77.3   73.5    59.8   55.8   63.7  71.6
+14 Poison    252.    NA    NA  399.  67.2   74.7    68.8   60.4   64.4  63.6
+15 Psychic   381.    NA    NA  476.  70.6   71.5    67.7   98.4   86.3  81.5
+16 Rock      393.    NA    NA  454.  65.4   92.9   101.    63.3   75.5  55.9
+17 Steel     443.    NA    NA  488.  65.2   92.7   126.    67.5   80.6  55.3
+18 Water     303.    NA    NA  430.  72.1   74.2    72.9   74.8   70.5  66.0
+# ... with 2 more variables: Generation &lt;dbl&gt;, Legendary &lt;dbl&gt;</code></pre>
+<p>Como puedes ver, la función calcula el promedio de todas las variables, y cuando encuentra variables no numericas, devuelve <strong>NA</strong></p>
+<p>Esto se puede solucionar usando una combinación de <code>across</code> y <code>where</code>; donde across the permite seleccionar un intervalo de variables y where, especificar una cualidad</p>
+<pre class="r"><code>pokemon %&gt;% 
+  group_by(Type1) %&gt;% 
+  summarise(across(5:8, mean))</code></pre>
+<pre><code># A tibble: 18 x 5
+   Type1       HP Attack Defense Sp_Atk
+   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 Bug       56.9   71.0    70.7   53.9
+ 2 Dark      66.8   88.4    70.2   74.6
+ 3 Dragon    83.3  112.     86.4   96.8
+ 4 Electric  59.8   69.1    66.3   90.0
+ 5 Fairy     74.1   61.5    65.7   78.5
+ 6 Fighting  69.9   96.8    65.9   53.1
+ 7 Fire      69.9   84.8    67.8   89.0
+ 8 Flying    70.8   78.8    66.2   94.2
+ 9 Ghost     64.4   73.8    81.2   79.3
+10 Grass     67.3   73.2    70.8   77.5
+11 Ground    73.8   95.8    84.8   56.5
+12 Ice       72     72.8    71.4   77.5
+13 Normal    77.3   73.5    59.8   55.8
+14 Poison    67.2   74.7    68.8   60.4
+15 Psychic   70.6   71.5    67.7   98.4
+16 Rock      65.4   92.9   101.    63.3
+17 Steel     65.2   92.7   126.    67.5
+18 Water     72.1   74.2    72.9   74.8</code></pre>
+<p>Calcular el promedio solamente en las variables numericas</p>
+<pre class="r"><code>pokemon %&gt;% 
+  group_by(Type1) %&gt;% 
+  summarise(
+    across(where(is.numeric), mean, na.rm = TRUE)
+  )</code></pre>
+<pre><code># A tibble: 18 x 10
+   Type1       ID Total    HP Attack Defense Sp_Atk Sp_Def Speed Generation
+   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Bug       334.  379.  56.9   71.0    70.7   53.9   64.8  61.7       3.22
+ 2 Dark      461.  446.  66.8   88.4    70.2   74.6   69.5  76.2       4.03
+ 3 Dragon    474.  551.  83.3  112.     86.4   96.8   88.8  83.0       3.88
+ 4 Electric  364.  443.  59.8   69.1    66.3   90.0   73.7  84.5       3.27
+ 5 Fairy     450.  413.  74.1   61.5    65.7   78.5   84.7  48.6       4.12
+ 6 Fighting  364.  416.  69.9   96.8    65.9   53.1   64.7  66.1       3.37
+ 7 Fire      327.  458.  69.9   84.8    67.8   89.0   72.2  74.4       3.21
+ 8 Flying    678.  485   70.8   78.8    66.2   94.2   72.5 102.        5.5 
+ 9 Ghost     486.  440.  64.4   73.8    81.2   79.3   76.5  64.3       4.19
+10 Grass     345.  421.  67.3   73.2    70.8   77.5   70.4  61.9       3.36
+11 Ground    356.  438.  73.8   95.8    84.8   56.5   62.8  63.9       3.16
+12 Ice       424.  433.  72     72.8    71.4   77.5   76.3  63.5       3.54
+13 Normal    319.  402.  77.3   73.5    59.8   55.8   63.7  71.6       3.05
+14 Poison    252.  399.  67.2   74.7    68.8   60.4   64.4  63.6       2.54
+15 Psychic   381.  476.  70.6   71.5    67.7   98.4   86.3  81.5       3.39
+16 Rock      393.  454.  65.4   92.9   101.    63.3   75.5  55.9       3.45
+17 Steel     443.  488.  65.2   92.7   126.    67.5   80.6  55.3       3.85
+18 Water     303.  430.  72.1   74.2    72.9   74.8   70.5  66.0       2.86</code></pre>
+<p>Hacer calculo en variables especificas</p>
+<pre class="r"><code>pokemon %&gt;% 
+  group_by(Type1) %&gt;% 
+  summarise(
+    across(contains(&quot;Sp_&quot;), mean, na.rm = TRUE)
+  )</code></pre>
+<pre><code># A tibble: 18 x 3
+   Type1    Sp_Atk Sp_Def
+   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+ 1 Bug        53.9   64.8
+ 2 Dark       74.6   69.5
+ 3 Dragon     96.8   88.8
+ 4 Electric   90.0   73.7
+ 5 Fairy      78.5   84.7
+ 6 Fighting   53.1   64.7
+ 7 Fire       89.0   72.2
+ 8 Flying     94.2   72.5
+ 9 Ghost      79.3   76.5
+10 Grass      77.5   70.4
+11 Ground     56.5   62.8
+12 Ice        77.5   76.3
+13 Normal     55.8   63.7
+14 Poison     60.4   64.4
+15 Psychic    98.4   86.3
+16 Rock       63.3   75.5
+17 Steel      67.5   80.6
+18 Water      74.8   70.5</code></pre>
+<blockquote>
+<p><strong>Ejercicio 3:</strong> Crea una nueva tabla en donde le restes el valor de ataque de cada individuo al valor total del grupo Type1</p>
+</blockquote>
+<pre class="r fold-hide"><code>pokemon_grp &lt;- pokemon %&gt;% 
+  group_by(Type1) %&gt;% 
+  mutate(Promedio_grupo = mean(Attack, na.rm = TRUE),
+         Attack_dif = Promedio_grupo - Attack) </code></pre>
+<blockquote>
+<p><strong>Ejercicio 4 Activida de LDH:</strong> Usando los valores de actividad enzimática que se encuentran en el directorio <code>data/</code>:</p>
+</blockquote>
+<ol style="list-style-type: decimal">
+<li>abre cada tibble y unelos en una sola con la función <code>rbind()</code></li>
+<li>selecciona las columnas <code>ExpNum</code>,<code>TreatTemp</code>, <code>Meas_Temp</code> y <code>ActivityLDH</code></li>
+<li>convierte la columna <code>ExpNum</code> y <code>Meas_Temp</code>en factores</li>
+<li>agrupa la tabla de acuerdo a esta columna</li>
+<li>calcula el promedio, desviación estandar y N para los valores de activtidad de LDH</li>
+<li>guarda esta nueva tabla en el directorio de resultados</li>
+</ol>
+<pre class="r fold-hide"><code>tbl &lt;-
+    list.files(path = &quot;data&quot;, pattern = &quot;Data_enzimas*&quot;, full.names = TRUE) %&gt;% 
+    map_df(~read.table(., sep = &quot;\t&quot;, h = TRUE))
+
+tbl %&gt;% 
+  tibble(.) %&gt;% 
+  select(ExpNum, TreatTemp, Meas_Temp, ActivityLDH) %&gt;% 
+  mutate(ExpNum = factor(ExpNum)) %&gt;% 
+  group_by(ExpNum, Meas_Temp) %&gt;% 
+  summarise(PromedioLDH = mean(ActivityLDH, na.rm = TRUE),
+            DesvLDH = sd(ActivityLDH, na.rm = TRUE),
+            N = n())</code></pre>
+</div>
+<div id="count" class="section level2" number="3.10">
+<h2 number="3.10"><span class="header-section-number">3.10</span> <code>count()</code></h2>
+<p>La función <code>count()</code> nos permite saber cuantas observaciones hay en una variable especifica. Al agregar el argumento <code>sort = TRUE</code>devuelve una tabla descendiente con el número de observaciones.</p>
+<p>Por ejemplo, para saber cuantos miembros de cada tipo hay en nuestra lista de pokemon:</p>
+<pre class="r"><code>pokemon %&gt;%
+  count(Type1, sort = TRUE, name = &quot;Numero&quot;)</code></pre>
+<pre><code># A tibble: 18 x 2
+   Type1    Numero
+   &lt;chr&gt;     &lt;int&gt;
+ 1 Water       112
+ 2 Normal       98
+ 3 Grass        70
+ 4 Bug          69
+ 5 Psychic      57
+ 6 Fire         52
+ 7 Electric     44
+ 8 Rock         44
+ 9 Dragon       32
+10 Ghost        32
+11 Ground       32
+12 Dark         31
+13 Poison       28
+14 Fighting     27
+15 Steel        27
+16 Ice          24
+17 Fairy        17
+18 Flying        4</code></pre>
+</div>
+<div id="ifelse" class="section level2" number="3.11">
+<h2 number="3.11"><span class="header-section-number">3.11</span> <code>ifelse()</code></h2>
+<p>La función <code>ifelse()</code> es utilizada en muchos contextos en los lenguajes de programación en donde se tiene la sintaxis:</p>
+<p>ifelse(condicion, resultado positivo, regulado negativo)</p>
+<p>por ejemplo</p>
+<pre class="r"><code>x = 20
+
+ifelse(x == 20, &quot;Si es&quot;, &quot;no es&quot;)</code></pre>
+<pre><code>[1] &quot;Si es&quot;</code></pre>
+<p>Entonces es posible utilizar la función <code>ifelse</code> dentro de mutate para transformar ciertas variables.</p>
+<pre class="r"><code>pokemon %&gt;% 
+  mutate(Tipo = ifelse(Type1 == &quot;Grass&quot;, &quot;Planta&quot;, Type1)) %&gt;% 
+  mutate(Rapidez = ifelse(Speed &gt;= 100, &quot;Muy rapido&quot;, &quot;lento&quot;))</code></pre>
+<pre><code># A tibble: 800 x 15
+      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
+ 2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
+ 3     3 Venusaur     Grass Pois~   525    80     82      83    100    100    80
+ 4     3 VenusaurMeg~ Grass Pois~   625    80    100     123    122    120    80
+ 5     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
+ 6     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
+ 7     6 Charizard    Fire  Flyi~   534    78     84      78    109     85   100
+ 8     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
+ 9     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
+10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
+# ... with 790 more rows, and 4 more variables: Generation &lt;dbl&gt;,
+#   Legendary &lt;lgl&gt;, Tipo &lt;chr&gt;, Rapidez &lt;chr&gt;</code></pre>
+</div>
+<div id="unir-dos-o-mas-tablas" class="section level2" number="3.12">
+<h2 number="3.12"><span class="header-section-number">3.12</span> Unir dos o mas tablas</h2>
+<div id="unir-dos-tablas-con-el-mismo-número-de-dimensiones" class="section level3" number="3.12.1">
+<h3 number="3.12.1"><span class="header-section-number">3.12.1</span> Unir dos tablas con el mismo número de dimensiones</h3>
+<p>Para este ejercicio, vamos a generar dos tibbles sencillos:</p>
+<pre class="r"><code>x &lt;- tibble(x1 = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;),
+            x2 = c(1, 2, 3))
+
+x</code></pre>
+<pre><code># A tibble: 3 x 2
+  x1       x2
+  &lt;chr&gt; &lt;dbl&gt;
+1 A         1
+2 B         2
+3 C         3</code></pre>
+<pre class="r"><code>y &lt;- tibble(x1 = c(&quot;B&quot;, &quot;C&quot;, &quot;D&quot;),
+            x2 = c(2,3,4))
+y</code></pre>
+<pre><code># A tibble: 3 x 2
+  x1       x2
+  &lt;chr&gt; &lt;dbl&gt;
+1 B         2
+2 C         3
+3 D         4</code></pre>
+<p>Unir las columnas con <code>bind_cols()</code></p>
+<pre class="r"><code>bind_cols(x, y)</code></pre>
+<pre><code>New names:
+* x1 -&gt; x1...1
+* x2 -&gt; x2...2
+* x1 -&gt; x1...3
+* x2 -&gt; x2...4</code></pre>
+<pre><code># A tibble: 3 x 4
+  x1...1 x2...2 x1...3 x2...4
+  &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+1 A           1 B           2
+2 B           2 C           3
+3 C           3 D           4</code></pre>
+<p>Unir las filas con <code>bind_rows()</code></p>
+<pre class="r"><code>bind_rows(x, y)</code></pre>
+<pre><code># A tibble: 6 x 2
+  x1       x2
+  &lt;chr&gt; &lt;dbl&gt;
+1 A         1
+2 B         2
+3 C         3
+4 B         2
+5 C         3
+6 D         4</code></pre>
+<p>Unir los elementos en común con <code>union()</code></p>
+<pre class="r"><code>union(x, y)</code></pre>
+<pre><code># A tibble: 4 x 2
+  x1       x2
+  &lt;chr&gt; &lt;dbl&gt;
+1 A         1
+2 B         2
+3 C         3
+4 D         4</code></pre>
+<p><code>intersect()</code>toma las filas que aparecen en ambas tablas</p>
+<pre class="r"><code>intersect(x,y)</code></pre>
+<pre><code># A tibble: 2 x 2
+  x1       x2
+  &lt;chr&gt; &lt;dbl&gt;
+1 B         2
+2 C         3</code></pre>
+</div>
+<div id="unir-dos-tablas-con-diferentes-dimensiones" class="section level3" number="3.12.2">
+<h3 number="3.12.2"><span class="header-section-number">3.12.2</span> Unir dos tablas con diferentes dimensiones</h3>
+<p>La sintaxis para estas funciones es la misma <code>xxxx_join(x1 = tabla1, x2 = tabla2, by = "columna en común")</code></p>
+<p><img src="https://statisticsglobe.com/wp-content/uploads/2019/04/dplyr-data-join-functions-overview_inner_join-left_join-right_join-full_join-semi_join-anti_join.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Para esto, vamos a construir otro par de tibbles</p>
+<pre class="r"><code>canciones &lt;- tibble(cancion = c(&quot;I´am the warlus&quot;,
+                                &quot;Come together&quot;,
+                                &quot;Yesterday&quot;,
+                                &quot;Why&quot;),
+                    autor = c(&quot;John&quot;, 
+                              &quot;John&quot;,
+                              &quot;Paul&quot;,
+                              &quot;Yoko&quot;))
+
+canciones</code></pre>
+<pre><code># A tibble: 4 x 2
+  cancion         autor
+  &lt;chr&gt;           &lt;chr&gt;
+1 I´am the warlus John 
+2 Come together   John 
+3 Yesterday       Paul 
+4 Why             Yoko </code></pre>
+<pre class="r"><code>artista &lt;- tibble(autor = c(&quot;George&quot;,
+                             &quot;John&quot;,
+                             &quot;Paul&quot;,
+                             &quot;Ringo&quot;),
+                  instrumento = c(&quot;sitara&quot;,
+                                  &quot;guitarra&quot;,
+                                  &quot;bajo&quot;,
+                                  &quot;bateria&quot;))
+artista</code></pre>
+<pre><code># A tibble: 4 x 2
+  autor  instrumento
+  &lt;chr&gt;  &lt;chr&gt;      
+1 George sitara     
+2 John   guitarra   
+3 Paul   bajo       
+4 Ringo  bateria    </code></pre>
+<p><code>inner_join()</code></p>
+<pre class="r"><code>inner_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 3 x 3
+  cancion         autor instrumento
+  &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt;      
+1 I´am the warlus John  guitarra   
+2 Come together   John  guitarra   
+3 Yesterday       Paul  bajo       </code></pre>
+<p><code>left_join()</code></p>
+<pre class="r"><code>left_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 4 x 3
+  cancion         autor instrumento
+  &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt;      
+1 I´am the warlus John  guitarra   
+2 Come together   John  guitarra   
+3 Yesterday       Paul  bajo       
+4 Why             Yoko  &lt;NA&gt;       </code></pre>
+<p><code>right_join()</code></p>
+<pre class="r"><code>right_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 5 x 3
+  cancion         autor  instrumento
+  &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;      
+1 I´am the warlus John   guitarra   
+2 Come together   John   guitarra   
+3 Yesterday       Paul   bajo       
+4 &lt;NA&gt;            George sitara     
+5 &lt;NA&gt;            Ringo  bateria    </code></pre>
+<p><code>full_join()</code></p>
+<pre class="r"><code>full_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 6 x 3
+  cancion         autor  instrumento
+  &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;      
+1 I´am the warlus John   guitarra   
+2 Come together   John   guitarra   
+3 Yesterday       Paul   bajo       
+4 Why             Yoko   &lt;NA&gt;       
+5 &lt;NA&gt;            George sitara     
+6 &lt;NA&gt;            Ringo  bateria    </code></pre>
+<p><code>semi_join()</code></p>
+<pre class="r"><code>semi_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 3 x 2
+  cancion         autor
+  &lt;chr&gt;           &lt;chr&gt;
+1 I´am the warlus John 
+2 Come together   John 
+3 Yesterday       Paul </code></pre>
+<p><code>anti_join()</code></p>
+<pre class="r"><code>anti_join(canciones, artista, by = &quot;autor&quot;)</code></pre>
+<pre><code># A tibble: 1 x 2
+  cancion autor
+  &lt;chr&gt;   &lt;chr&gt;
+1 Why     Yoko </code></pre>
+<blockquote>
+<p>Ejercicio: Utiliza la función <code>read_csv()</code> para abrir el archivo <strong>pokemon_extended.csv</strong>. Posteriormente, genera una nueva tabla donde en una sola cadena unas la información del peso y altura de cada pokemon con el el resto de la tabla original, conservando solamente aquellos individuos presentes en ambas tablas, selecciona solamente las columnas Name, Type1, Total, HP, height_m, weight_gk y filtrar aquellos pokemon que tengan un peso superior al promedio global</p>
+</blockquote>
+<pre class="r fold-hide"><code>pokemon_ext &lt;- read_csv(&quot;data/pokemon_extended.csv&quot;)
+
+pokemon_E5 &lt;- pokemon %&gt;% 
+  
+  # Unir ambas tablas con inner join
+  inner_join(pokemon_ext, by = &quot;Name&quot;) %&gt;% 
+  
+  #seleccionar las columnas de interes
+  select(Name, Type1, Total, HP, height_m, weight_kg) %&gt;% 
+  
+  #filtrar los individuos con peso mayor al promedio
+  filter(weight_kg &gt; mean(weight_kg, na.rm = TRUE))</code></pre>
+<blockquote>
+<p>Ejercicio: Utilizando <code>read_csv()</code> genero un par de objetos nuevos con las tablas <strong>Trancriptome_DGE.csv</strong> y <strong>Transcriptome_Anotacion.csv</strong>. En una sola cadena, une ambas tablas de manera que cada transcrito de la tabla DGE tenga su anotación; filtra aquellos transcritos que tuvieron un valor de logFC mayor a 0; y genera una tabla con el numero de organismos de cada genero (genus).</p>
+</blockquote>
+<pre class="r fold-hide"><code>expresion &lt;- read_csv(&quot;data/Transcriptome_DGE.csv&quot;)
+expresion
+
+
+anotacion &lt;- read_csv(&quot;data/Transcriptome_Anotacion.csv&quot;)
+
+
+expresion %&gt;% 
+  inner_join(anotacion, by = &quot;transcript&quot;) %&gt;% 
+  filter(logFC &gt; 0) %&gt;% 
+  count(genus, sort = TRUE)</code></pre>
+</div>
+</div>
+<div id="cambio-de-formato-long-y-wide-con-pivot_longer-y-pivot_wider" class="section level2" number="3.13">
+<h2 number="3.13"><span class="header-section-number">3.13</span> Cambio de formato long y wide con <code>pivot_longer()</code> y <code>pivot_wider()</code></h2>
+<p>Para entender la diferencia entre el formato ancho y largo, usemos la siguiente tabla con los datos de consumo de oxígeno de 10 individuos a lo largo de seis días:</p>
+<pre class="r"><code>MO2 &lt;- read_csv(&quot;data/Consumo_oxigeno_wide.csv&quot;)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  individuo = col_character(),
+  dia1 = col_double(),
+  dia2 = col_double(),
+  dia3 = col_double(),
+  dia4 = col_double(),
+  dia5 = col_double(),
+  dia6 = col_double()
+)</code></pre>
+<pre class="r"><code>MO2</code></pre>
+<pre><code># A tibble: 10 x 7
+   individuo  dia1  dia2  dia3  dia4  dia5  dia6
+   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 E1        11.7  46.6   8.10 18.7   59.6  47.5
+ 2 E2        12.7   8.95 15.2  31.8   30.3  30.4
+ 3 E3        14.5  27.2  11.9  29.3   42.2  40.5
+ 4 E4        27.6  29.5  17.1  30.1   61.2  63.0
+ 5 E5         7.70 29.7  19.0  31.8   71.0  42.7
+ 6 E6         6.64 34.8  14.3   5.18  61.6  65.1
+ 7 E7        10.4  36.3   9.66 24.1   60.6  65.4
+ 8 E8        14.5  40.1   8.11 33.6   18.5  59.4
+ 9 E9         5.62 48.8  14.5  10.4   21.0  52.4
+10 E10        6.97 14.6  NA    NA     NA    45.2</code></pre>
+<p>En este caso, los individuos estan en filas y cada dia en una columna diferentes. Para transformar en formato largo, usando la funcion <code>pivot_longer()</code></p>
+<div class="figure" style="text-align: center">
+<img src="https://thinkr.fr/wp-content/uploads/wide_long.png" alt="imagen tomada de: thinkr.fr/wp-content/uploads/wide_long.png" width="75%" />
+<p class="caption">
+imagen tomada de: thinkr.fr/wp-content/uploads/wide_long.png
+</p>
+</div>
+<p>La sintaxis para utilizar estas funciones es la siguiente:</p>
+<p>pivot_longer( data, cols, names_to = “NNN”, values_to = “NNN”)</p>
+<p>en donde:</p>
+<ul>
+<li><strong>data:</strong> Corresponde a la tabla (no es necesario especificar si viene de una cadena)</li>
+<li><strong>cols:</strong> cuales son las columnas que se desea transformar. Si se desea mantener solo una variable fija, se puede espeficicar con <code>-variable</code></li>
+<li><strong>names_to:</strong> Nombre de la columna que contiene las <em>columnas</em> proporcionadas</li>
+<li><strong>values_to:</strong> Nombre de la variable que contiene los valores asociados a las <em>columnas</em> proporcionadas</li>
+</ul>
+<pre class="r"><code>MO2_long = MO2 %&gt;%
+  pivot_longer(-individuo, names_to = &quot;Dia&quot;, values_to = &quot;MO2&quot;)
+
+MO2_long</code></pre>
+<pre><code># A tibble: 60 x 3
+   individuo Dia     MO2
+   &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;
+ 1 E1        dia1  11.7 
+ 2 E1        dia2  46.6 
+ 3 E1        dia3   8.10
+ 4 E1        dia4  18.7 
+ 5 E1        dia5  59.6 
+ 6 E1        dia6  47.5 
+ 7 E2        dia1  12.7 
+ 8 E2        dia2   8.95
+ 9 E2        dia3  15.2 
+10 E2        dia4  31.8 
+# ... with 50 more rows</code></pre>
+<p>Por el contrario, podemos usar <code>pivot_wider()</code>para realizar la operación opuesta</p>
+<div class="figure" style="text-align: center">
+<img src="https://thinkr.fr/wp-content/uploads/long_wide.png" alt="imagen tomada de:thinkr.fr/wp-content/uploads/long_wide.png" width="75%" />
+<p class="caption">
+imagen tomada de:thinkr.fr/wp-content/uploads/long_wide.png
+</p>
+</div>
+<pre class="r"><code>MO2_wide = MO2_long %&gt;%
+ pivot_wider(individuo, names_from = Dia, values_from = MO2)
+
+MO2_wide</code></pre>
+<pre><code># A tibble: 10 x 7
+   individuo  dia1  dia2  dia3  dia4  dia5  dia6
+   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 E1        11.7  46.6   8.10 18.7   59.6  47.5
+ 2 E2        12.7   8.95 15.2  31.8   30.3  30.4
+ 3 E3        14.5  27.2  11.9  29.3   42.2  40.5
+ 4 E4        27.6  29.5  17.1  30.1   61.2  63.0
+ 5 E5         7.70 29.7  19.0  31.8   71.0  42.7
+ 6 E6         6.64 34.8  14.3   5.18  61.6  65.1
+ 7 E7        10.4  36.3   9.66 24.1   60.6  65.4
+ 8 E8        14.5  40.1   8.11 33.6   18.5  59.4
+ 9 E9         5.62 48.8  14.5  10.4   21.0  52.4
+10 E10        6.97 14.6  NA    NA     NA    45.2</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] readxl_1.3.1    forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5    
+ [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.0.4   
+ [9] ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.1.0 xfun_0.20        haven_2.3.1      colorspace_2.0-0
+ [5] vctrs_0.3.6      generics_0.1.0   htmltools_0.5.0  yaml_2.2.1      
+ [9] utf8_1.1.4       rlang_0.4.10     later_1.1.0.1    pillar_1.6.0    
+[13] withr_2.3.0      glue_1.4.2       DBI_1.1.0        dbplyr_2.1.1    
+[17] modelr_0.1.8     lifecycle_1.0.0  cellranger_1.1.0 munsell_0.5.0   
+[21] gtable_0.3.0     rvest_1.0.0      evaluate_0.14    knitr_1.30      
+[25] ps_1.5.0         httpuv_1.5.4     fansi_0.4.1      highr_0.8       
+[29] broom_0.7.6      Rcpp_1.0.5       promises_1.1.1   backports_1.2.1 
+[33] scales_1.1.1     jsonlite_1.7.2   fs_1.5.0         hms_1.0.0       
+[37] digest_0.6.27    stringi_1.5.3    rprojroot_2.0.2  grid_4.0.5      
+[41] cli_2.4.0        tools_4.0.5      magrittr_2.0.1   crayon_1.4.1    
+[45] whisker_0.4      pkgconfig_2.0.3  ellipsis_0.3.1   xml2_1.3.2      
+[49] reprex_2.0.0     lubridate_1.7.10 rstudioapi_0.13  assertthat_0.2.1
+[53] rmarkdown_2.6    httr_1.4.2       R6_2.5.0         git2r_0.27.1    
+[57] compiler_4.0.5  </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
