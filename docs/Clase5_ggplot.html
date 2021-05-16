@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-05-06" />
+
+<title>Clase5 Visualizacion con ggplot2</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase5 Visualizacion con ggplot2</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-05-06</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-05-16
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree5126d03b42f92e5c6d46db20c278661f83b93087targetblank5126d03a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/5126d03b42f92e5c6d46db20c278661f83b93087" target="_blank">5126d03</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree5126d03b42f92e5c6d46db20c278661f83b93087targetblank5126d03a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/5126d03b42f92e5c6d46db20c278661f83b93087" target="_blank">5126d03</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  analysis/images/
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+    Untracked:  output/Plot_all_penguins.pdf
+    Untracked:  output/Plot_all_penguins.tiff
+    Untracked:  output/graficos/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase5_ggplot.Rmd</code>) and HTML (<code>docs/Clase5_ggplot.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/5126d03b42f92e5c6d46db20c278661f83b93087/analysis/Clase5_ggplot.Rmd" target="_blank">5126d03</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-16
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<p><img src="https://ggplot2.tidyverse.org/logo.png" width="75%" style="display: block; margin: auto;" /></p>
+<div id="que-es-ggplot2" class="section level2" number="0.1">
+<h2 number="0.1"><span class="header-section-number">0.1</span> ¿Que es ggplot2?</h2>
+<p>ggplot es un motor gráfico basado en la gramática grafica de Wilkinson <a href="https://www.youtube.com/watch?v=AbHU5tLCmuo&amp;t=0s">Wilkinson, 2005</a>. Bajo este contexto, un gráfico es una serie de capas (<em>layers</em>) similares a una transparecia, con algo impreso en ellas, que puede ser texto, puntos, lineas, barras, imagenes de pollitos o cualquier otro tipo de representación. La imagen final, cada una de estas capas se colocan una sobre otra.</p>
+<div class="figure">
+<img src="figure/AndyField.png" alt="" />
+<p class="caption">imagen de Andy Field (R)</p>
+</div>
+</div>
+<div id="geoms-y-aesthetics" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> geoms y aesthetics</h1>
+<p>Como se observa en la figura anterior, cada capa contiene objetos visuales (barras, puntos, text, etc) conocidos como <em>geoms()</em> (por objetos geométricos).</p>
+<p>Estas geometricas también tienen propiedades estéticas (<em>aesthetics</em>; <em>aes()</em>) las cuales determinan como lucen y donde se ubican. Estos estéticos controlan la apariencia de cada uno de los elementos de la gráfica (color, forma, etsilo, etc) y puede ser especificado de manera individual para cada geometría o de manera global.</p>
+<p>En resumen, los elementos necesarios para representar un gráfico con ggplot2son los siguientes:</p>
+<ul>
+<li>Un <em>data frame</em> que contiene los datos que se quieren visualizar.</li>
+<li>Los <em>aesthetics</em>, es decir, una lista de relaciones entre las variables del fichero de datos y determinados aspectos del gráfico (como por ejemplo coordenadas, formas o colores).</li>
+<li>Los <em>geoms</em>, que especifican los elementos geométricos (puntos, líneas, círculos, etc) que se van a representar.</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="https://nbisweden.github.io/RaukR-2019/ggplot/presentation/ggplot_presentation_assets/geoms.png" alt="Algunos tipos de geometrias (geoms)" width="100%" />
+<p class="caption">
+Algunos tipos de geometrias (geoms)
+</p>
+</div>
+</div>
+<div id="los-datos" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Los datos</h1>
+<p>Para esta practica, utilizaremos la base de datos de <code>penguis_size.csv</code> la cual utilizamos previamente en la practica de gráficos base.</p>
+</div>
+<div id="funcionamiento-básico" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Funcionamiento básico</h1>
+<p>Para poder utilizar ggplot2, podemos cargar solamente la libreria ggplot2 o cargar todo el conjunto de paquetes tidyverse el cual incluye herramientas que hemos usado hasta ahora como dplyr, tidyr, readr, tibble y ggplot2.</p>
+<pre class="r"><code>library(tidyverse)
+
+penguins &lt;- read_csv(&quot;data/penguins_size.csv&quot;)
+penguins &lt;- penguins[complete.cases(penguins), ]</code></pre>
+</div>
+<div id="funcion-ggplot" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Funcion <code>ggplot()</code></h1>
+<p>Para crear un gráfico se usa el comando ggplot():</p>
+<pre class="r"><code>ggplot(data = penguins)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Al ejecutar la función, no da error pero no vemos ninguna gráfica. Esto se debe a que no hemos indicado a ggplot cuales son las coordenadas y esteticos, ni cuales son las geometrías.</p>
+<p>Para desginar los esteticos, definimos el plano usando los datos de la longitud del culmen y la masa corporal ejecutando:</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>El argumento <em>aes()</em> es sinónimo de estética, ggplot2 considera que el eje X e Y de la gráfica es estético, junto con el color, el tamaño, la forma, el relleno, etc. Se puede agregar cualquier estética que se desee dentro del argumento <em>aes()</em>, como por ejemplo indicar los ejes X e Y, especificando las variables respectivas del conjunto de datos. La variable en función de la cual el color, tamaño, forma y trazo debe cambiar también se puede especificar aquí mismo. Debes tener en cuenta que <strong>la estética especificada aquí será heredada por todas las capas geom que se agregarán posteriormente</strong>.</p>
+<p>Sin embargo, aún no vemos ninguna gráfica, ya que para esto es necesario indicar que tipo de geometria (<em>geom()</em>) de gráfica queremos utilizar.</p>
+<p>Para crear un diagrama de dispersión es necesario agregarle la geometria <code>geom_N()</code>. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo <code>+</code></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="aesthetics" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Aesthetics</h2>
+<p>Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estetico a los grupos.</p>
+<p>por ejemplo, podemos asignarle un color diferente a cada especie</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Y asignarle una forma diferente a por sexo</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>o cambiar el tamaño</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex, size = culmen_length_mm))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Como se mencionó mas adelante, es posible defininar los aesteticos de manera global, de manera que afectara a todas las geometrias posterior, o se puede definir de manera indiviual por geometria</p>
+<p>De manera que se puede expresar de esta forma:</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_point()+
+  geom_smooth(method = &quot;lm&quot;)</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>o de esta:</p>
+<pre class="r"><code>ggplot(data = penguins)+
+  geom_point(aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species))</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geometrias" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Geometrias</h2>
+<p>Los nombres de las funciones de geometría siguen el patrón: geom_X donde X es el nombre de la geometría. Algunos ejemplos incluyen geom_point, geom_bar y geom_histogram.</p>
+<p>A continuación repasaremos algunas de las geometrias mas comunes:</p>
+</div>
+<div id="graficar-una-variable-continua" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Graficar una variable continua</h2>
+<div id="geom_density" class="section level3" number="4.3.1">
+<h3 number="4.3.1"><span class="header-section-number">4.3.1</span> `geom_density()</h3>
+<pre class="r"><code>c_plot &lt;- ggplot(data= penguins, aes(x = culmen_length_mm, fill = island))
+
+c_plot + geom_density(alpha = 0.4)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_histogram" class="section level3" number="4.3.2">
+<h3 number="4.3.2"><span class="header-section-number">4.3.2</span> <code>geom_histogram()</code></h3>
+<pre class="r"><code>c_plot + geom_histogram(alpha = 0.4)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_dotplot" class="section level3" number="4.3.3">
+<h3 number="4.3.3"><span class="header-section-number">4.3.3</span> <code>geom_dotplot</code></h3>
+<pre class="r"><code>c_plot + geom_dotplot(alpha = 0.4)</code></pre>
+<pre><code>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_qqplot" class="section level3" number="4.3.4">
+<h3 number="4.3.4"><span class="header-section-number">4.3.4</span> <code>geom_qqplot()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(sample = culmen_length_mm, col = island))+
+  geom_qq() +
+  geom_qq_line()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="gráficas-de-variables-discretas" class="section level2" number="4.4">
+<h2 number="4.4"><span class="header-section-number">4.4</span> Gráficas de variables discretas</h2>
+<div id="geom_bar" class="section level3" number="4.4.1">
+<h3 number="4.4.1"><span class="header-section-number">4.4.1</span> <code>geom_bar()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, fill = species))+
+  geom_bar()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar(position = &quot;dodge&quot;)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar(position = &quot;fill&quot;)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="gráficas-de-una-variable-discreta-continua" class="section level2" number="4.5">
+<h2 number="4.5"><span class="header-section-number">4.5</span> Gráficas de una variable discreta + continua</h2>
+<div id="geom_boxplot" class="section level3" number="4.5.1">
+<h3 number="4.5.1"><span class="header-section-number">4.5.1</span> <code>geom_boxplot()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_boxplot()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_dotplot-1" class="section level3" number="4.5.2">
+<h3 number="4.5.2"><span class="header-section-number">4.5.2</span> <code>geom_dotplot()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_dotplot(binaxis = &quot;y&quot;, stackdir = &quot;center&quot;, position = &quot;dodge&quot;, binwidth = 0.75)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_violin" class="section level3" number="4.5.3">
+<h3 number="4.5.3"><span class="header-section-number">4.5.3</span> <code>geom_violin()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_violin()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="jitter" class="section level3" number="4.5.4">
+<h3 number="4.5.4"><span class="header-section-number">4.5.4</span> jitter</h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex, col = sex))+
+  geom_point(position = position_jitterdodge(jitter.width = 0.1), size = 2)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="gráficas-con-una-variable-continua-continua" class="section level2" number="4.6">
+<h2 number="4.6"><span class="header-section-number">4.6</span> Gráficas con una variable continua + continua</h2>
+<div id="geom_label" class="section level3" number="4.6.1">
+<h3 number="4.6.1"><span class="header-section-number">4.6.1</span> <code>geom_label()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_label(aes(label = island))</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_rug" class="section level3" number="4.6.2">
+<h3 number="4.6.2"><span class="header-section-number">4.6.2</span> <code>geom_rug()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_rug()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geom_point" class="section level3" number="4.6.3">
+<h3 number="4.6.3"><span class="header-section-number">4.6.3</span> <code>geom_point()</code></h3>
+<pre class="r"><code>ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="grafica-de-lineas" class="section level2" number="4.7">
+<h2 number="4.7"><span class="header-section-number">4.7</span> grafica de lineas</h2>
+<p>Para usar esta geometria, es necesario usar el aestetics de group:</p>
+<pre class="r"><code>MO &lt;- read_csv(&quot;data/Consumo_oxigeno_wide.csv&quot;)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  individuo = col_character(),
+  dia1 = col_double(),
+  dia2 = col_double(),
+  dia3 = col_double(),
+  dia4 = col_double(),
+  dia5 = col_double(),
+  dia6 = col_double()
+)</code></pre>
+<pre class="r"><code>MO_long &lt;- MO %&gt;% 
+  pivot_longer(-individuo, names_to = &quot;Dia&quot;, values_to = &quot;MO&quot;)
+
+ggplot(data = MO_long, aes(x = Dia, y = MO, group = individuo, col = individuo))+
+  geom_line()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="edición-de-las-gráficas" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Edición de las gráficas</h1>
+<div id="titulos-y-etiquetas" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Titulos y etiquetas</h2>
+<p>Al igual que en las gráficas base de R, es posible editar los titulos principales y cambiar las etiquetas. Para esto, es posible utilizar las funciones <code>ylab()</code> , <code>xlab()</code> o <code>ggtitle()</code>, pero resulta mas practico utilizar la funcion <strong><code>labs()</code></strong></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
+  geom_point()+
+  labs(x = &quot;Longitud del culmen (mm)&quot;,
+       y = &quot;Masa corporal (g)&quot;,
+       title = &quot;Relación pico y masa&quot;,
+       subtitle = &quot;Datos por especie&quot;,
+       caption = &quot;Datos: Palmer Penguins&quot;,
+       col = &quot;Especie&quot;,
+       shape = &quot;Sexo&quot;)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="theme" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> <code>theme()</code></h2>
+<p>Es posible utilizar la función <code>theme()</code> para controlar parámetros gráficos independientes de los datos, tales como color de fondo, tamaño y tipo de letra, margenes, leyenda, etc.</p>
+<p>Los parametros que se pueden controlar con themes()son abundantes, sin embargo, existen varios themes en ggplot2 que se pueden usar rapidamente para cambiar el formato:</p>
+<ul>
+<li>theme_gray()</li>
+<li>theme_bw()</li>
+<li>theme_linedraw()</li>
+<li>theme_light()</li>
+<li>theme_minimal()</li>
+<li>theme_classic()</li>
+</ul>
+<p>Por ejemplo, podemos usat <code>theme_minimal()</code> el cual no contiene lineas de los ejes</p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
+  geom_point()+
+  labs(x = &quot;Longitud del culmen (mm)&quot;,
+       y = &quot;Masa corporal (g)&quot;,
+       title = &quot;Relación pico y masa&quot;,
+       subtitle = &quot;Datos por especie&quot;,
+       caption = &quot;Datos: Palmer Penguins&quot;,
+       col = &quot;Especie&quot;,
+       shape = &quot;Sexo&quot;)+
+  theme_minimal()</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>con los otros temas, la gráfica se verian así</p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ajusta-el-color-de-los-elementos-geometricos" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> Ajusta el color de los elementos geometricos</h2>
+<p>Cuando los elementos geometricos no se estan separados por factores, se puede especificar el color, relleno y forma dentro de esa geometria. Por ejemplo:</p>
+<pre class="r"><code>ggplot(data = penguins, aes(y = culmen_length_mm, x = island))+
+  geom_boxplot(fill = &quot;lightblue&quot;, col = &quot;salmon&quot;)+
+  geom_point(col = &quot;darkblue&quot;, pch = 5)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Cuando tenemos datos por grupos, es posible ajustar los colores y el relleno de manera manual con:</p>
+<ul>
+<li><code>scale_color_manual()</code></li>
+<li><code>scale_fill_manual()</code></li>
+</ul>
+<p>los valores de color se especifican dentro del parámetro <em>values</em></p>
+<pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island, fill = island))+
+  geom_point()+
+  scale_color_manual(values = c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;))</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>colores &lt;- c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;)
+
+ggplot(data = penguins, aes(x = culmen_length_mm, fill = island, col = island))+
+  geom_density(alpha = 0.4)+
+  geom_rug()+
+  scale_fill_manual(values = colores)+
+  scale_color_manual(values = colores)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="dividir-variables-en-paneles-con-facet_wrap-y-facet_grid" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Dividir variables en paneles con <code>facet_wrap()</code> y <code>facet_grid()</code></h1>
+<div id="dividir-paneles-por-una-variable-con-facet_wrap" class="section level2" number="6.1">
+<h2 number="6.1"><span class="header-section-number">6.1</span> Dividir paneles por una variable con <code>facet_wrap()</code></h2>
+<pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  #ajustar el numero de columans con ncol
+  facet_wrap(~ island, ncol = 1)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="dividir-paneles-por-dos-variabels-con-facet_grid" class="section level3" number="6.1.1">
+<h3 number="6.1.1"><span class="header-section-number">6.1.1</span> Dividir paneles por dos variabels con <code>facet_grid()</code></h3>
+<pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  #ajustar el numero de columans con ncol
+  facet_grid(sex ~ island)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="unir-dos-o-mas-gráficos-con-patchwork" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Unir dos o mas gráficos con <strong><code>patchwork</code></strong></h1>
+<p>Actualmente existen diversos paquetes con los que es posible unir diverss gráficos generados con ggplot tales como:</p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html">Cowplot</a></li>
+<li><a href="https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html">gridExtra</a></li>
+<li><a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr</a></li>
+</ul>
+<p>Uno de los paquetes mas sencillos es <code>patchwork</code> el cual permite unir diversos gráficos usando una sintaxis simple. Por ejemplo:</p>
+<pre class="r"><code># Grafico 1
+
+library(patchwork)
+
+fig1 &lt;- ggplot(penguins, aes(x = culmen_length_mm, y = culmen_depth_mm, col = island))+
+  geom_point()
+
+# grafico 2
+fig2 &lt;- ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()
+
+fig3 &lt;- ggplot(penguins, aes(x = culmen_length_mm, y = flipper_length_mm, col = island))+
+  geom_point()
+
+
+fig1 + fig2 + fig3</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_all &lt;- (fig1 | fig2) / fig3
+plot_all</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_all &lt;- plot_all + plot_layout(guides = &quot;collect&quot;)
+plot_all</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_all &amp; theme_bw() </code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_all</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-39-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_all &lt;- plot_all + plot_annotation(title = &quot;Relación de la longitud del culmen&quot;,
+                          tag_levels = &quot;A&quot;, tag_suffix = &quot;)&quot;)
+plot_all</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="exportar-una-gráfica-con-ggsave" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Exportar una gráfica con <strong><code>ggsave()</code></strong></h1>
+<p>La función <code>ggsave()</code> permite exportar gráficos en diferentes formatos, tales como PNG, TIFF, SVG y PDF</p>
+<p>Por default, ggsave exporta el úlitmo gráfico que se haya generado</p>
+<pre class="r"><code>ggsave(&quot;output/Plot_all_penguins.pdf&quot;, plot = plot_all, width = 180, height = 180, units = &quot;mm&quot;)</code></pre>
+<pre class="r"><code>ggsave(&quot;output/Plot_all_penguins.tiff&quot;, plot = plot_all, width = 180, height = 180, units = &quot;mm&quot;, dpi = 300)</code></pre>
+<hr />
+<blockquote>
+<p><strong><em>Ejercicio1:</em></strong></p>
+</blockquote>
+<p>En una sola cadena, filtra los pokemon de 1ra y 2da generación y realiza un gráfico de barras con la frecuencia de cada tipo (Type1) separando cada generación en un panel (facet) diferente</p>
+<pre class="r fold-hide"><code>pokemon &lt;- readxl::read_xls(&quot;data/datasets_pokemon.xls&quot;, sheet = &quot;pokemon&quot;)
+
+pokemon %&gt;% 
+  filter(Generation %in% c(1,2)) %&gt;% 
+ggplot(., aes(x = Type1))+
+  geom_bar() +
+  facet_wrap(~Generation, ncol = 1)</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio 2</em></strong></p>
+</blockquote>
+<p>Con ayuda de patchwork, une dos gráficas donde se muestre la relación entre el nivel de ataque (Attack) y defensa (Defense) entre los pokemon legendario y los no legendario. Añade un titulo, cambia las etiquetas de los ejes a español y agregales letras A) y B). Guarda esta gráfica como pdf</p>
+<pre class="r fold-hide"><code>nolegend &lt;- ggplot(pokemon %&gt;% 
+                     filter(Legendary == &quot;FALSE&quot;), aes(x = Attack, y = Defense))+
+  geom_point(col = &quot;darkblue&quot;)
+
+
+legendary &lt;- ggplot(pokemon %&gt;% 
+                     filter(Legendary == &quot;TRUE&quot;), aes(x = Attack, y = Defense))+
+  geom_point(col = &quot;salmon&quot;)
+
+
+plot_all_e2 &lt;- legendary + nolegend &amp; labs(x = &quot;Ataque&quot;, y = &quot;Defensa&quot;) &amp; theme_classic()
+
+plot_all_e2 &lt;- plot_all_e2 + 
+  plot_annotation(title = &quot;Relación de defensa y ataque en pokemon A) legendarios y B) no legendario&quot;,tag_levels = &quot;A&quot;, tag_suffix = &quot;)&quot;) 
+
+
+plot_all_e2
+
+ggsave(&quot;output/graficos/Ejercicio_ggplot2.pdf&quot;,plot_all_e2, width = 160, height = 120, units = &quot;mm&quot;, scale = 1.5)</code></pre>
+<blockquote>
+<p><strong><em>Ejercicio 2</em></strong></p>
+</blockquote>
+<p>En una sola cadea, filtra a los pokemon de tipo1 agua (<em>Water</em>), fuego (<em>Fire</em>), planta (<em>Grass</em>) y roca (<em>Rock</em>); Genera un gráfico de densidad del valor de ataque especial (<em>Sp_Atk</em>) con un color diferente para cada tipo; grafica en paneles diferentes cada tipo y si son legendarios (gradilla de 2 x 4). Finalmente, cambia la paleta de colores y el tema del grafico a tu gusto.</p>
+<pre class="r fold-hide"><code>colores &lt;- viridisLite::cividis(4)
+pokemon %&gt;% 
+  filter(Type1 %in% c(&quot;Fire&quot;, &quot;Water&quot;, &quot;Grass&quot;, &quot;Rock&quot;)) %&gt;% 
+  ggplot(., aes(Sp_Atk, fill = Type1)) +
+  geom_density() +
+  scale_fill_manual(values = colores) +
+  facet_grid(Legendary ~ Type1)+
+  theme_light()</code></pre>
+<hr />
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] patchwork_1.1.1 forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5    
+ [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.0.4   
+ [9] ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.5       lattice_0.20-41  lubridate_1.7.10 ps_1.5.0        
+ [5] assertthat_0.2.1 rprojroot_2.0.2  digest_0.6.27    utf8_1.1.4      
+ [9] R6_2.5.0         cellranger_1.1.0 backports_1.2.1  reprex_2.0.0    
+[13] evaluate_0.14    httr_1.4.2       highr_0.8        pillar_1.6.0    
+[17] rlang_0.4.10     readxl_1.3.1     rstudioapi_0.13  whisker_0.4     
+[21] Matrix_1.3-2     rmarkdown_2.6    splines_4.0.5    labeling_0.4.2  
+[25] munsell_0.5.0    broom_0.7.6      compiler_4.0.5   httpuv_1.5.4    
+[29] modelr_0.1.8     xfun_0.20        pkgconfig_2.0.3  mgcv_1.8-33     
+[33] htmltools_0.5.0  tidyselect_1.1.0 fansi_0.4.1      crayon_1.4.1    
+[37] dbplyr_2.1.1     withr_2.3.0      later_1.1.0.1    grid_4.0.5      
+[41] nlme_3.1-152     jsonlite_1.7.2   gtable_0.3.0     lifecycle_1.0.0 
+[45] DBI_1.1.0        git2r_0.27.1     magrittr_2.0.1   scales_1.1.1    
+[49] cli_2.4.0        stringi_1.5.3    farver_2.0.3     fs_1.5.0        
+[53] promises_1.1.1   xml2_1.3.2       ellipsis_0.3.1   generics_0.1.0  
+[57] vctrs_0.3.6      tools_4.0.5      glue_1.4.2       hms_1.0.0       
+[61] yaml_2.2.1       colorspace_2.0-0 rvest_1.0.0      knitr_1.30      
+[65] haven_2.3.1     </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
