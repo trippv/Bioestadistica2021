@@ -34,4 +34,4 @@ Temas:
 
 -   [Clase 4: Dplyr y Tidyverse](CLase4_Dplyr.html)
 
--   [Clase 5: Gráficos con ggplot](CLase5_ggplot.html)
+-   [Clase 5: Gráficos con ggplot](Clase5_ggplot.html)
