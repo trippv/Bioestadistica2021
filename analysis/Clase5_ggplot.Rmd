@@ -118,10 +118,11 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = speci
 
 ```
 
-Como se mencionó mas adelante, es posible defininar los aesteticos de manera global, de manera que afectara a todas las geometrias posterior, o se puede definir de manera indiviual por geometria
+Es posible defininar los elementos estéticos (_aesthetics_) de manera global, lo que afectará a todas las geometrias, o se puede definir de manera indiviual por geometria
 
 
 De manera que se puede expresar de esta forma:
+
 ```{r}
 ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
   geom_point()+
