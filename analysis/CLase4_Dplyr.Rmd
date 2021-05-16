@@ -696,7 +696,6 @@ anti_join(canciones, artista, by = "autor")
 
 
 
-
 ```{r Ejercicio5, class.source = 'fold-hide', eval= FALSE}
 pokemon_ext <- read_csv("data/pokemon_extended.csv")
 
@@ -713,7 +712,7 @@ pokemon_E5 <- pokemon %>%
 ```
 
 
-> Ejercicio: Utilizando `read_csv()` genero un par de objetos nuevos con las tablas **Trancriptome_DGE.csv** y **Transcriptome_Anotacion.csv**. En una sola cadena, une ambas tablas de manera que cada transcrito de la tabla DGE tenga su anotación; filtra aquellos transcritos que tuvieron un valor de logFC mayor a 0; y genera una tabla con el numero de organismos de cada genero (genus). 
+> Ejercicio: Utilizando `read_csv()` genera un par de objetos nuevos con las tablas **Trancriptome_DGE.csv** y **Transcriptome_Anotacion.csv**. En una sola cadena, une ambas tablas de manera que cada transcrito de la tabla DGE tenga su anotación; filtra aquellos transcritos que tuvieron un valor de logFC mayor a 0; y genera una tabla con el numero de organismos de cada genero (genus). 
 
 ```{r Ejercicio6, class.source = 'fold-hide', eval= FALSE}
 expresion <- read_csv("data/Transcriptome_DGE.csv")
@@ -748,6 +747,7 @@ Para transformar en formato largo, usando la funcion `pivot_longer()`
 
 
 ```{r, echo=FALSE, out.width = '75%', fig.cap= "imagen tomada de: thinkr.fr/wp-content/uploads/wide_long.png"}
+
 knitr::include_graphics("https://thinkr.fr/wp-content/uploads/wide_long.png")
 ```
 
@@ -791,4 +791,27 @@ MO2_wide = MO2_long %>%
 MO2_wide
 ```
 
+
+
+
+
+```{r, echo=FALSE, out.width = '75%', fig.cap="imagen tomada de:thinkr.fr/wp-content/uploads/long_wide.png" }
+knitr::include_graphics("https://thinkr.fr/wp-content/uploads/long_wide.png")
+```
+
+
+> Ejercicio: De la tabla pokemon, utiliza filter() para filtrar a las evolcuiones de Eevee
+
+
+```{r, echo=FALSE, out.width = '50%' }
+knitr::include_graphics("https://i.pinimg.com/originals/b0/7a/28/b07a2821122c154b88585b347604f891.jpg")
+```
+
+
+
+```{r ejercicio7, class.source = 'fold-hide', eval= FALSE}
+pokemon %>% 
+    filter(str_detect(Name, "eon"),
+         !str_detect(Name, "Charm")) 
+```
 

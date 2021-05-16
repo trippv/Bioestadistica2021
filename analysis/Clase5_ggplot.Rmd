@@ -1,0 +1,540 @@
+---
+title: "Clase5 Visualizacion con ggplot2"
+author: "Miguel Tripp"
+date: "2021-05-06"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+
+```{r, echo=FALSE, out.width = '75%'}
+knitr::include_graphics("https://ggplot2.tidyverse.org/logo.png")
+```
+
+
+## ¿Que es ggplot2?
+
+ggplot es un motor gráfico basado en la gramática grafica de Wilkinson [Wilkinson, 2005](https://www.youtube.com/watch?v=AbHU5tLCmuo&t=0s).  Bajo este contexto, un gráfico es una serie de capas (_layers_) similares a una transparecia, con algo impreso en ellas, que puede ser texto, puntos, lineas, barras, imagenes de pollitos o cualquier otro tipo de representación. La imagen final, cada una de estas capas se colocan una sobre otra.
+
+
+![imagen de Andy Field (R)](figure/AndyField.png)
+
+# geoms y aesthetics
+
+Como se observa en la figura anterior, cada capa contiene objetos visuales (barras, puntos, text, etc) conocidos como _geoms()_ (por objetos geométricos).
+
+Estas geometricas también tienen propiedades estéticas (_aesthetics_; _aes()_) las cuales determinan como lucen y donde se ubican. Estos estéticos controlan la apariencia de cada uno de los elementos de la gráfica (color, forma, etsilo, etc) y puede ser especificado de manera individual para cada geometría o de manera global. 
+
+En resumen, los elementos necesarios para representar un gráfico con ggplot2son los siguientes:
+
+  * Un _data frame_ que contiene los datos que se quieren visualizar.
+  * Los _aesthetics_, es decir, una lista de relaciones entre las variables del fichero de datos y determinados aspectos del gráfico (como por ejemplo coordenadas, formas o colores).
+  * Los _geoms_, que especifican los elementos geométricos (puntos, líneas, círculos, etc) que se van a representar.
+
+
+```{r, echo=FALSE, out.width = '100%', fig.cap= "Algunos tipos de geometrias (geoms)"}
+knitr::include_graphics("https://nbisweden.github.io/RaukR-2019/ggplot/presentation/ggplot_presentation_assets/geoms.png")
+```
+
+# Los datos
+
+Para esta practica, utilizaremos la base de datos de `penguis_size.csv` la cual utilizamos previamente en la practica de gráficos base.
+
+
+
+# Funcionamiento básico
+
+Para poder utilizar ggplot2, podemos cargar solamente la libreria ggplot2 o cargar todo el conjunto de paquetes tidyverse el cual incluye herramientas que hemos usado hasta ahora como dplyr, tidyr, readr, tibble y ggplot2.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+
+penguins <- read_csv("data/penguins_size.csv")
+penguins <- penguins[complete.cases(penguins), ]
+```
+
+# Funcion `ggplot()`
+
+Para crear un gráfico se usa el comando ggplot():
+
+```{r}
+ggplot(data = penguins)
+```
+
+Al ejecutar la función, no da error pero no vemos ninguna gráfica. Esto se debe a que no hemos indicado a ggplot cuales son las coordenadas y esteticos, ni cuales son las geometrías.
+
+Para desginar los esteticos, definimos el plano usando los datos de la longitud del culmen y la masa corporal ejecutando:
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))
+```
+
+El argumento _aes()_ es sinónimo de estética, ggplot2 considera que el eje X e Y de la gráfica es estético, junto con el color, el tamaño, la forma, el relleno, etc. Se puede agregar cualquier estética que se desee dentro del argumento _aes()_, como por ejemplo indicar los ejes X e Y, especificando las variables respectivas del conjunto de datos. La variable en función de la cual el color, tamaño, forma y trazo debe cambiar también se puede especificar aquí mismo. Debes tener en cuenta que **la estética especificada aquí será heredada por todas las capas geom que se agregarán posteriormente**.
+
+Sin embargo, aún no vemos ninguna gráfica, ya que para esto es necesario indicar que tipo de geometria (_geom()_) de gráfica queremos utilizar.
+
+Para crear un diagrama de dispersión es necesario agregarle la geometria `geom_N()`. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo `+`
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))+
+  geom_point()
+```
+
+## Aesthetics
+
+Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estetico a los grupos.
+
+por ejemplo, podemos asignarle un color diferente a cada especie 
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_point()
+```
+
+
+Y asignarle una forma diferente a por sexo
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex))+
+  geom_point()
+```
+
+o cambiar el tamaño
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex, size = culmen_length_mm))+
+  geom_point()
+
+```
+
+Como se mencionó mas adelante, es posible defininar los aesteticos de manera global, de manera que afectara a todas las geometrias posterior, o se puede definir de manera indiviual por geometria
+
+
+De manera que se puede expresar de esta forma:
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_point()+
+  geom_smooth(method = "lm")
+```
+
+
+o de esta:
+```{r}
+ggplot(data = penguins)+
+  geom_point(aes(x = culmen_length_mm, y = body_mass_g, color = species))+
+  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species))
+```
+
+
+## Geometrias
+
+Los nombres de las funciones de geometría siguen el patrón: geom_X donde X es el nombre de la geometría. Algunos ejemplos incluyen geom_point, geom_bar y geom_histogram.
+
+A continuación repasaremos algunas de las geometrias mas comunes:
+
+## Graficar una variable continua
+
+### `geom_density()
+
+```{r}
+c_plot <- ggplot(data= penguins, aes(x = culmen_length_mm, fill = island))
+
+c_plot + geom_density(alpha = 0.4)
+```
+
+### `geom_histogram()`
+
+```{r}
+c_plot + geom_histogram(alpha = 0.4)
+```
+
+### `geom_dotplot`
+```{r}
+c_plot + geom_dotplot(alpha = 0.4)
+```
+
+### `geom_qqplot()`
+```{r}
+ggplot(data = penguins, aes(sample = culmen_length_mm, col = island))+
+  geom_qq() +
+  geom_qq_line()
+```
+
+## Gráficas de variables discretas
+
+### `geom_bar()`
+
+```{r}
+
+ggplot(data = penguins, aes(x = species, fill = species))+
+  geom_bar()
+```
+
+
+
+```{r}
+ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar()
+```
+
+
+```{r}
+ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar(position = "dodge")
+```
+
+
+```{r}
+ggplot(data = penguins, aes(x = species, fill = sex ))+
+  geom_bar(position = "fill")
+```
+
+## Gráficas de una variable discreta + continua
+
+### `geom_boxplot()`
+
+```{r}
+ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_boxplot()
+```
+
+### `geom_dotplot()`
+```{r}
+ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", binwidth = 0.75)
+```
+
+### `geom_violin()`
+```{r}
+ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex))+
+  geom_violin()
+```
+
+### jitter
+```{r}
+ggplot(data = penguins, aes(x = species, y = culmen_length_mm, fill = sex, col = sex))+
+  geom_point(position = position_jitterdodge(jitter.width = 0.1), size = 2)
+```
+
+
+## Gráficas con una variable continua + continua
+
+### `geom_label()`
+
+```{r}
+ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_label(aes(label = island))
+```
+
+### `geom_rug()`
+```{r}
+ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_rug()
+```
+
+### `geom_point()`
+```{r}
+ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
+  geom_point()
+```
+
+## grafica de lineas
+
+Para usar esta geometria, es necesario usar el aestetics de group:
+
+```{r}
+MO <- read_csv("data/Consumo_oxigeno_wide.csv")
+
+MO_long <- MO %>% 
+  pivot_longer(-individuo, names_to = "Dia", values_to = "MO")
+
+ggplot(data = MO_long, aes(x = Dia, y = MO, group = individuo, col = individuo))+
+  geom_line()
+```
+
+# Edición de las gráficas
+
+## Titulos y etiquetas
+
+Al igual que en las gráficas base de R, es posible editar los titulos principales y cambiar las etiquetas. Para esto, es posible utilizar las funciones `ylab()` , `xlab()` o `ggtitle()`, pero resulta mas practico utilizar la funcion **`labs()`**
+
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
+  geom_point()+
+  labs(x = "Longitud del culmen (mm)",
+       y = "Masa corporal (g)",
+       title = "Relación pico y masa",
+       subtitle = "Datos por especie",
+       caption = "Datos: Palmer Penguins",
+       col = "Especie",
+       shape = "Sexo")
+```
+
+
+## `theme()`
+
+Es posible utilizar la función `theme()` para controlar parámetros gráficos independientes de los datos, tales como color de fondo, tamaño y tipo de letra, margenes, leyenda, etc.
+
+Los parametros que se pueden controlar con themes()son abundantes, sin embargo, existen varios themes en ggplot2 que se pueden usar rapidamente para cambiar el formato:
+
+  * theme_gray()
+  * theme_bw()
+  * theme_linedraw()
+  * theme_light()
+  * theme_minimal()
+  * theme_classic()
+  
+Por ejemplo, podemos usat `theme_minimal()` el cual no contiene lineas de los ejes
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
+  geom_point()+
+  labs(x = "Longitud del culmen (mm)",
+       y = "Masa corporal (g)",
+       title = "Relación pico y masa",
+       subtitle = "Datos por especie",
+       caption = "Datos: Palmer Penguins",
+       col = "Especie",
+       shape = "Sexo")+
+  theme_minimal()
+```
+
+
+
+con los otros temas, la gráfica se verian así
+
+```{r, include=TRUE, echo=FALSE}
+plot_test <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
+  geom_point()+
+  labs(x = "Longitud del culmen (mm)",
+       y = "Masa corporal (g)",
+       subtitle = "Datos por especie",
+       caption = "Datos: Palmer Penguins",
+       col = "Especie",
+       shape = "Sexo")+
+  theme(legend.position = "none")
+
+test_minimal <- plot_test+
+  theme_classic()+
+  theme(legend.position = "none")+
+  labs(title = "Theme classic")
+
+test_dark <- plot_test+
+  theme_dark()+
+  theme(legend.position = "none")+
+  labs(title = "Theme dark")
+
+test_light <- plot_test+
+  theme_light()+
+  theme(legend.position = "none")+
+  labs(title = "Theme light")
+
+test_void <- plot_test+
+  theme_void()+
+  theme(legend.position = "none")+
+  labs(title = "Theme void")
+
+
+library(patchwork)
+
+test_minimal + test_dark + test_light + test_void
+```
+
+
+## Ajusta el color de los elementos geometricos
+
+Cuando los elementos geometricos no se estan separados por factores, se puede especificar el color, relleno y forma dentro de esa geometria. Por ejemplo:
+
+```{r}
+
+ggplot(data = penguins, aes(y = culmen_length_mm, x = island))+
+  geom_boxplot(fill = "lightblue", col = "salmon")+
+  geom_point(col = "darkblue", pch = 5)
+```
+
+Cuando tenemos datos por grupos, es posible ajustar los colores y el relleno de manera manual con:
+
+  * `scale_color_manual()`
+  * `scale_fill_manual()`
+
+los valores de color se especifican dentro del parámetro _values_ 
+```{r}
+ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island, fill = island))+
+  geom_point()+
+  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9"))
+```
+
+```{r}
+colores <- c("#999999", "#E69F00", "#56B4E9")
+
+ggplot(data = penguins, aes(x = culmen_length_mm, fill = island, col = island))+
+  geom_density(alpha = 0.4)+
+  geom_rug()+
+  scale_fill_manual(values = colores)+
+  scale_color_manual(values = colores)
+```
+
+
+
+# Dividir variables en paneles con `facet_wrap()` y `facet_grid()`
+
+## Dividir paneles por una variable con `facet_wrap()`
+
+```{r}
+ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  #ajustar el numero de columans con ncol
+  facet_wrap(~ island, ncol = 1)
+```
+
+### Dividir paneles por dos variabels con `facet_grid()`
+
+```{r}
+ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  #ajustar el numero de columans con ncol
+  facet_grid(sex ~ island)
+```
+
+# Unir dos o mas gráficos con **`patchwork`**
+
+Actualmente existen diversos paquetes con los que es posible unir diverss gráficos generados con ggplot tales como:
+
+  * [Cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html)
+  * [gridExtra](https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html)
+  * [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html)
+
+Uno de los paquetes mas sencillos es `patchwork` el cual permite unir diversos gráficos usando una sintaxis simple. Por ejemplo:
+
+```{r}
+# Grafico 1
+
+library(patchwork)
+
+fig1 <- ggplot(penguins, aes(x = culmen_length_mm, y = culmen_depth_mm, col = island))+
+  geom_point()
+
+# grafico 2
+fig2 <- ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()
+
+fig3 <- ggplot(penguins, aes(x = culmen_length_mm, y = flipper_length_mm, col = island))+
+  geom_point()
+
+
+fig1 + fig2 + fig3
+```
+
+
+
+
+```{r}
+plot_all <- (fig1 | fig2) / fig3
+plot_all
+```
+
+
+```{r}
+plot_all <- plot_all + plot_layout(guides = "collect")
+plot_all
+```
+
+
+```{r}
+plot_all & theme_bw() 
+plot_all
+```
+
+```{r}
+plot_all <- plot_all + plot_annotation(title = "Relación de la longitud del culmen",
+                          tag_levels = "A", tag_suffix = ")")
+plot_all
+```
+
+# Exportar una gráfica con **`ggsave()`**
+
+La función `ggsave()` permite exportar gráficos en diferentes formatos, tales como PNG, TIFF, SVG y PDF
+
+Por default, ggsave exporta el úlitmo gráfico que se haya generado 
+
+
+```{r}
+ggsave("output/Plot_all_penguins.pdf", plot = plot_all, width = 180, height = 180, units = "mm")
+```
+
+
+```{r}
+ggsave("output/Plot_all_penguins.tiff", plot = plot_all, width = 180, height = 180, units = "mm", dpi = 300)
+```
+
+***
+> **_Ejercicio1:_**
+
+En una sola cadena, filtra los pokemon de 1ra y 2da generación y realiza un gráfico de barras con la frecuencia de cada tipo (Type1) separando cada generación en un panel (facet) diferente
+
+```{r ejercicio1, class.source = 'fold-hide', eval= FALSE}
+pokemon <- readxl::read_xls("data/datasets_pokemon.xls", sheet = "pokemon")
+
+pokemon %>% 
+  filter(Generation %in% c(1,2)) %>% 
+ggplot(., aes(x = Type1))+
+  geom_bar() +
+  facet_wrap(~Generation, ncol = 1)
+```
+
+
+> **_Ejercicio 2_**
+
+Con ayuda de patchwork, une dos gráficas donde se muestre la relación entre el nivel de ataque (Attack) y defensa (Defense) entre los pokemon legendario y los no legendario. Añade un titulo, cambia las etiquetas de los ejes a español y agregales letras A) y B). Guarda esta gráfica como pdf
+
+```{r ejercicio2, class.source = 'fold-hide', eval= FALSE}
+nolegend <- ggplot(pokemon %>% 
+                     filter(Legendary == "FALSE"), aes(x = Attack, y = Defense))+
+  geom_point(col = "darkblue")
+
+
+legendary <- ggplot(pokemon %>% 
+                     filter(Legendary == "TRUE"), aes(x = Attack, y = Defense))+
+  geom_point(col = "salmon")
+
+
+plot_all_e2 <- legendary + nolegend & labs(x = "Ataque", y = "Defensa") & theme_classic()
+
+plot_all_e2 <- plot_all_e2 + 
+  plot_annotation(title = "Relación de defensa y ataque en pokemon A) legendarios y B) no legendario",tag_levels = "A", tag_suffix = ")") 
+
+
+plot_all_e2
+
+ggsave("output/graficos/Ejercicio_ggplot2.pdf",plot_all_e2, width = 160, height = 120, units = "mm", scale = 1.5)
+```
+
+> **_Ejercicio 2_**
+
+En una sola cadea, filtra a los pokemon de tipo1 agua (_Water_), fuego (_Fire_), planta (_Grass_) y roca (_Rock_); Genera un gráfico de densidad del valor de ataque especial (_Sp_Atk_) con un color diferente para cada tipo; grafica en paneles diferentes cada tipo y si son legendarios (gradilla de 2 x 4). Finalmente, cambia la paleta de colores y el tema del grafico a tu gusto.
+
+```{r ejercicio3, class.source = 'fold-hide', eval= FALSE}
+
+colores <- viridisLite::cividis(4)
+pokemon %>% 
+  filter(Type1 %in% c("Fire", "Water", "Grass", "Rock")) %>% 
+  ggplot(., aes(Sp_Atk, fill = Type1)) +
+  geom_density() +
+  scale_fill_manual(values = colores) +
+  facet_grid(Legendary ~ Type1)+
+  theme_light()
+```
+
+
+***
+
