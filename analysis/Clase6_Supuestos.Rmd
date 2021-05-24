@@ -1,0 +1,679 @@
+---
+title: "Clase 6: Supuestos"
+author: "Miguel Tripp"
+date: "2021-05-18"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include=FALSE, message=FALSE}
+library(tidyverse)
+library(patchwork)
+```
+
+
+# Introduction
+
+Muchos de los estadisticos que se abordan en el curso son pruebas paramétricas las cuales se basan en una distribución normal, es decir, que las muestras se hayan obtenido de una población distribución normal (Gausiana), por lo tanto, resulta de imortancía confirmar dicho supuesto antes de decidir que prueba estadistica es apropiada. 
+
+
+La mayoria de las pruebas paramétricas basadas en la distribución normal tienen cuatro supuestos que deben de cumplirse para que la prueba sea precisa:
+
+  * **Datos distribuidos normalmente:** La interpretación de la mayoria de la pruebas estadisticas requiere del supuesto de que los datos fueron colectados de una población que sigue una distribución normal simetrica en el centro (la media).
+  
+  
+```{r, echo=FALSE, fig.cap="Figura: WikiCommons"}
+
+# # External package to generate four shades of blue
+# library(RColorBrewer)
+# cols <- rev(brewer.pal(4, "Blues"))
+cols <- c("#2171B5", "#6BAED6", "#BDD7E7", "#EFF3FF")
+
+# Sequence between -4 and 4 with 0.1 steps
+x <- seq(-4, 4, 0.1)
+
+# Plot an empty chart with tight axis boundaries, and axis lines on bottom and left
+plot(x, type="n", xaxs="i", yaxs="i", xlim=c(-4, 4), ylim=c(0, 0.4),
+     bty="l", xaxt="n", xlab="", ylab="")
+
+# Function to plot each coloured portion of the curve, between "a" and "b" as a
+# polygon; the function "dnorm" is the normal probability density function
+polysection <- function(a, b, col, n=11){
+    dx <- seq(a, b, length.out=n)
+    polygon(c(a, dx, b), c(0, dnorm(dx), 0), col=col, border=NA)
+    # draw a white vertical line on "inside" side to separate each section
+    segments(a, 0, a, dnorm(a), col="white")
+}
+
+# Build the four left and right portions of this bell curve
+for(i in 0:3){
+    polysection(     i, i + 1, col=cols[i + 1])  # Right side of 0
+    polysection(-i - 1,    -i, col=cols[i + 1])  # Left right of 0
+}
+
+# Black outline of bell curve
+lines(x, dnorm(x))
+
+# Bottom axis values, where sigma represents standard deviation and mu is the mean
+axis(1, at=-3:3, labels=expression(mu - 3 * sigma, mu - 2 * sigma, mu - sigma, mu,
+                                   mu + sigma, mu + 2 * sigma, mu + 3 * sigma))
+
+# Add percent densities to each division (rounded to 1 decimal place), between x and x+1
+text(c((0:3) + 0.5, (0:-3) - 0.5), c(0.16, 0.05, 0.04, 0.02),
+     sprintf("%.1f%%", 100 * (pnorm(1:4) - pnorm(0:3))),
+     col=c("white", "white", "black", "black"))
+segments(c(-2.5, -3.5, 2.5, 3.5), dnorm(c(2.5, 3.5)),
+         c(-2.5, -3.5, 2.5, 3.5), c(0.03, 0.01))
+```
+  
+
+  
+  * **Homogeneidad de varianzas:** El supuesto de homogeneidad de varianzas, también conocido como supuesto de homocedasticidad, implica que las varianzas deben de ser iguales en los datos. En diseños que implican una prueba entre varios grupos o tratamientos, este supuesto implica que cada uno de estos grupos viene de una población con la misma varianza. En diseños de correlación, este supuesto implica que la varianza de una variable debe mantenerse estable en todos los niveles de la otra variable
+  
+```{r, echo=FALSE}
+data("iris")
+iris <- filter(.data = iris, Species %in% c("versicolor", "virginica"))
+
+ggplot(data = iris, aes(x = Species, y = Petal.Length, colour = Species)) +
+  geom_boxplot() +
+  geom_point() +
+  theme_bw() +
+  labs(x = "Especie", y = "Longitud del petalo")+
+  theme(legend.position = "none")
+
+```
+  
+  
+  
+  * **Independencia de los datos:** Este supuesto va a depender del tipo de análisis que vayamos a realizar. En ciertos casos, este supuesto implica que las observaciones de cada individuo de un grupo experimental no afecta las observaciones de los otros individuos
+  
+  
+  
+  
+  
+# Comprobar la normalidad de los datos
+
+## Histogramas y distribución normal
+
+Con una cantidad de datos de la muestra suficientemente grande (n>30) la violación del supuesto de la normalidad no debería causar mayores problemas. Esto implica que podemos ignorar la distribución de los datos y usar pruebas paramétricas si estamos tratando con muestras de gran tamaño.
+
+El teorema del límite central nos dice que sin importar el tipo de distribución que tengan las cosas, la distribución de la muestra tiende a ser normal si ésta es lo suficientemente grande (n>30).
+
+Sin embargo, para ser constantes, la normalidad puede ser comprobada mediante:
+
+
+
+
+![](figure/Clase6_Supuestos.Rmd/normalidad.png)
+
+
+Una de las formas en que podemos visualizar la distribución de los datos es mediante la generación de histogramas de frecuencia. 
+
+El histograma y el gráfico de densidad son herramientas muy útiles porque sirven para mostrar la distribución, la simetría, el sesgo, variabilidad, moda, mediana y observaciones atípicas de un conjunto de datos. Para explorar la normalidad de un conjunto de datos lo que se busca es que el histograma o gráfico de densidad presenten un patrón más o menos simétrico. 
+
+
+
+### Asimetría y curtosis
+
+
+
+  * La asimetría es el grado en que los datos no son simétricos. El hecho de que el valor de la asimetría sea 0, positivo o negativo, revela información sobre la forma de los datos.
+  *A medida que los datos se vuelven más simétricos, el valor de su asimetría se acerca a cero. A medida que los valores se alejen del cero, es mas factible que los datos no tengan una distribución normal. 
+  * Valores **positivos** de asimetria indican que hay muchos valores bajos en la distribución, mientras que una asimetria **negativa** indican que hay un exceso de valores altos 
+
+
+
+```{r, echo=FALSE, message=FALSE, fig.width=10}
+set.seed(123)
+Datos.Normales <- rnorm(n = 100, mean = 0, sd = 1)
+Datos.Cola.Izquierda <- rbeta(100,5,2)
+Datos.Cola.Derecha <- rbeta(100,2,5)
+
+par(mfrow = c(1,3))
+
+hist(Datos.Normales, breaks = 10, prob = TRUE, col = "lightblue") #Una indicación del número de columnas a dibujar la podemos obtener haciendo la raíz cuadrada del número de observaciones. En este caso, la raíz cuadrada de 100 es 10.
+lines(density(Datos.Normales), lwd = 4, col = "darkred")
+
+hist(Datos.Cola.Izquierda, breaks = 10, prob = TRUE, col = "lightblue") 
+lines(density(Datos.Cola.Izquierda), lwd = 4, col = "darkred")
+
+hist(Datos.Cola.Derecha, breaks = 10, prob = TRUE, col = "lightblue") 
+lines(density(Datos.Cola.Derecha), lwd = 4, col = "darkred")
+dev.off()
+```
+
+  * La curtosis indica la manera en que las colas de una distribución difieren de la distribución normal.
+  * Los datos que siguen una distribución normal perfectamente tienen un **valor de curtosis de 0**. Los datos distribuidos normalmente establecen la línea de base para la curtosis. Una curtosis de la muestra que se desvía significativamente de 0 puede indicar que los datos no están distribuidos normalmente.
+  * Una distribución con un valor positivo de curtosis indica que la distribución tiene colas más pesadas que la distribución normal.
+  * Una distribución con un valor negativo de curtosis indica que la distribución tiene colas más livianas que la distribución normal
+  
+  
+  
+```{r, message=FALSE, include=TRUE, echo=FALSE}
+ggplot(data.frame(x = c(-4, 4)), aes(x)) +
+        stat_function(fun = dnorm, args = list(mean = 0, sd = 1), aes(colour = "Mesocurtica"), size = 2) +
+        stat_function(fun = dnorm, args = list(mean = 0, sd = 0.5), aes(colour = "Leptocurtica"), size = 2) +
+        stat_function(fun = dnorm, args = list(mean = 0, sd = 2), aes(colour = "Platicurtica"), size = 2) +
+        scale_colour_manual("Curtosis", values = c("grey65", "lightblue", "salmon"))+
+  theme_minimal()
+```
+
+
+### Las distribuciones normales no siempre lucen normales
+
+Las siguientes gráficas muestran la distribución de frecuencias de valores esogidos al asar de una distribución normal con una media = 36.77 y una desviación estandar de 0.40. La variación entre gráfico y gráfico es simplemente el resultado de la variación aleatoria durante el muestreo.
+
+
+```{r, echo=FALSE, fig.height=10, fig.width=10}
+set.seed(123)
+par(mfrow=c(3, 3))
+n <- c(12,12,12, 50, 50,50, 200,200, 200)
+for (i in n) {
+  x <- rnorm(i, mean = 36.82, sd = 0.41)
+  hist(x, main=bquote(~ n == .(i)),
+       ylab='Densidad', col='lightblue', xlab='x', las=1, lwd=2, prob = TRUE)
+ lines(density(x), col = "salmon", lwd = 2)
+}
+```
+
+
+### Gráficos Cuantil-Cuantil (Q-Q plot)
+
+  * Un gráfico Cuantil-Cuantil permite observar cuan cerca está la distribución de un conjunto de datos a alguna distribución ideal ó comparar la distribución de dos conjuntos de datos.
+  * Los diagramas cuantil-cuantil normales se construyen trazando los [cuantiles](https://es.wikipedia.org/wiki/Cuantil) de una variable numérica respecto de los cuantiles de una distribución normal. Esto significa que cada valor es comaparado con valor esperado si siguiera una distribucón normal.
+  * Si las distribuciones de los cuantiles comparados son idénticas, los puntos del diagrama formarán una línea recta de 45 grados. Cuanto más lejos se desvíen los puntos del diagrama de una línea recta, menos similares serán las distribuciones comparadas.
+  
+
+
+**Generar un gráfico Q-Q con R base**
+
+```{r}
+set.seed(123)
+
+datos_norm <- rnorm(n = 100, mean = 0, sd = 1)
+
+hist(datos_norm, breaks = 12)
+qqnorm(datos_norm)
+qqline(datos_norm)
+
+```
+
+
+**Con ggplot**
+
+```{r}
+ggplot()+
+  geom_histogram(aes(datos_norm), col = "grey75", fill = "white", bins = 12)
+
+ggplot()+
+  geom_qq(aes(sample = datos_norm))+
+  geom_qq_line(aes(sample = datos_norm))
+```
+
+
+Los gráficos Q-Q tambien nos permiten inspeccionar la distribución de los datos. Los datos que muestren una asimetria positiva o negativa tambien se veran reflejados en la desviación de los puntos de los valores obsverados con respecto a la distribución teórica. 
+  
+```{r, echo=FALSE, message=FALSE, fig.width=10, fig.height=12}
+set.seed(123)
+Datos.Normales <- rnorm(n = 100, mean = 0, sd = 1)
+Datos.Cola.Izquierda <- rbeta(100,5,2)
+Datos.Cola.Derecha <- rbeta(100,2,5)
+
+par(mfrow = c(3,3))
+
+hist(Datos.Normales, breaks = 10, prob = TRUE, col = "lightblue") #Una indicación del número de columnas a dibujar la podemos obtener haciendo la raíz cuadrada del número de observaciones. En este caso, la raíz cuadrada de 100 es 10.
+lines(density(Datos.Normales), lwd = 4, col = "darkblue")
+
+qqnorm(Datos.Normales, col = "lightblue", pch = 16)
+qqline(Datos.Normales, col= "lightblue")
+boxplot(Datos.Normales, col = "lightblue")
+
+
+hist(Datos.Cola.Izquierda, breaks = 10, prob = TRUE, col = "salmon") 
+lines(density(Datos.Cola.Izquierda), lwd = 4, col = "darkred")
+
+qqnorm(Datos.Cola.Izquierda, col = "salmon", pch = 16)
+qqline(Datos.Cola.Izquierda, col= "salmon")
+boxplot(Datos.Cola.Izquierda, col = "salmon")
+
+hist(Datos.Cola.Derecha, breaks = 10, prob = TRUE, col = "yellow") 
+lines(density(Datos.Cola.Derecha), lwd = 4, col = "yellow3")
+
+
+qqnorm(Datos.Cola.Derecha, col = "yellow3", pch = 16)
+qqline(Datos.Cola.Derecha, col= "yellow")
+boxplot(Datos.Cola.Derecha, col= "yellow3")
+
+
+dev.off()
+```
+
+  
+  
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, fig.height=12, include= FALSE, echo=FALSE}
+set.seed(123)
+Datos.Normales.12 <- rnorm(n = 12, mean = 0, sd = 1)
+Datos.Normales.30 <- rnorm(n = 30, mean = 0, sd = 1)
+Datos.Normales.100 <- rnorm(n = 100, mean = 0, sd = 1)
+
+par(mfrow = c(3,3))
+
+hist(Datos.Normales.12, breaks = 10, prob = TRUE, col = "lightblue") 
+lines(density(Datos.Normales.12), lwd = 4, col = "darkblue")
+
+qqnorm(Datos.Normales.12, col = "lightblue", pch = 16)
+qqline(Datos.Normales.12, col= "lightblue")
+boxplot(Datos.Normales.12, col = "lightblue")
+
+
+hist(Datos.Normales.30, breaks = 10, prob = TRUE, col = "salmon") 
+lines(density(Datos.Normales.30), lwd = 4, col = "darkred")
+
+qqnorm(Datos.Normales.30, col = "salmon", pch = 16)
+qqline(Datos.Normales.30, col= "salmon")
+boxplot(Datos.Normales.30, col = "salmon")
+
+hist(Datos.Normales.100, breaks = 10, prob = TRUE, col = "yellow") 
+lines(density(Datos.Normales.100), lwd = 4, col = "yellow3")
+
+
+qqnorm(Datos.Normales.100, col = "yellow3", pch = 16)
+qqline(Datos.Normales.100, col= "yellow")
+boxplot(Datos.Normales.100, col= "yellow3")
+
+
+dev.off()
+```
+
+  
+> **¿Por qué la distribución normal es central en la teoría estadistca?**
+La distribución normal o Gaussiana juega un papel central en la estadística debido a la relación matemática conocida como el _teorema del límite central_. Este dice que si tu muestra es lo suficientemente grande, la distribución de las medias se aproximará a la distribución Gaussiana, aún si la población no es Gaussiana. Debido a que la mayoria de las pruebas estadisticas (como la t de Student o el análisis de varianzas) se centran solamente en las diferencias entre las medias, la teoría del limite central explica porque estas pruebas funcionan aún cuando la población no es Gaussiana. 
+
+
+# Evaluando la normalidad
+
+Para evaluar el supuesto de normalidad, vamos a usar un set de datos obtenidos de un festival de música en el Reino Unido, en el cual se evaluó la higiene de los participantes durante los tres dias del festival utilizando una técnica estandarizada con un valor entre 4 (huele a rosas durante el rocio de la mañana) y 0 (huele a cuerpo putrefacto escondido en el traseso de un zorillo)(Andy Field)
+
+```{r, message=FALSE}
+festival_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Festival.csv"
+
+festival <- read_csv(festival_url)
+
+head(festival)
+```
+
+Dibujamos el histograma con los valores de densidad
+
+```{r}
+
+d1 <- ggplot(data = festival, aes(x = dia1))+
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white")+
+  labs(x = "valores de higiene en dia 1", y = "Densidad")+
+  stat_function(fun = dnorm, args = list(mean = mean(festival$dia1, na.rm = TRUE),
+                                                                 sd = sd(festival$dia1, na.rm = TRUE)
+                                                     ))
+d1
+
+```
+La figura sugiere que los datos siguen una distribución normal. Ahora si gráficamos un QQplot
+
+
+```{r}
+d1_qq <- ggplot(data = festival, aes(sample = dia1))+
+  geom_qq()+
+  geom_qq_line()
+
+d1_qq
+```
+
+Los datos se ajustan bastante a la diagonal.
+
+
+Para explorar mas a fondo la distribución de los datos, es posible utilizar la funcion `describe()` dentro del paquete _psych_ o la función `stat.desc()` del paquete _pastecs_.
+
+
+> recuerda que para instalar un paquete debes usar la función `install.package()`
+
+```{r}
+psych::describe(festival$dia1)
+```
+
+alternativamente:
+
+```{r}
+#indicamos norm = T para desplegar estadisticos de normalidad
+pastecs::stat.desc(festival$dia1, basic = FALSE, norm = TRUE)  %>% 
+  round(3)
+```
+
+
+> Ejercicio 1: Usando ggplot y patchwork grafica el histograma de frecuencia con la distribución normal y los qqplots para cada unos de los dias del festival. Incluye el análisis con _pastecs_ para cada grupo
+
+
+```{r ejercicio1, class.source = 'fold-hide', eval= TRUE, include=FALSE, warning=FALSE}
+
+library(patchwork)
+
+#1. definir los histogramas
+d1 <- ggplot(data = festival, aes(x = dia1))+
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white")+
+  labs(x = "valores de higiene en dia 1", y = "Densidad")+
+  stat_function(fun = dnorm, args = list(mean = mean(festival$dia1, na.rm = TRUE),
+                                                                 sd = sd(festival$dia1, na.rm = TRUE)
+                                                     ))
+
+d2 <- ggplot(data = festival, aes(x = dia2))+
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white")+
+  labs(x = "valores de higiene en dia 2", y = "Densidad")+
+  stat_function(fun = dnorm, args = list(mean = mean(festival$dia3, na.rm = TRUE),
+                                                                 sd = sd(festival$dia3, na.rm = TRUE)
+                                                     ))
+
+
+d3 <- ggplot(data = festival, aes(x = dia3))+
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white")+
+  labs(x = "valores de higiene en dia 2", y = "Densidad")+
+  stat_function(fun = dnorm, args = list(mean = mean(festival$dia3, na.rm = TRUE),
+                                                                 sd = sd(festival$dia3, na.rm = TRUE)
+                                                                                             ))
+
+# definir los qq 
+d2_qq <- ggplot(data = festival, aes(sample = dia2))+
+  geom_qq()+
+  geom_qq_line()
+
+d3_qq <- ggplot(data = festival, aes(sample = dia3))+
+  geom_qq()+
+  geom_qq_line()
+
+
+# combinar con pathchwor
+(d1 + d1_qq) / (d2 + d2_qq) / (d3 + d3_qq)
+
+```
+
+```{r, echo=FALSE, message=FALSE, fig.width=10, fig.height=12, warning=FALSE}
+(d1 + d1_qq) / (d2 + d2_qq) / (d3 + d3_qq)
+```
+
+
+```{r ejercicio 1B, class.source = 'fold-hide', eval= FALSE, include=FALSE, warning=FALSE}
+pastecs::stat.desc(festival[, c("dia1", "dia2","dia3")], basic = TRUE, norm = TRUE) %>% 
+  round(., 3)
+
+```
+
+Los gráficos, asi como los valores de asimetría y curtosis sugieren que la higiene de los asistentes del festival se deteriora notablemente con el paso de los días. 
+
+
+# Probando la distribución normal
+
+Otra forma de evaluar el supuesto de normalidad de los datos es mediante una prueba que nos indique si la distribución de los datos se desvia de una distribución normal. 
+
+
+## Prueba de Shapiro-Wilk 
+
+Como el resto de tests que analizan la normalidad, se considera como hipótesis nula que **los datos sí proceden de una distribución normal, la hipótesis alternativa que no lo hacen.**
+
+El valor p de estos test indica la probabilidad de obtener una distribución como la observada si los datos realmente proceden de una población con una distribución normal.
+
+Sin embargo, es importante tomar que cuenta que esta prueba tiene sus limitaciones, ya que con tamaños de muestra grandes es fácil tener valores singificativos de pequeñas desviaciones de la normalidad, por lo que una prueba significativa no necesariamente nos indica si la desviación de la normalidad es lo suficientemente grande como para sesgar los resultados de una prueba estadística. 
+
+La prueba de Shapiro-Wilk esta incluida dentro de los resultados de `stat.desc()` pero tambien es posible aplicarla usando la función `shapiro.test()`
+
+
+```{r}
+# Prueba shapiro dia1
+shapiro.test(festival$dia1)
+
+# Prueba shapiro dia2
+shapiro.test(festival$dia2)
+
+# Prueba shapiro dia3
+shapiro.test(festival$dia3)
+
+
+```
+
+
+## Prueba de Kolmogorov-Smirnov
+
+Este test se emplea para contrastar normalidad cuando el tamaño de la muestra es relativamente grande (>50 [30]).
+
+Es importante cnsiderar que la prueba de Kolmogorov-Smirnov **asume que se conocen la media y varianza poblacional**, lo que en la mayoría de los casos no es posible. Esto hace que el test sea muy conservador y poco potente. Para solventar este problema se desarrolló una modificación del Kolmogorov-Smirnov conocida como test Lilliefors. El test Lilliefors asume que la media y varianza son desconocidas, estando especialmente desarrollado para testar la normalidad.
+
+
+
+```{r}
+ks.test(festival$dia1, y = "pnorm", mean=mean(festival$dia1), sd=sd(festival$dia1))
+```
+
+
+Para poder usar la prueba de Lilliefors es necesario instalar el paquete `nortest`
+
+```{r}
+#install.packages("nortest")
+nortest::lillie.test(festival$dia1)
+```
+
+
+
+# Homogeneidad de varianzas (Homocedasticidad)
+
+El supuesto de homogeneidad de varianzas, también conocido como supuesto de homocedasticidad, considera que la varianza es constante (no varía) en los diferentes niveles de un factor, es decir, entre diferentes grupos.
+
+```{r, echo=FALSE, fig.width= 10, fig.height= 6}
+homo <- data.frame(data1 = rnorm(30, mean = 0, sd = 1), 
+            data2 = rnorm(30, mean = 2.5, sd =  1), 
+            data3= rnorm(30, mean = 5, sd = 1) ,
+            ID = 1:10) %>% 
+  pivot_longer(-ID, names_to = "Data", values_to = "values") %>% 
+  ggplot(., aes(x = Data, y = values, fill = Data))+
+  geom_boxplot(alpha = 0.4)+
+  geom_jitter()
+
+
+
+hetero <- data.frame(data1 = rnorm(30, mean = 0, sd = 1), 
+            data2 = rnorm(30, mean = 2.5, sd =  3.5), 
+            data3= rnorm(30, mean = 5, sd = 0.5) ,
+            ID = 1:10) %>% 
+  pivot_longer(-ID, names_to = "Data", values_to = "values") %>% 
+  ggplot(., aes(x = Data, y = values, fill = Data))+
+  geom_boxplot(alpha = 0.4)+
+  geom_jitter()
+
+
+plot_var <- homo + hetero & theme_classic() & theme(legend.position = "none")
+plot_var  
+
+```
+
+
+Existen diferentes test que permiten evaluar la distribución de la varianza. Todos ellos consideran como hipótesis nula que la varianza es igual entre los grupos y como hipótesis alternativa que no lo es. La diferencia entre ellos es el estadístico de centralidad que utilizan.
+
+### Prueba de Levene
+
+La prueba de Levene es una prueba simple que trabaja realizando una ANOVA de una via sobre los valores de desvicación; es decir, la diferecia absoluta entre cada valor y la media del grupo del que viene.
+
+Para utilizar esta prueba es necesario instalar el paquete `car` y usar la funcion `leveneTest()`
+
+La prueba LeveneTest se caracteriza ademas por permitir elegir entre diferentes estadísticos de centralidad :mediana (por defecto), media, media truncada. Esto es importante a la hora de contrastar la homocedasticidad dependiendo de si los grupos se distribuyen de forma normal o no.
+
+> Nota: es importante considerar que necesitamos valores agrupados.
+
+Para este ejercicio, trabajaremos los datos `Rexamendat` los cuales contienen los resultados de un examen de R conducido en dos universidades
+
+
+
+Aplicamos la prueba de Levene sobre los valores del examen y aritmetica (numeracy)
+
+```{r}
+Rexam_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Rexamendat.csv"
+Rexam <- read_csv(Rexam_url)
+
+#convertir la uni a factor
+Rexam$uni <- as.factor(Rexam$uni)
+
+# graficas
+
+ggplot(Rexam, aes(x = exam))+
+  geom_histogram(col = "grey65", fill = "white")+
+  labs(title = "histograma de frecuencia para examen de R por universidad")+
+  facet_grid(uni ~ .)
+
+shapiro.test(Rexam$exam[Rexam$uni == "Duncetown University"])
+
+ggplot(Rexam, aes(x = numeracy))+
+  geom_histogram(col = "grey65", fill = "white")+
+  labs(title = "histograma de frecuencia para examen de aritmentica por universidad")+
+  facet_grid(uni ~ .)
+
+shapiro.test(Rexam$exam[Rexam$uni == "Sussex University"])
+
+```
+
+
+Para realizar la prueba de Levene ejecutamos la función `leveneTest()`
+```{r}
+
+car::leveneTest(Rexam$exam, Rexam$uni)
+
+#alternativamente se puede ejecutar de la forma
+car::leveneTest(Rexam$exam ~ Rexam$uni)
+
+car::leveneTest(Rexam$numeracy, Rexam$uni)
+
+```
+
+
+Los resultados de la prueba se denotan con la letra _F_ y en este caso hay dos tipos de grados de libertad (grupo y total). Por tanto se puede expresar en la forma _F(gl1, gl2)_ = valor. 
+
+De manera que podemos decir que para los resultados de la prueba de R, las varianzas fueron similares en ambas universidades con _F(1,98) = 2.09; P > 0.05_ pero para los resultados de aritmentica, las varianzas fueron significativamente diferentes entre los grupos _F(1,98) = 5.37; P = 0.023_ 
+
+
+
+## Prueba F (razón de varianzas)
+
+Es muy potente, detecta diferencias muy sutiles, pero **es muy sensible a violaciones de la normalidad** de las poblaciones. Por esta razón, no es un test recomendable si no se tiene mucha certeza de que las poblaciones se distribuyen de forma normal.
+
+El F-test estudia el cociente de varianzas $\sigma_2^{2} / \sigma_1^{2}$, que en caso de que sean iguales, toma el valor 1.
+
+Dentro de R, esta prueba se ejecuta con la función `var.test()`
+
+
+```{r}
+# Prueba de varianzas para examen R
+var.test(Rexam$exam ~ Rexam$uni)
+
+# Prueba de varianzas para aritmentica
+var.test(Rexam$numeracy ~ Rexam$uni)
+
+```
+
+
+### Prueba de Bartlett
+
+Permite contrastar la igualdad de varianza en 2 o más poblaciones sin necesidad de que el tamaño de los grupos sea el mismo. **Es más sensible que el test de Levene a la falta de normalidad**, pero si se está seguro de que los datos provienen de una distribución normal, es la mejor opción.Se ejecuta con la función `bartlett.test()`
+
+
+```{r}
+#Prueba para examen R
+bartlett.test(Rexam$exam ~ Rexam$uni)
+
+#Prueba para aritmética
+bartlett.test(Rexam$numeracy ~ Rexam$uni)
+```
+
+
+### Test de Fligner-Killeen
+
+Se trata de un test no paramétrico que compara las varianzas basándose en la mediana. Es también una alternativa cuando no se cumple la condición de normalidad en las muestras.
+
+Se ejecuta con la función `fligner.test()`
+
+```{r}
+#Prueba para examen R
+fligner.test(Rexam$exam ~ Rexam$uni)
+
+#Prueba para aritmética
+fligner.test(Rexam$numeracy ~ Rexam$uni)
+```
+
+
+> En conclusión: Si se tiene seguridad de que las muestras a comparar proceden de poblaciones que siguen una distribución normal, son recomendables el F-test y el test de Bartlet, pareciendo ser el segundo más recomendable ya que el primero es muy potente pero extremadamente sensible a desviaciones de la normal. Si no se tiene la seguridad de que las poblaciones de origen son normales, se recomiendan el test de Leven utilizando la mediana o el test no paramétrico Fligner-Killeen que también se basa en la mediana.
+
+
+# Pruebas de supuestos con `rstatixs()`
+
+rstatixs es un aquete que permite realizar las pruebas de normalizadad y varianza en un formato _pipe-friendly_
+
+
+```{r}
+library(rstatix)
+
+# Obtner el resumen de una variable o variables
+Rexam %>% 
+  group_by(uni) %>% 
+  get_summary_stats(exam, type = "common")
+
+# Prueba de shapiro de una variable
+Rexam %>% 
+  shapiro_test(exam)
+
+
+# Prueba de Shapiro por grupo
+Rexam %>% 
+  group_by(uni) %>% 
+  shapiro_test(exam)
+
+# Prueba de Levene por grupo
+
+Rexam %>% 
+  levene_test(exam ~ uni)
+```
+
+> Ejercicio:
+Utiliza la base de datos de pingüinos y evlaua si las poblaciones de cada especie cumplen los supuestos 
+
+```{r}
+penguins <- read_csv("data/penguins_size.csv")
+
+penguins <- penguins %>% 
+  select(species, island, flipper_length_mm) %>% 
+  filter(complete.cases(flipper_length_mm))
+
+ggplot(penguins, aes(x = flipper_length_mm)) +
+  geom_histogram()+
+ facet_wrap(~species)
+
+
+ggplot(penguins, aes(sample = flipper_length_mm)) +
+  geom_qq()+
+  geom_qq_line()+
+  facet_wrap(~species)
+
+
+# Prueba de normalidad
+
+# Todo el set
+penguins %>% 
+  shapiro_test(flipper_length_mm)
+
+# Por especie
+penguins %>% 
+  group_by(species) %>% 
+  shapiro_test(flipper_length_mm)
+
+```
+
