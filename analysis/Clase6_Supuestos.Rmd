@@ -108,12 +108,7 @@ Con una cantidad de datos de la muestra suficientemente grande (n>30) la violaci
 
 El teorema del límite central nos dice que sin importar el tipo de distribución que tengan las cosas, la distribución de la muestra tiende a ser normal si ésta es lo suficientemente grande (n>30).
 
-Sin embargo, para ser constantes, la normalidad puede ser comprobada mediante:
 
-
-
-
-![](figure/Clase6_Supuestos.Rmd/normalidad.png)
 
 
 Una de las formas en que podemos visualizar la distribución de los datos es mediante la generación de histogramas de frecuencia. 
@@ -643,10 +638,12 @@ Rexam %>%
   levene_test(exam ~ uni)
 ```
 
-> Ejercicio:
-Utiliza la base de datos de pingüinos y evlaua si las poblaciones de cada especie cumplen los supuestos 
 
-```{r}
+
+> Ejercicio 2:
+Utiliza la base de datos de pingüinos y evalua si los valores de la longitud de la aleta _(flipper_length_mm)_ entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas
+
+```{r ejercicio2, class.source = 'fold-hide', eval=FALSE}
 penguins <- read_csv("data/penguins_size.csv")
 
 penguins <- penguins %>% 
