@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treecd72752e0b1a41bfd395f1f05d555caccc345d67targetblankcd72752a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/cd72752e0b1a41bfd395f1f05d555caccc345d67" target="_blank">cd72752</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree458bf8fb53f19b14c11d00af8ec0492c80478cf2targetblank458bf8fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/458bf8fb53f19b14c11d00af8ec0492c80478cf2" target="_blank">458bf8f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treecd72752e0b1a41bfd395f1f05d555caccc345d67targetblankcd72752a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree458bf8fb53f19b14c11d00af8ec0492c80478cf2targetblank458bf8fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/cd72752e0b1a41bfd395f1f05d555caccc345d67" target="_blank">cd72752</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/458bf8fb53f19b14c11d00af8ec0492c80478cf2" target="_blank">458bf8f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -620,6 +620,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/458bf8fb53f19b14c11d00af8ec0492c80478cf2/analysis/Clase6_Supuestos.Rmd" target="_blank">458bf8f</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-24
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/da04854bc9fd56374352c0be63851caeecf23d51/docs/Clase6_Supuestos.html" target="_blank">da04854</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -686,8 +720,6 @@ Figura: WikiCommons
 <h2 number="2.1"><span class="header-section-number">2.1</span> Histogramas y distribución normal</h2>
 <p>Con una cantidad de datos de la muestra suficientemente grande (n&gt;30) la violación del supuesto de la normalidad no debería causar mayores problemas. Esto implica que podemos ignorar la distribución de los datos y usar pruebas paramétricas si estamos tratando con muestras de gran tamaño.</p>
 <p>El teorema del límite central nos dice que sin importar el tipo de distribución que tengan las cosas, la distribución de la muestra tiende a ser normal si ésta es lo suficientemente grande (n&gt;30).</p>
-<p>Sin embargo, para ser constantes, la normalidad puede ser comprobada mediante:</p>
-<p><img src="figure/Clase6_Supuestos.Rmd/normalidad.png" /></p>
 <p>Una de las formas en que podemos visualizar la distribución de los datos es mediante la generación de histogramas de frecuencia.</p>
 <p>El histograma y el gráfico de densidad son herramientas muy útiles porque sirven para mostrar la distribución, la simetría, el sesgo, variabilidad, moda, mediana y observaciones atípicas de un conjunto de datos. Para explorar la normalidad de un conjunto de datos lo que se busca es que el histograma o gráfico de densidad presenten un patrón más o menos simétrico.</p>
 <div id="asimetría-y-curtosis" class="section level3" number="2.1.1">
@@ -1051,53 +1083,35 @@ Rexam %&gt;%
   &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
 1     1    98      2.09 0.152</code></pre>
 <blockquote>
-<p>Ejercicio: Utiliza la base de datos de pingüinos y evlaua si las poblaciones de cada especie cumplen los supuestos</p>
+<p>Ejercicio 2: Utiliza la base de datos de pingüinos y evalua si los valores de la longitud de la aleta <em>(flipper_length_mm)</em> entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas</p>
 </blockquote>
-<pre class="r"><code>penguins &lt;- read_csv(&quot;data/penguins_size.csv&quot;)</code></pre>
-<pre><code>
--- Column specification --------------------------------------------------------
-cols(
-  species = col_character(),
-  island = col_character(),
-  culmen_length_mm = col_double(),
-  culmen_depth_mm = col_double(),
-  flipper_length_mm = col_double(),
-  body_mass_g = col_double(),
-  sex = col_character()
-)</code></pre>
-<pre class="r"><code>penguins &lt;- penguins %&gt;% 
+<pre class="r fold-hide"><code>penguins &lt;- read_csv(&quot;data/penguins_size.csv&quot;)
+
+penguins &lt;- penguins %&gt;% 
   select(species, island, flipper_length_mm) %&gt;% 
   filter(complete.cases(flipper_length_mm))
 
 ggplot(penguins, aes(x = flipper_length_mm)) +
   geom_histogram()+
- facet_wrap(~species)</code></pre>
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="figure/Clase6_Supuestos.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ggplot(penguins, aes(sample = flipper_length_mm)) +
+ facet_wrap(~species)
+
+
+ggplot(penguins, aes(sample = flipper_length_mm)) +
   geom_qq()+
   geom_qq_line()+
-  facet_wrap(~species)</code></pre>
-<p><img src="figure/Clase6_Supuestos.Rmd/unnamed-chunk-27-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># Prueba de normalidad
+  facet_wrap(~species)
+
+
+# Prueba de normalidad
 
 # Todo el set
 penguins %&gt;% 
-  shapiro_test(flipper_length_mm)</code></pre>
-<pre><code># A tibble: 1 x 3
-  variable          statistic             p
-  &lt;chr&gt;                 &lt;dbl&gt;         &lt;dbl&gt;
-1 flipper_length_mm     0.952 0.00000000354</code></pre>
-<pre class="r"><code># Por especie
+  shapiro_test(flipper_length_mm)
+
+# Por especie
 penguins %&gt;% 
   group_by(species) %&gt;% 
   shapiro_test(flipper_length_mm)</code></pre>
-<pre><code># A tibble: 3 x 4
-  species   variable          statistic       p
-  &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;
-1 Adelie    flipper_length_mm     0.993 0.720  
-2 Chinstrap flipper_length_mm     0.989 0.811  
-3 Gentoo    flipper_length_mm     0.962 0.00162</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
