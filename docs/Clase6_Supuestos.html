@@ -444,7 +444,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-05-24
+<strong>Last updated:</strong> 2021-05-31
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree458bf8fb53f19b14c11d00af8ec0492c80478cf2targetblank458bf8fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/458bf8fb53f19b14c11d00af8ec0492c80478cf2" target="_blank">458bf8f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treed2189e14b85cbcbb7e4492bce62ce1abc085b7dbtargetblankd2189e1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/d2189e14b85cbcbb7e4492bce62ce1abc085b7db" target="_blank">d2189e1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree458bf8fb53f19b14c11d00af8ec0492c80478cf2targetblank458bf8fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treed2189e14b85cbcbb7e4492bce62ce1abc085b7dbtargetblankd2189e1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/458bf8fb53f19b14c11d00af8ec0492c80478cf2" target="_blank">458bf8f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/d2189e14b85cbcbb7e4492bce62ce1abc085b7db" target="_blank">d2189e1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -560,6 +560,7 @@ Untracked files:
     Untracked:  Diapositivas/
     Untracked:  README.html
     Untracked:  Resources/
+    Untracked:  analysis/Clase7_tstudent.Rmd
     Untracked:  analysis/images/
     Untracked:  data/Consumo_oxigeno_wide.csv
     Untracked:  data/Data_enzimas_Experimento1.txt
@@ -618,6 +619,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/d2189e14b85cbcbb7e4492bce62ce1abc085b7db/analysis/Clase6_Supuestos.Rmd" target="_blank">d2189e1</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-31
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/34660dee6ce175fda7ed3d94a4ab1a94a53de330/docs/Clase6_Supuestos.html" target="_blank">34660de</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -910,10 +945,10 @@ Rexam &lt;- read_csv(Rexam_url)</code></pre>
 <pre><code>
 -- Column specification --------------------------------------------------------
 cols(
-  exam = col_double(),
-  computer = col_double(),
-  lectures = col_double(),
-  numeracy = col_double(),
+  examen = col_double(),
+  habilidades = col_double(),
+  lectura = col_double(),
+  aritmetica = col_double(),
   uni = col_character()
 )</code></pre>
 <pre class="r"><code>#convertir la uni a factor
@@ -921,43 +956,43 @@ Rexam$uni &lt;- as.factor(Rexam$uni)
 
 # graficas
 
-ggplot(Rexam, aes(x = exam))+
+ggplot(Rexam, aes(x = examen))+
   geom_histogram(col = &quot;grey65&quot;, fill = &quot;white&quot;)+
   labs(title = &quot;histograma de frecuencia para examen de R por universidad&quot;)+
   facet_grid(uni ~ .)</code></pre>
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="figure/Clase6_Supuestos.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>shapiro.test(Rexam$exam[Rexam$uni == &quot;Duncetown University&quot;])</code></pre>
+<pre class="r"><code>shapiro.test(Rexam$examen[Rexam$uni == &quot;Universidad Duncetown&quot;])</code></pre>
 <pre><code>
     Shapiro-Wilk normality test
 
-data:  Rexam$exam[Rexam$uni == &quot;Duncetown University&quot;]
+data:  Rexam$examen[Rexam$uni == &quot;Universidad Duncetown&quot;]
 W = 0.97217, p-value = 0.2829</code></pre>
-<pre class="r"><code>ggplot(Rexam, aes(x = numeracy))+
+<pre class="r"><code>ggplot(Rexam, aes(x = aritmetica))+
   geom_histogram(col = &quot;grey65&quot;, fill = &quot;white&quot;)+
   labs(title = &quot;histograma de frecuencia para examen de aritmentica por universidad&quot;)+
   facet_grid(uni ~ .)</code></pre>
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="figure/Clase6_Supuestos.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>shapiro.test(Rexam$exam[Rexam$uni == &quot;Sussex University&quot;])</code></pre>
+<pre class="r"><code>shapiro.test(Rexam$examen[Rexam$uni == &quot;Universidad Sussex&quot;])</code></pre>
 <pre><code>
     Shapiro-Wilk normality test
 
-data:  Rexam$exam[Rexam$uni == &quot;Sussex University&quot;]
+data:  Rexam$examen[Rexam$uni == &quot;Universidad Sussex&quot;]
 W = 0.98371, p-value = 0.7151</code></pre>
 <p>Para realizar la prueba de Levene ejecutamos la función <code>leveneTest()</code></p>
-<pre class="r"><code>car::leveneTest(Rexam$exam, Rexam$uni)</code></pre>
+<pre class="r"><code>car::leveneTest(Rexam$examen, Rexam$uni)</code></pre>
 <pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
       Df F value Pr(&gt;F)
 group  1  2.0886 0.1516
       98               </code></pre>
 <pre class="r"><code>#alternativamente se puede ejecutar de la forma
-car::leveneTest(Rexam$exam ~ Rexam$uni)</code></pre>
+car::leveneTest(Rexam$examen ~ Rexam$uni)</code></pre>
 <pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
       Df F value Pr(&gt;F)
 group  1  2.0886 0.1516
       98               </code></pre>
-<pre class="r"><code>car::leveneTest(Rexam$numeracy, Rexam$uni)</code></pre>
+<pre class="r"><code>car::leveneTest(Rexam$aritmetica, Rexam$uni)</code></pre>
 <pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
       Df F value  Pr(&gt;F)  
 group  1   5.366 0.02262 *
@@ -973,11 +1008,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>El F-test estudia el cociente de varianzas <span class="math inline">\(\sigma_2^{2} / \sigma_1^{2}\)</span>, que en caso de que sean iguales, toma el valor 1.</p>
 <p>Dentro de R, esta prueba se ejecuta con la función <code>var.test()</code></p>
 <pre class="r"><code># Prueba de varianzas para examen R
-var.test(Rexam$exam ~ Rexam$uni)</code></pre>
+var.test(Rexam$examen ~ Rexam$uni)</code></pre>
 <pre><code>
     F test to compare two variances
 
-data:  Rexam$exam by Rexam$uni
+data:  Rexam$examen by Rexam$uni
 F = 1.5217, num df = 49, denom df = 49, p-value = 0.1452
 alternative hypothesis: true ratio of variances is not equal to 1
 95 percent confidence interval:
@@ -986,11 +1021,11 @@ sample estimates:
 ratio of variances 
           1.521734 </code></pre>
 <pre class="r"><code># Prueba de varianzas para aritmentica
-var.test(Rexam$numeracy ~ Rexam$uni)</code></pre>
+var.test(Rexam$aritmetica ~ Rexam$uni)</code></pre>
 <pre><code>
     F test to compare two variances
 
-data:  Rexam$numeracy by Rexam$uni
+data:  Rexam$aritmetica by Rexam$uni
 F = 0.45281, num df = 49, denom df = 49, p-value = 0.006446
 alternative hypothesis: true ratio of variances is not equal to 1
 95 percent confidence interval:
@@ -1002,18 +1037,18 @@ ratio of variances
 <h3 number="5.1.1"><span class="header-section-number">5.1.1</span> Prueba de Bartlett</h3>
 <p>Permite contrastar la igualdad de varianza en 2 o más poblaciones sin necesidad de que el tamaño de los grupos sea el mismo. <strong>Es más sensible que el test de Levene a la falta de normalidad</strong>, pero si se está seguro de que los datos provienen de una distribución normal, es la mejor opción.Se ejecuta con la función <code>bartlett.test()</code></p>
 <pre class="r"><code>#Prueba para examen R
-bartlett.test(Rexam$exam ~ Rexam$uni)</code></pre>
+bartlett.test(Rexam$examen ~ Rexam$uni)</code></pre>
 <pre><code>
     Bartlett test of homogeneity of variances
 
-data:  Rexam$exam by Rexam$uni
+data:  Rexam$examen by Rexam$uni
 Bartlett&#39;s K-squared = 2.122, df = 1, p-value = 0.1452</code></pre>
 <pre class="r"><code>#Prueba para aritmética
-bartlett.test(Rexam$numeracy ~ Rexam$uni)</code></pre>
+bartlett.test(Rexam$aritmetica ~ Rexam$uni)</code></pre>
 <pre><code>
     Bartlett test of homogeneity of variances
 
-data:  Rexam$numeracy by Rexam$uni
+data:  Rexam$aritmetica by Rexam$uni
 Bartlett&#39;s K-squared = 7.4206, df = 1, p-value = 0.006448</code></pre>
 </div>
 <div id="test-de-fligner-killeen" class="section level3" number="5.1.2">
@@ -1021,18 +1056,18 @@ Bartlett&#39;s K-squared = 7.4206, df = 1, p-value = 0.006448</code></pre>
 <p>Se trata de un test no paramétrico que compara las varianzas basándose en la mediana. Es también una alternativa cuando no se cumple la condición de normalidad en las muestras.</p>
 <p>Se ejecuta con la función <code>fligner.test()</code></p>
 <pre class="r"><code>#Prueba para examen R
-fligner.test(Rexam$exam ~ Rexam$uni)</code></pre>
+fligner.test(Rexam$examen ~ Rexam$uni)</code></pre>
 <pre><code>
     Fligner-Killeen test of homogeneity of variances
 
-data:  Rexam$exam by Rexam$uni
+data:  Rexam$examen by Rexam$uni
 Fligner-Killeen:med chi-squared = 2.1791, df = 1, p-value = 0.1399</code></pre>
 <pre class="r"><code>#Prueba para aritmética
-fligner.test(Rexam$numeracy ~ Rexam$uni)</code></pre>
+fligner.test(Rexam$aritmetica ~ Rexam$uni)</code></pre>
 <pre><code>
     Fligner-Killeen test of homogeneity of variances
 
-data:  Rexam$numeracy by Rexam$uni
+data:  Rexam$aritmetica by Rexam$uni
 Fligner-Killeen:med chi-squared = 4.8469, df = 1, p-value = 0.0277</code></pre>
 <blockquote>
 <p>En conclusión: Si se tiene seguridad de que las muestras a comparar proceden de poblaciones que siguen una distribución normal, son recomendables el F-test y el test de Bartlet, pareciendo ser el segundo más recomendable ya que el primero es muy potente pero extremadamente sensible a desviaciones de la normal. Si no se tiene la seguridad de que las poblaciones de origen son normales, se recomiendan el test de Leven utilizando la mediana o el test no paramétrico Fligner-Killeen que también se basa en la mediana.</p>
@@ -1052,38 +1087,38 @@ Attaching package: &#39;rstatix&#39;</code></pre>
 <pre class="r"><code># Obtner el resumen de una variable o variables
 Rexam %&gt;% 
   group_by(uni) %&gt;% 
-  get_summary_stats(exam, type = &quot;common&quot;)</code></pre>
+  get_summary_stats(examen, type = &quot;common&quot;)</code></pre>
 <pre><code># A tibble: 2 x 11
   uni            variable     n   min   max median   iqr  mean    sd    se    ci
   &lt;fct&gt;          &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 Duncetown Uni~ exam        50    15    66     38  16.5  40.2  12.6  1.78  3.58
-2 Sussex Univer~ exam        50    56    99     75  12    76.0  10.2  1.44  2.9 </code></pre>
+1 Universidad D~ examen      50    15    66     38  16.5  40.2  12.6  1.78  3.58
+2 Universidad S~ examen      50    56    99     75  12    76.0  10.2  1.44  2.9 </code></pre>
 <pre class="r"><code># Prueba de shapiro de una variable
 Rexam %&gt;% 
-  shapiro_test(exam)</code></pre>
+  shapiro_test(examen)</code></pre>
 <pre><code># A tibble: 1 x 3
   variable statistic       p
   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;
-1 exam         0.961 0.00499</code></pre>
+1 examen       0.961 0.00499</code></pre>
 <pre class="r"><code># Prueba de Shapiro por grupo
 Rexam %&gt;% 
   group_by(uni) %&gt;% 
-  shapiro_test(exam)</code></pre>
+  shapiro_test(examen)</code></pre>
 <pre><code># A tibble: 2 x 4
-  uni                  variable statistic     p
-  &lt;fct&gt;                &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
-1 Duncetown University exam         0.972 0.283
-2 Sussex University    exam         0.984 0.715</code></pre>
+  uni                   variable statistic     p
+  &lt;fct&gt;                 &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+1 Universidad Duncetown examen       0.972 0.283
+2 Universidad Sussex    examen       0.984 0.715</code></pre>
 <pre class="r"><code># Prueba de Levene por grupo
 
 Rexam %&gt;% 
-  levene_test(exam ~ uni)</code></pre>
+  levene_test(examen ~ uni)</code></pre>
 <pre><code># A tibble: 1 x 4
     df1   df2 statistic     p
   &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
 1     1    98      2.09 0.152</code></pre>
 <blockquote>
-<p>Ejercicio 2: Utiliza la base de datos de pingüinos y evalua si los valores de la longitud de la aleta <em>(flipper_length_mm)</em> entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas</p>
+<p>Ejercicio 2: Utiliza la base de datos de pingüinos, evalua si los valores de la longitud de la aleta <em>(flipper_length_mm)</em> entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas</p>
 </blockquote>
 <pre class="r fold-hide"><code>penguins &lt;- read_csv(&quot;data/penguins_size.csv&quot;)
 
@@ -1111,7 +1146,37 @@ penguins %&gt;%
 # Por especie
 penguins %&gt;% 
   group_by(species) %&gt;% 
-  shapiro_test(flipper_length_mm)</code></pre>
+  shapiro_test(flipper_length_mm)
+
+
+
+# Prueba de homogeneidad de varianzas
+
+penguins %&gt;% 
+  levene_test(flipper_length_mm ~ species)
+
+
+# Visualización por medio de boxlot
+
+p1 &lt;- penguins %&gt;% 
+  ggplot(., aes(x = species, y = flipper_length_mm, color = species))+
+  geom_point(position = position_jitter(width = 0.2))+
+  geom_boxplot(alpha = 0.4)+
+  theme(legend.position = &quot;none&quot;)
+
+
+p2 &lt;- penguins %&gt;% 
+  ggplot(., aes(x = flipper_length_mm, fill = species))+
+  geom_density(alpha = 0.4)+
+  coord_flip()+
+  theme(legend.position = &quot;none&quot;,
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+  
+
+library(patchwork)
+
+p1 + p2 + plot_layout(ncol = 2, widths = c(4,1))</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
