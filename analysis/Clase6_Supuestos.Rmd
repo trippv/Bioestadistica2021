@@ -522,19 +522,19 @@ Rexam$uni <- as.factor(Rexam$uni)
 
 # graficas
 
-ggplot(Rexam, aes(x = exam))+
+ggplot(Rexam, aes(x = examen))+
   geom_histogram(col = "grey65", fill = "white")+
   labs(title = "histograma de frecuencia para examen de R por universidad")+
   facet_grid(uni ~ .)
 
-shapiro.test(Rexam$exam[Rexam$uni == "Duncetown University"])
+shapiro.test(Rexam$examen[Rexam$uni == "Universidad Duncetown"])
 
-ggplot(Rexam, aes(x = numeracy))+
+ggplot(Rexam, aes(x = aritmetica))+
   geom_histogram(col = "grey65", fill = "white")+
   labs(title = "histograma de frecuencia para examen de aritmentica por universidad")+
   facet_grid(uni ~ .)
 
-shapiro.test(Rexam$exam[Rexam$uni == "Sussex University"])
+shapiro.test(Rexam$examen[Rexam$uni == "Universidad Sussex"])
 
 ```
 
@@ -542,12 +542,12 @@ shapiro.test(Rexam$exam[Rexam$uni == "Sussex University"])
 Para realizar la prueba de Levene ejecutamos la función `leveneTest()`
 ```{r}
 
-car::leveneTest(Rexam$exam, Rexam$uni)
+car::leveneTest(Rexam$examen, Rexam$uni)
 
 #alternativamente se puede ejecutar de la forma
-car::leveneTest(Rexam$exam ~ Rexam$uni)
+car::leveneTest(Rexam$examen ~ Rexam$uni)
 
-car::leveneTest(Rexam$numeracy, Rexam$uni)
+car::leveneTest(Rexam$aritmetica, Rexam$uni)
 
 ```
 
@@ -569,10 +569,10 @@ Dentro de R, esta prueba se ejecuta con la función `var.test()`
 
 ```{r}
 # Prueba de varianzas para examen R
-var.test(Rexam$exam ~ Rexam$uni)
+var.test(Rexam$examen ~ Rexam$uni)
 
 # Prueba de varianzas para aritmentica
-var.test(Rexam$numeracy ~ Rexam$uni)
+var.test(Rexam$aritmetica ~ Rexam$uni)
 
 ```
 
@@ -584,10 +584,10 @@ Permite contrastar la igualdad de varianza en 2 o más poblaciones sin necesidad
 
 ```{r}
 #Prueba para examen R
-bartlett.test(Rexam$exam ~ Rexam$uni)
+bartlett.test(Rexam$examen ~ Rexam$uni)
 
 #Prueba para aritmética
-bartlett.test(Rexam$numeracy ~ Rexam$uni)
+bartlett.test(Rexam$aritmetica ~ Rexam$uni)
 ```
 
 
@@ -599,10 +599,10 @@ Se ejecuta con la función `fligner.test()`
 
 ```{r}
 #Prueba para examen R
-fligner.test(Rexam$exam ~ Rexam$uni)
+fligner.test(Rexam$examen ~ Rexam$uni)
 
 #Prueba para aritmética
-fligner.test(Rexam$numeracy ~ Rexam$uni)
+fligner.test(Rexam$aritmetica ~ Rexam$uni)
 ```
 
 
@@ -620,28 +620,28 @@ library(rstatix)
 # Obtner el resumen de una variable o variables
 Rexam %>% 
   group_by(uni) %>% 
-  get_summary_stats(exam, type = "common")
+  get_summary_stats(examen, type = "common")
 
 # Prueba de shapiro de una variable
 Rexam %>% 
-  shapiro_test(exam)
+  shapiro_test(examen)
 
 
 # Prueba de Shapiro por grupo
 Rexam %>% 
   group_by(uni) %>% 
-  shapiro_test(exam)
+  shapiro_test(examen)
 
 # Prueba de Levene por grupo
 
 Rexam %>% 
-  levene_test(exam ~ uni)
+  levene_test(examen ~ uni)
 ```
 
 
 
 > Ejercicio 2:
-Utiliza la base de datos de pingüinos y evalua si los valores de la longitud de la aleta _(flipper_length_mm)_ entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas
+Utiliza la base de datos de pingüinos, evalua si los valores de la longitud de la aleta _(flipper_length_mm)_ entre cada especie cumplen los supuestos normalidad y homogeneidad de varianzas. Utiliza métodos gráficos y pruebas estadísticas
 
 ```{r ejercicio2, class.source = 'fold-hide', eval=FALSE}
 penguins <- read_csv("data/penguins_size.csv")
@@ -672,5 +672,34 @@ penguins %>%
   group_by(species) %>% 
   shapiro_test(flipper_length_mm)
 
+
+
+# Prueba de homogeneidad de varianzas
+
+penguins %>% 
+  levene_test(flipper_length_mm ~ species)
+
+
+# Visualización por medio de boxlot
+
+p1 <- penguins %>% 
+  ggplot(., aes(x = species, y = flipper_length_mm, color = species))+
+  geom_point(position = position_jitter(width = 0.2))+
+  geom_boxplot(alpha = 0.4)+
+  theme(legend.position = "none")
+
+
+p2 <- penguins %>% 
+  ggplot(., aes(x = flipper_length_mm, fill = species))+
+  geom_density(alpha = 0.4)+
+  coord_flip()+
+  theme(legend.position = "none",
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank())
+  
+
+library(patchwork)
+
+p1 + p2 + plot_layout(ncol = 2, widths = c(4,1))
 ```
 
