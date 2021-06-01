@@ -355,7 +355,7 @@ pastecs::stat.desc(festival$dia1, basic = FALSE, norm = TRUE)  %>%
 > Ejercicio 1: Usando ggplot y patchwork grafica el histograma de frecuencia con la distribución normal y los qqplots para cada unos de los dias del festival. Incluye el análisis con _pastecs_ para cada grupo
 
 
-```{r ejercicio1, class.source = 'fold-hide', eval= TRUE, include=FALSE, warning=FALSE}
+```{r ejercicio1, class.source = 'fold-hide', eval= TRUE, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE, fig.width=10, fig.height=12, warning=FALSE}
 
 library(patchwork)
 
@@ -397,13 +397,9 @@ d3_qq <- ggplot(data = festival, aes(sample = dia3))+
 
 ```
 
-```{r, echo=FALSE, message=FALSE, fig.width=10, fig.height=12, warning=FALSE}
-(d1 + d1_qq) / (d2 + d2_qq) / (d3 + d3_qq)
-```
 
-
-```{r ejercicio 1B, class.source = 'fold-hide', eval= FALSE, include=FALSE, warning=FALSE}
-pastecs::stat.desc(festival[, c("dia1", "dia2","dia3")], basic = TRUE, norm = TRUE) %>% 
+```{r ejercicio 1B, class.source = 'fold-hide', eval= TRUE, include=TRUE, warning=FALSE, echo=TRUE}
+pastec_res <- pastecs::stat.desc(festival[, c("dia1", "dia2","dia3")], basic = TRUE, norm = TRUE) %>% 
   round(., 3)
 
 ```
