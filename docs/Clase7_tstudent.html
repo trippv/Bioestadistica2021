@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-05-29" />
+
+<title>Comparación de dos medias: Prueba de de Student</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Comparación de dos medias: Prueba de de Student</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-05-29</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-06-02
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree5e69a71639b1d6524a9ee870e9cbe7e8e0ab41e8targetblank5e69a71a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/5e69a71639b1d6524a9ee870e9cbe7e8e0ab41e8" target="_blank">5e69a71</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree5e69a71639b1d6524a9ee870e9cbe7e8e0ab41e8targetblank5e69a71a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/5e69a71639b1d6524a9ee870e9cbe7e8e0ab41e8" target="_blank">5e69a71</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  analysis/images/
+    Untracked:  data/CS_subset.csv
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/DownloadFestival(No Outlier).dat
+    Untracked:  data/Festival.csv
+    Untracked:  data/LungCapData.txt
+    Untracked:  data/LungCapDataEsp.csv
+    Untracked:  data/RExam.dat
+    Untracked:  data/Rexamendat.csv
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+    Untracked:  output/Plot_all_penguins.pdf
+    Untracked:  output/Plot_all_penguins.tiff
+    Untracked:  output/graficos/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase7_tstudent.Rmd</code>) and HTML (<code>docs/Clase7_tstudent.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/5e69a71639b1d6524a9ee870e9cbe7e8e0ab41e8/analysis/Clase7_tstudent.Rmd" target="_blank">5e69a71</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-02
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(webr)
+library(patchwork)
+library(tidyverse)</code></pre>
+<pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>v ggplot2 3.3.3     v purrr   0.3.4
+v tibble  3.0.4     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<div id="distribución-t" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Distribución T</h1>
+<p>La distribución T-student se asemeja en gran medida a la distribución normal. Tiene como parámetros la media, la varianza y además incorpora a través de los grados de libertad una modificación que permite flexibilizar las colas en función del tamaño que tenga la muestra. A medida que se reduce el tamaño muestral, la probabilidad acumulada en las colas aumenta, siendo así menos estricta de lo cabría esperar en una distribución normal. Una distribución T-student con 30 o más grados de libertad es prácticamente igual a una distribución normal.</p>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre><code>null device 
+          1 </code></pre>
+</div>
+<div id="comparación-de-dos-medias-con-t-de-student" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Comparación de dos medias con t de Student</h1>
+<p>La prueba t estima la diferencia entre la media de dos grupos usando la proporción de la diferencía entre la media de los grupos y el error estandar de ambos grupos</p>
+<div id="supuestos-de-la-prueba" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Supuestos de la prueba</h2>
+<p>Para esta prueba es necesario considerar el nivel de medición de las variables, para lo cual se requiere de una variable <strong>cuantitativa</strong> y una variable <strong>nominal</strong> (dos grupos).</p>
+<p>Las condiciones para calcular intervalos de confianza o aplicar un test basados en la distribución <em>T-student</em> son:</p>
+<ul>
+<li><strong>Independencia:</strong> Las observaciones tienen que ser independientes unas de las otras. Para ello el muestreo tiene que ser aleatoria y el tamaño de la muestra inferior al 10% de la población.</li>
+<li><strong>Normalidad:</strong> Las poblaciones que se comparan tienn que distribuirse de forma normal. En caso de cierta asimetría, <em>los T-test son considerablemente robustos cuando el tamaño de muestra es mayor o igual a 30</em>.</li>
+<li><strong>Homogeneidad de varianzas</strong>: La varianza de ambas poblaciones comparadas debe ser igual. En caso de no cumplirse con esta condición se puede usar una prueba <em>Welch Two Sample t-test</em>. Esta corrección se incorpora a traves de los grados de libertad permitiendo compensar la diferencia de varianzas (con el inconveniente de que se pierde precisión).</li>
+</ul>
+</div>
+<div id="establecer-las-hipótesis" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Establecer las hipótesis</h2>
+<p>La hopótesis nula (<span class="math inline">\(H_0\)</span>) considera que no hay diferencia o cambio. Suele contener en su definición el simbolo <span class="math inline">\(=\)</span> de manera que al comparar dos medias independientes, suponemos que <span class="math inline">\(\mu_1 = \mu_2\)</span>. La hipotesis alternativa (<span class="math inline">\(H_A\)</span>) considera que el valor real de las medias de ambas poblaciones son diferentes, de manera que <span class="math inline">\(\mu_1 \ne \mu_2\)</span></p>
+</div>
+<div id="determinar-el-tipo-de-test-una-o-dos-colas" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Determinar el tipo de test; una o dos colas</h2>
+<p>Los test de hipótesis pueden ser de una cola o de dos colas. Si la hipótesis alternativa emplea <code>&gt;</code> o <code>&lt;</code> se trata de un test de una cola, en el que solo se analizan desviaciones en un sentido. Si la hipótesis alternativa es del tipo “diferente de” se trata de un test de dos colas, en el que se analizan posibles desviaciones en las dos direcciones. Solo se emplean test de una cola cuando se sabe con seguridad que las desviaciones de interés son en un sentido y únicamente si se ha determinado antes de observar la muestra, no a posteriori.</p>
+</div>
+<div id="formula" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Formula</h2>
+<p><span class="math inline">\(t = \frac{\tilde{x}_1 - \tilde{x}_2} {\sqrt{ \frac{S^2_{1}}{n_{1}} + \frac{S^2_{2}}{n_{2}} }}\)</span></p>
+<p>Donde <em>t</em> es es valor <em>t</em>, <span class="math inline">\(\tilde{x}_1\)</span> y <span class="math inline">\(\tilde{x}_2\)</span> son las mediates de los grupos contrastados, <span class="math inline">\(S_1\)</span> y <span class="math inline">\(S_2\)</span> son las desviaciones estandar de cada grupo, y <span class="math inline">\(n_1\)</span> y <span class="math inline">\(n_2\)</span> es el número de observaciones en cada grupo.</p>
+<p>Un valor de t grande indicaria que la diferencia entre la media de los grupos es mayor que la desviación estandar de ambos grupos, indicando una diferencia entre ambos grupos.</p>
+<p>Posteriormente comparamos el valor t calculado contra valores de probabilidad.</p>
+<p>El nivel de significancia <strong><span class="math inline">\(\alpha\)</span></strong> determina la probabilidad de error que se quiere asumir a la hora de rechazar la hipótesis nula. Se emplea como punto de referencia para determinar si el valor p obtenido en el test de hipótesis es suficientemente bajo como para considerar significativas las diferencias observadas y por lo tanto rechazar <strong><span class="math inline">\(H_0\)</span></strong>.</p>
+</div>
+</div>
+<div id="ejemplo-manual" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Ejemplo (manual):</h1>
+<p>Se quiere estudiar el efecto de un aditivo en el consumo de alimento en una dieta de peces, para ello, se mide la ingesta de comida (gr) en dos grupos de peces. En vista de los resultados ¿se puede conisderar que el aditivo funciona en la tasa de ingesta?</p>
+<table>
+<caption>Resultados del experimento</caption>
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th>Media</th>
+<th>S</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>control</td>
+<td>24.889</td>
+<td>8.007</td>
+<td>22</td>
+</tr>
+<tr class="even">
+<td>tratamiento</td>
+<td>38.23</td>
+<td>15.398</td>
+<td>22</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1. Planteamos las hipótesis</strong></p>
+<p><span class="math inline">\(H_0:\)</span> No hay diferencias entre las medias; <em>media control - media tratamiento</em> <span class="math inline">\(= 0\)</span></p>
+<p><span class="math inline">\(H_a:\)</span> Hay diferencias entre las medias; <em>media control - media tratamiento</em> <span class="math inline">\(\ne 0\)</span></p>
+<p><strong>2. Páramtetro estimado</strong></p>
+<p>media control - media tratamiento = 24.889 - 38.23 = -13.341</p>
+<p><strong>4. Modelo de la prueba</strong></p>
+<p>Como queremos evaluar si hay diferencias por las dietas (que puede ser positiva o negativa) usamos una prueba de dos colas</p>
+<p><strong>5. Nivel de significancia</strong></p>
+<p><span class="math inline">\(\alpha = 0.05\)</span></p>
+<p><strong>6. Estimación del valor p</strong></p>
+<p>Parametro estimado = -13.341</p>
+<p>Grados de libertad = 21</p>
+<p>SE(media control - media tratamiento) =</p>
+<p><span class="math inline">\(SEM = \sqrt{ \frac{S^2_{Control}}{n_{control}} + \frac{S^2_{tratamiento}}{n_{tratamiento}} }\)</span></p>
+<p>Si lo reemplazamos:</p>
+<p>SEM = sqrt((8.007^2 / 22) + (15.398^2 / 22))</p>
+<pre><code>[1] 3.700187</code></pre>
+<p>Estimación del valor T</p>
+<p>T = 38.23 - 24.889 / 3.7001871</p>
+<pre><code>[1] -3.605493</code></pre>
+<p>Por último, estimamos el valor de probabilidad</p>
+<pre class="r"><code>2*pt(-abs(T), df=42)</code></pre>
+<pre><code>[1] 0.0008203744</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="t-test-en-r" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> T-test en R</h1>
+<p>Para aplicar la prueba de t de Student en R, es posible utilizar la función <code>t.test()</code> la cual esta incluida en R base y utiliza la siguiente syntaxis:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p><code>t.test(x, y , alternative = c("two.sided", "less", "greater"), mu = 0,          paired = FALSE, var.equal = FALSE, conf.level = 0.95)</code></p></li>
+<li><p><code>t.test(variable1 ~ variable2, data = datos, var.equal = TRUE)</code></p></li>
+</ol>
+<p>en donde <code>var.equal=</code> nosotros indicamos si ambos grupos muestreales tienen varianzas homogeneas o no.</p>
+<pre class="r"><code>t.test(ctrl, treat, var.equal = TRUE)</code></pre>
+<pre><code>
+    Two Sample t-test
+
+data:  ctrl and treat
+t = -3.6055, df = 42, p-value = 0.0008203
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -20.807928  -5.873726
+sample estimates:
+mean of x mean of y 
+ 24.88915  38.22998 </code></pre>
+<p>El resultadod e esta prueba indica:</p>
+<ol style="list-style-type: decimal">
+<li>Idicación de que es lo que se esta comparando (<strong>data</strong>).</li>
+<li>El <strong>valor t</strong>. Es frecuente obtener valores negativos, lo cual esta bien, ya que solo nos interesa el valor absoluto de la diferencía, o la idstancia de 0, sin importat la dirección.</li>
+<li>Los <strong>grados de libertad</strong>, los cuales estan relacionados con el tamaño de la muestra e indican cuantos datos “lilbres” estan disponibles para hacer las comparaciones.</li>
+<li>El <strong>valor p</strong> el cual describe la probabilidad de ver un valor t tan extremo o mas como el obtenido por azar.</li>
+<li>La hipotesis alternativa (<span class="math inline">\(H_a\)</span>). En este caso, la <span class="math inline">\(H_a\)</span> es que la diferencía entre la media de las muestras no es 0.</li>
+<li><strong>Intervalo de confianza</strong> del 95%. Esto significa que de repetir el muestreo multiples veces, el 95% de las veces la media estaraá contenida en este intervalo.</li>
+<li>La <strong>media</strong> calculada para cada grupo</li>
+</ol>
+</div>
+<div id="ejemplo-practico-comparación-de-muestras-independientes" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Ejemplo (practico): Comparación de muestras independientes</h1>
+<p>De la base de datos de pingüinos, queremos ver si <strong>hay diferencias en la longitud del culmen entre entre las poblaciones de <em>Dream</em> y <em>Biscoe</em> de la especie <em>Adelie</em> </strong></p>
+<p>Para esta sesión, necesitaremos tres paquetes:</p>
+<ul>
+<li><code>Tidyverse</code>: Para usar dplyr y ggplot2</li>
+<li><code>car</code>: contiene algunas funciones estadisticas</li>
+<li><code>rstatixs</code>: Contiene funciones estadisticas compatibles con el ambiente de tidyverse (<em>pipe-friendly</em>). Puedes conocer mas sobre este paquete <a href="https://rpkgs.datanovia.com/rstatix/index.html">aqui</a></li>
+</ul>
+<pre class="r"><code>library(tidyverse)
+library(car)
+library(rstatix)
+
+penguins &lt;- read_csv(&quot;data/penguins_size.csv&quot;)
+
+
+# Filtrar especies
+pen_Adelie &lt;- penguins %&gt;%
+  filter(species == &quot;Adelie&quot;, island %in% c(&quot;Dream&quot;, &quot;Biscoe&quot;))</code></pre>
+<p>El primer paso es realizar una exploración de los datos y verificar los supuestos de la prueba; la prueba t requiere que los datos tengan una distribución normal y con varianzas iguales.</p>
+<p>Grafico de histogramas para visualizar la distribución de los datos entre ambas islas</p>
+<pre class="r"><code>ggplot(pen_Adelie, aes(x = culmen_length_mm, fill = island, col = island))+
+  geom_histogram(alpha = 0.3)+
+  facet_wrap(~island)+
+  labs(y = &quot;frecuencia&quot;,
+       x = &quot;longitud del culmen (mm)&quot;,
+       title=&quot;Grafico de densidad&quot;, 
+       fill = &quot;isla&quot;, 
+       col = &quot;isla&quot;)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Tambien es posible realizar un <strong>gráfico qq (quantil-quantil)</strong> para evaluar visualmente si la distribución de los datos de ambas islas se asemejan a una distribución normal</p>
+<pre class="r"><code>ggplot(pen_Adelie, aes(sample = culmen_length_mm, col = island))+
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ island)</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>De acuerdo a los gráficos, es evidente que ambas poblaciones tienen distribuciones muy parecida a la normal. Para validar estos resutlados, realizaremos una prueba de <strong>Shapiro_wilks</strong> para evaluar la significancia de la normalidad.</p>
+<p>El método de <strong>Shapiro-Wilks</strong> es ampliamente recomendado y tiene mayor poder en comparación de K-S. Para conocer mas sobre pruebas de normalidad visita <a href="https://www.datanovia.com/en/lessons/normality-test-in-r/#shapiro-wilks-normality-test">aqui</a></p>
+<pre class="r"><code>pin_Ade_shap &lt;- pen_Adelie %&gt;%
+  group_by(island) %&gt;%
+  shapiro_test(culmen_length_mm) %&gt;%
+  print()</code></pre>
+<pre><code># A tibble: 2 x 4
+  island variable         statistic     p
+  &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt; &lt;dbl&gt;
+1 Biscoe culmen_length_mm     0.977 0.520
+2 Dream  culmen_length_mm     0.984 0.640</code></pre>
+<blockquote>
+<p>La hipótesis nula de esta prueba es que la muestra viene de una población con distribución normal.</p>
+</blockquote>
+<p>Tanto la gráfica de densidad como el qqplot sugieren que los datos cumplen con el supuesto de normalidad. Para validar esta aseveración es necesario realizar la prueba de Shapiro-Wilk.</p>
+<p>El siguiente paso es evaluar el supuesto de homogeneidad de varianzas. Las gráficas de densidades nuevamente nos dan un indicativo visual de la disperción de los datos, pero es posible evaluar la significancia con una prueba de Levene implementada en el paquete <code>car</code>:</p>
+<pre class="r"><code>leveneTest(culmen_length_mm ~ island, data = pen_Adelie)</code></pre>
+<pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
+factor.</code></pre>
+<pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
+      Df F value Pr(&gt;F)
+group  1  0.0054 0.9415
+      98               </code></pre>
+<pre class="r"><code>pen_Adelie %&gt;% 
+  levene_test(culmen_length_mm ~ island)</code></pre>
+<pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
+factor.</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     1    98   0.00542 0.941</code></pre>
+<p>La prueba nos dice que las varianzas son homogeneas entre los grupos</p>
+<p>El siguiente paso para la exploración de los datos es obtener el promedio de los valores de la longitud del culmen:</p>
+<pre class="r"><code>pen_Ade_sum &lt;- pen_Adelie %&gt;%
+  group_by(island) %&gt;%
+  summarise(promedio = mean(culmen_length_mm),
+            desviacion = sd(culmen_length_mm),
+            N = n())
+pen_Ade_sum</code></pre>
+<pre><code># A tibble: 2 x 4
+  island promedio desviacion     N
+  &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1 Biscoe     39.0       2.48    44
+2 Dream      38.5       2.47    56</code></pre>
+<p>De manera alternativa, este procedimiento se puede realizar con ayuda del paquete <code>rstatix</code></p>
+<pre class="r"><code>pen_Ade_sum &lt;- pen_Adelie %&gt;%
+  group_by(island) %&gt;%
+  get_summary_stats(culmen_length_mm)
+pen_Ade_sum</code></pre>
+<pre><code># A tibble: 2 x 14
+  island variable       n   min   max median    q1    q3   iqr   mad  mean    sd
+  &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Biscoe culmen_le~    44  34.5  45.6   38.7  37.7  40.7  3.02  2.74  39.0  2.48
+2 Dream  culmen_le~    56  32.1  44.1   38.6  36.8  40.4  3.62  2.74  38.5  2.46
+# ... with 2 more variables: se &lt;dbl&gt;, ci &lt;dbl&gt;</code></pre>
+<p>Posteriormente, hacemos un boxplot para visualizar los datos:</p>
+<pre class="r"><code>ggplot(pen_Adelie, aes(x = island, y = culmen_length_mm, fill = island))+
+  geom_boxplot(outlier.shape = &quot;&quot;)+
+  geom_point(position = position_jitter(0.1), col = &quot;grey50&quot;)+
+  theme_light()+
+  labs(x = &quot;Isla&quot;,
+       y = &quot;longitud del culmen (mm)&quot;,
+       title = &quot;Longitud del culmen por isla en el pingüino Adelie&quot;,
+       fill = &quot;Isla&quot;, col = &quot;Isla&quot;)</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente, hacemos la prueba t de student. Esta puede realizarse siguiendo el comando base en R <code>t.test()</code></p>
+<pre class="r"><code>t.test(culmen_length_mm ~ island, data = pen_Adelie, var.equal = TRUE )</code></pre>
+<pre><code>
+    Two Sample t-test
+
+data:  culmen_length_mm by island
+t = 0.95016, df = 98, p-value = 0.3444
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.5151265  1.4615551
+sample estimates:
+mean in group Biscoe  mean in group Dream 
+            38.97500             38.50179 </code></pre>
+<p>En esta prueba, la <strong>hipótesis nula</strong> es que la media de las dos poblaciones es igual, lo que impricla que la <strong>hipótesis alternativa</strong> es que la diferencia de las medias no es igual a cero.</p>
+<p>En la prueba de hiótesis, se desea aceptar o rechazar la hipotesis nula con ciertos <strong>intervalos de confianza</strong>. Dado que probamos la diferencias entre ambas medias, el intervalo de confianza especifica el intervalo de los valores de esta diferencia.</p>
+<p>Alternativametne podemos usar la prueba implementada en <em>rstatixs</em>:</p>
+<pre class="r"><code>pin_Ade_ttest &lt;- pen_Adelie %&gt;%
+  t_test(culmen_length_mm ~ island, var.equal = TRUE) %&gt;%
+  print()</code></pre>
+<pre><code># A tibble: 1 x 8
+  .y.              group1 group2    n1    n2 statistic    df     p
+* &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 culmen_length_mm Biscoe Dream     44    56     0.950    98 0.344</code></pre>
+<p>Ahora con la información generada con la prueba, es posible agregar la anotacion a la gráfica</p>
+<pre class="r"><code>p.val = pin_Ade_ttest$p
+
+ggplot(pen_Adelie, aes(x = island, y = culmen_length_mm, fill = island))+
+  geom_boxplot(outlier.shape = &quot;&quot;)+
+  geom_point(position = position_jitter(0.1), col = &quot;grey50&quot;)+
+  theme_light()+
+  labs(x = &quot;Isla&quot;,
+       y = &quot;longitud del culmen (mm)&quot;,
+       title = &quot;Longitud del culmen por isla en el pingüino Adelie&quot;,
+       fill = &quot;Isla&quot;, col = &quot;Isla&quot;,
+       caption = paste0(&quot;t-student; p = &quot;, p.val))</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Tambien es posible visualizar la ditrtibución de probabilidad</p>
+<pre class="r"><code>plot(t.test(culmen_length_mm ~ island, data = pen_Adelie, var.equal = TRUE ))</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ejerccio-practico-hay-diferencia-en-la-longitud-de-la-aleta-entre-pingünio-adelie-y-gentoo" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Ejerccio practico ¿ Hay diferencia en la longitud de la aleta entre pingünio <strong><em>Adelie</em></strong> y <strong><em>Gentoo</em></strong>?</h1>
+<pre class="r"><code>pen_Aleta &lt;- penguins %&gt;%
+  filter(species %in% c(&quot;Adelie&quot;, &quot;Gentoo&quot;))</code></pre>
+<p>Histograma de frecuencias</p>
+<pre class="r"><code>ggplot(pen_Aleta, aes(x = flipper_length_mm, fill = species, col = species))+
+  geom_histogram(alpha = 0.3)+
+  facet_wrap(~species)+
+  labs(y = &quot;Frecuencia&quot;,
+       x = &quot;longitud de la aleta (mm)&quot;,
+       title=&quot;Grafico de densidad&quot;, 
+       fill = &quot;especie&quot;, 
+       col = &quot;especie&quot;)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>qqplot</p>
+<pre class="r"><code>ggplot(pen_Aleta, aes(sample = flipper_length_mm, col = species))+
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ species)</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_qq).</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_qq_line).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Prueba de shapiro utilizando el paquete RSTATIX</p>
+<pre class="r"><code>pen_Aleta_shap &lt;- pen_Aleta %&gt;%
+  group_by(species) %&gt;%
+  shapiro_test(flipper_length_mm) %&gt;%
+  print()</code></pre>
+<pre><code># A tibble: 2 x 4
+  species variable          statistic       p
+  &lt;chr&gt;   &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;
+1 Adelie  flipper_length_mm     0.993 0.720  
+2 Gentoo  flipper_length_mm     0.962 0.00162</code></pre>
+<p>Distribucion de las varianzas</p>
+<pre class="r"><code>leveneTest(flipper_length_mm ~ species, data = pen_Aleta)</code></pre>
+<pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
+factor.</code></pre>
+<pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
+       Df F value Pr(&gt;F)
+group   1   0.157 0.6922
+      272               </code></pre>
+<p>Boxplot</p>
+<pre class="r"><code>ggplot(pen_Aleta, aes(x = species, y = flipper_length_mm, fill = species))+
+  geom_boxplot()+
+  geom_point(position = position_jitter(0.1), col = &quot;grey50&quot;)+
+  theme_light()+
+  labs(x = &quot;Especie&quot;,
+       y = &quot;longitud de la aleta (mm)&quot;,
+       title = &quot;Longitud de la aleta por especie&quot;,
+       fill = &quot;Especie&quot;, col = &quot;Especie&quot;)</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Hacemos la prueba T de student</p>
+<pre class="r"><code>t.test(flipper_length_mm ~ species, data = pen_Aleta, var.equal = TRUE)</code></pre>
+<pre><code>
+    Two Sample t-test
+
+data:  flipper_length_mm by species
+t = -34.415, df = 272, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -28.79125 -25.67545
+sample estimates:
+mean in group Adelie mean in group Gentoo 
+            189.9536             217.1870 </code></pre>
+<p>t.student con rstatixs</p>
+<pre class="r"><code>pen_Aleta_ttest &lt;- pen_Aleta %&gt;%
+  t_test(flipper_length_mm ~ species, var.equal = TRUE)
+pen_Aleta_ttest</code></pre>
+<pre><code># A tibble: 1 x 8
+  .y.               group1 group2    n1    n2 statistic    df         p
+* &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+1 flipper_length_mm Adelie Gentoo   152   124     -34.4   272 4.21e-101</code></pre>
+<p>La prueba nos dice que las medias de ambas poblaciones son diferentes.</p>
+</div>
+<div id="ejercicio-practico-hay-diferencia-en-el-peso-de-los-pokemon-de-roca-y-los-de-planta" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Ejercicio practico: ¿Hay diferencia en el peso de los pokemon de roca y los de planta?</h1>
+<p>Para resolver este ejercicio, vamos a hacer uso de la tabla <code>datasets_pokemon.xls</code>y <code>pokemon_extended.csv</code> para relacionar el tipo y el peso de cada pokemon.</p>
+<pre class="r"><code>poke_ext &lt;- read_csv(&quot;data/pokemon_extended.csv&quot;)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  height_m = col_double(),
+  Name = col_character(),
+  percentage_male = col_double(),
+  pokedex_number = col_double(),
+  weight_kg = col_double()
+)</code></pre>
+<pre class="r"><code>pokemon &lt;- readxl::read_xls(&quot;data/datasets_pokemon.xls&quot;)
+
+
+poke_test &lt;- pokemon %&gt;% 
+  inner_join(poke_ext, by = &quot;Name&quot;) %&gt;% 
+  select(Type1, weight_kg) %&gt;% 
+  filter(Type1 %in% c(&quot;Grass&quot;, &quot;Rock&quot;))</code></pre>
+<p>Como primer paso, visualizamos los valores de peso de cada grupo con un histograma</p>
+<pre class="r"><code>poke_hito &lt;- ggplot(poke_test, aes(x = weight_kg, fill = Type1))+
+  geom_histogram(alpha = 0.4)+
+  facet_wrap(~Type1, nrow = 2)+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p>y psoteriorment construimos qqplots para cada grupo</p>
+<pre class="r"><code>poke_qq &lt;- ggplot(poke_test, aes(sample = weight_kg, color = Type1))+
+  geom_qq()+
+  geom_qq_line()+
+  facet_wrap(~Type1, nrow = 2)+
+  theme(legend.position = &quot;none&quot;)
+
+
+poke_hito + poke_qq</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_qq).</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_qq_line).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Los histogramas muestran que los valores parecen tener una fuerte asimetria y curtosis negativa para el caso del grupo roca.</p>
+<p>Prueba de Shapiro-Wilk</p>
+<pre class="r"><code>poke_test %&gt;% 
+  group_by(Type1) %&gt;% 
+  shapiro_test(weight_kg)</code></pre>
+<pre><code># A tibble: 2 x 4
+  Type1 variable  statistic            p
+  &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;
+1 Grass weight_kg     0.711 0.0000000429
+2 Rock  weight_kg     0.758 0.0000871   </code></pre>
+<p>La prueba de Shapiro-Wilk nos confirma que ambos grupos no vienen de una distribución normal.En este caso, es posible hacer una transformación de los datos, para lo cual vamos a generar una columna columna con el logaritmo del peso</p>
+<pre class="r"><code>poke_test$log_weight &lt;- log(poke_test$weight_kg)
+poke_test</code></pre>
+<pre><code># A tibble: 72 x 3
+   Type1 weight_kg log_weight
+   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Grass       6.9       1.93
+ 2 Grass      13         2.56
+ 3 Grass     100         4.61
+ 4 Grass       5.4       1.69
+ 5 Grass       8.6       2.15
+ 6 Grass      18.6       2.92
+ 7 Grass       4         1.39
+ 8 Grass       6.4       1.86
+ 9 Grass      15.5       2.74
+10 Rock       NA        NA   
+# ... with 62 more rows</code></pre>
+<p>Y volvemos a generar los histogramas de frecuencia y qqplots para ser el cambio</p>
+<pre class="r"><code>poke_hito_log &lt;- ggplot(poke_test, aes(x = log_weight, fill = Type1))+
+  geom_histogram(alpha = 0.4)+
+  facet_wrap(~Type1, nrow = 2)+
+  theme(legend.position = &quot;none&quot;)
+
+poke_qq_log &lt;- ggplot(poke_test, aes(sample = log_weight, color = Type1))+
+  geom_qq()+
+  geom_qq_line()+
+  facet_wrap(~Type1, nrow = 2)+
+  theme(legend.position = &quot;none&quot;)
+
+
+poke_hito_log + poke_qq_log</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_qq).</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_qq_line).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>y repetimos la prueba de normalidad</p>
+<pre class="r"><code>poke_test %&gt;% 
+  group_by(Type1) %&gt;% 
+  shapiro_test(log_weight)</code></pre>
+<pre><code># A tibble: 2 x 4
+  Type1 variable   statistic     p
+  &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;
+1 Grass log_weight     0.972 0.349
+2 Rock  log_weight     0.930 0.110</code></pre>
+<p>Comprobando que la transformación nos ajusta los datos a una distribución normal.</p>
+<p>Posteriormente, realizamos una prueba de Levene para corroborar que los datos tengan homogeneidad de varianzas</p>
+<pre class="r"><code>poke_test %&gt;% 
+  levene_test(log_weight ~ Type1)</code></pre>
+<pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
+factor.</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     1    66     0.239 0.627</code></pre>
+<p>Posteriormente realizamos la prueba t usando los valores transformados</p>
+<pre class="r"><code>t.test(log_weight ~ Type1, data = poke_test)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  log_weight by Type1
+t = -3.3259, df = 49.745, p-value = 0.001662
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.8627433 -0.4598902
+sample estimates:
+mean in group Grass  mean in group Rock 
+           2.624765            3.786082 </code></pre>
+<pre class="r"><code>plot(t.test(log_weight ~ Type1, data = poke_test))</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente, realizamos un boxplot para mostrar las diferencias entre ambos grupos</p>
+<pre class="r"><code>ggplot(poke_test, aes(x = Type1, y = weight_kg, fill = Type1))+
+  geom_boxplot()</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(poke_test, aes(x = Type1, y = log_weight, fill = Type1))+
+  geom_boxplot()</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ejercicio-practico-hay-diferencia-entre-la-actividad-enzimática-de-la-citrato-sintasa-a-18c-y-32c-prueba-t-con-varianzas-heterogeneas" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Ejercicio practico: ¿Hay diferencia entre la actividad enzimática de la citrato sintasa a 18°C y 32°C?; Prueba t con varianzas heterogeneas</h1>
+<p>Como ya hemos visto, una de las condiciones para aplicar una prueba t de Student es la igualdad de varianzas (homocedasticidad) de ambas poblaciones. En caso de no cumplirse esta condición se puede emplear un <em>Welch Two Sample t-test</em>. Esta corrección se incorpora a través de los grados de libertad permitiendo compensar la diferencia de varianzas. El número de grados de libertad de un Welch Two Sample t-test viene dado por la siguiente función:</p>
+<p><span class="math inline">\(f = \frac{(\frac{S^2_1}{n_1} + \frac{S^2_2}{n_2})^2} {\frac{1}{n_1 + 1}(\frac{S^2_1}{n_1})^2 + \frac{1}{n_2 + 1}(\frac{S^2_2}{n_2})^2} - 2\)</span></p>
+<p>Para este ejercicio, utilizaremos los datos de actividad enzimática de la citrato sintasa (CS) entre una muestra colectada tras una exposición a 18°C y una exposición a 32°C. Estos datos se pueden descargar de la siguiente liga:</p>
+<pre class="r"><code>cs_url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/CS_subset.csv&quot;
+
+cs_activity &lt;- read_csv(cs_url)</code></pre>
+<p>Para este ejercicio vamos a filtrar solamente los datos del <strong>experimento número 4</strong> y de las temperaturas 18 y 32. Posteriomente vamos a convertir estos valores a factores</p>
+<pre class="r"><code>cs_activity &lt;- cs_activity %&gt;% 
+  filter(ExpNum== 4,
+         TreatTemp %in% c(18,32)) %&gt;% 
+  mutate(TreatTemp = factor(TreatTemp))</code></pre>
+<p>Utilizando rstatix, realizamos las pruebas de normalidad y homogeneidad de varianzas</p>
+<pre class="r"><code># Prueba de normalidad
+cs_activity %&gt;% 
+  group_by(TreatTemp) %&gt;% 
+  shapiro_test(ActivityCS)</code></pre>
+<pre><code># A tibble: 2 x 4
+  TreatTemp variable   statistic      p
+  &lt;fct&gt;     &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;
+1 18        ActivityCS     0.882 0.0930
+2 32        ActivityCS     0.955 0.704 </code></pre>
+<pre class="r"><code># Prueba de homogeneidad de varianzas
+cs_activity %&gt;% 
+  levene_test(ActivityCS ~ TreatTemp)</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic       p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+1     1    22      10.5 0.00377</code></pre>
+<pre class="r"><code># Boxplot 
+
+ggplot(data = cs_activity, aes(x = TreatTemp, y = ActivityCS, fill = TreatTemp))+
+  geom_boxplot()</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente realizamos la prueba de Welch incluyendo el parametro <code>var.equal = FALSE</code></p>
+<pre class="r"><code>cs_activity %&gt;% 
+  t_test(ActivityCS ~ TreatTemp, var.equal = FALSE)</code></pre>
+<pre><code># A tibble: 1 x 8
+  .y.        group1 group2    n1    n2 statistic    df      p
+* &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1 ActivityCS 18     32        12    12      1.99  16.3 0.0639</code></pre>
+<pre class="r"><code># alternativamente
+t.test(ActivityCS ~ TreatTemp, data = cs_activity, var.equal = FALSE)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  ActivityCS by TreatTemp
+t = 1.9884, df = 16.275, p-value = 0.06385
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.007403253  0.236401539
+sample estimates:
+mean in group 18 mean in group 32 
+       0.6242346        0.5097355 </code></pre>
+<pre class="r"><code>plot(t.test(ActivityCS ~ TreatTemp, data = cs_activity, var.equal = FALSE))</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente concluimos que no hay diferencia entre la actividad enzimatica tras una exposición a 32°C</p>
+</div>
+<div id="ejercicio-hay-diferencia-en-el-consumo-de-oxígeno-mo_2-tras-la-exposición-a-la-temperatura" class="section level1" number="9">
+<h1 number="9"><span class="header-section-number">9</span> Ejercicio: ¿Hay diferencia en el consumo de oxígeno (<span class="math inline">\(MO_2\)</span>) tras la exposición a la temperatura?</h1>
+<p>Para esto utilizaremos datos de tasa metabolica de abulón a dos temperaturas:</p>
+<pre class="r"><code>abalone_mo &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/abalone_MO2.csv&quot;
+
+mo2 &lt;- read_csv(abalone_mo)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  Individuo = col_character(),
+  Temperatura = col_double(),
+  MO2 = col_double()
+)</code></pre>
+<pre class="r"><code>mo2$Temperatura &lt;- as.factor(mo2$Temperatura)</code></pre>
+<p>Exploración de los datos con <code>geom_histogram</code></p>
+<pre class="r"><code>ggplot(mo2, aes(x = MO2,fill=Temperatura))+
+  geom_histogram()+
+  labs(x = &quot;consumo de oxígeno (MO2)&quot;)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Verificar la normalidad con gráfico de qq seguido con una prueba de Shapiro</p>
+<pre class="r"><code>ggplot(mo2, aes(sample= MO2, col = Temperatura)) +
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ Temperatura)</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mo2_shapiro &lt;- mo2 %&gt;%
+  group_by(Temperatura) %&gt;%
+  shapiro_test(MO2) %&gt;% 
+  print()</code></pre>
+<pre><code># A tibble: 2 x 4
+  Temperatura variable statistic      p
+  &lt;fct&gt;       &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+1 18          MO2          0.829 0.0329
+2 32          MO2          0.879 0.128 </code></pre>
+<p>Ambas gráficas y la prueba indica que uno de los grupos no cumple con el supuesto de normalidad. Dado que el tamaño de la muestra es pequeño, hay que evaluar cual es el mejor procedimiento.</p>
+<p>Una opción es analizar cada una de las muestras y evaluar si alguno puede ser considerado como outlier. Otra opcion es realizar una transformación de los datos.</p>
+<p>A continuación, se tranformaran los datos de MO2 a logaritmo</p>
+<pre class="r"><code>mo2 &lt;- mo2 %&gt;% 
+  mutate(mo2_log = log(MO2))</code></pre>
+<p>Verificar la normalidad de los datos transformados con gráfico de qq seguido con una prueba de Shapiro</p>
+<pre class="r"><code>ggplot(mo2, aes(sample= mo2_log, col = Temperatura)) +
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ Temperatura)+
+  labs(title = &quot;QQplot de datos transformados&quot;)</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Prueba de Shapiro para los datos transformados</p>
+<pre class="r"><code>mo2_log_shapiro &lt;- mo2 %&gt;%
+  group_by(Temperatura) %&gt;%
+  shapiro_test(mo2_log) %&gt;% 
+  print()</code></pre>
+<pre><code># A tibble: 2 x 4
+  Temperatura variable statistic     p
+  &lt;fct&gt;       &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+1 18          mo2_log      0.952 0.696
+2 32          mo2_log      0.929 0.441</code></pre>
+<p>Prueba de levene para varianzas</p>
+<pre class="r"><code>mo2_log_leven &lt;- mo2 %&gt;%
+  levene_test(mo2_log ~ Temperatura) %&gt;% 
+  print()</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic      p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+1     1    18      4.42 0.0499</code></pre>
+<p>Prueba t de student pareada</p>
+<pre class="r"><code>mo2_log_ttest &lt;- mo2 %&gt;%
+  t_test(mo2_log ~ Temperatura, paired = TRUE, var.equal = TRUE) %&gt;% 
+  print()</code></pre>
+<pre><code># A tibble: 1 x 8
+  .y.     group1 group2    n1    n2 statistic    df         p
+* &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+1 mo2_log 18     32        10    10     -8.17     9 0.0000187</code></pre>
+<p>Y finalmente graficamos los datos</p>
+<pre class="r"><code>ggplot(mo2, aes(x = Temperatura, y = MO2, fill = Temperatura))+
+  geom_boxplot(outlier.shape = &quot;&quot;)+
+  geom_point(col = &quot;grey35&quot;)+
+  geom_line(aes(group = Individuo), col = &quot;grey35&quot;)+
+  labs(title = &quot;Cambio en el consumo de oxígeno tras un incremento en la temperatura&quot;)</code></pre>
+<p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] rstatix_0.7.0   car_3.0-10      carData_3.0-4   forcats_0.5.1  
+ [5] stringr_1.4.0   dplyr_1.0.5     purrr_0.3.4     readr_1.4.0    
+ [9] tidyr_1.1.3     tibble_3.0.4    ggplot2_3.3.3   tidyverse_1.3.1
+[13] patchwork_1.1.1 webr_0.1.6      workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] rrtable_0.2.1      colorspace_2.0-0   ggsignif_0.6.0    
+  [4] ellipsis_0.3.1     rio_0.5.16         sjlabelled_1.1.8  
+  [7] rprojroot_2.0.2    flextable_0.6.6    base64enc_0.1-3   
+ [10] fs_1.5.0           rstudioapi_0.13    ggpubr_0.4.0      
+ [13] farver_2.0.3       DT_0.17            fansi_0.4.2       
+ [16] lubridate_1.7.10   xml2_1.3.2         mnormt_2.0.2      
+ [19] knitr_1.30         sjmisc_2.8.7       polyclip_1.10-0   
+ [22] jsonlite_1.7.2     broom_0.7.6        dbplyr_2.1.1      
+ [25] ggforce_0.3.2      shiny_1.5.0        compiler_4.0.5    
+ [28] httr_1.4.2         backports_1.2.1    assertthat_0.2.1  
+ [31] fastmap_1.0.1      cli_2.5.0          later_1.1.0.1     
+ [34] tweenr_1.0.1       moonBook_0.2.4     htmltools_0.5.1.1 
+ [37] tools_4.0.5        gtable_0.3.0       glue_1.4.2        
+ [40] Rcpp_1.0.5         cellranger_1.1.0   vctrs_0.3.8       
+ [43] nlme_3.1-152       psych_2.0.12       lmtest_0.9-38     
+ [46] insight_0.11.1     xfun_0.20          ps_1.5.0          
+ [49] openxlsx_4.2.3     rvest_1.0.0        mime_0.9          
+ [52] miniUI_0.1.1.1     lifecycle_1.0.0    devEMF_4.0-2      
+ [55] MASS_7.3-53        zoo_1.8-8          scales_1.1.1      
+ [58] hms_1.0.0          promises_1.1.1     parallel_4.0.5    
+ [61] RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3          
+ [64] gdtools_0.2.3      stringi_1.5.3      zip_2.1.1         
+ [67] rlang_0.4.11       pkgconfig_2.0.3    systemfonts_0.3.2 
+ [70] evaluate_0.14      lattice_0.20-41    labeling_0.4.2    
+ [73] htmlwidgets_1.5.3  rvg_0.2.5          tidyselect_1.1.1  
+ [76] editData_0.1.8     magrittr_2.0.1     R6_2.5.0          
+ [79] generics_0.1.0     DBI_1.1.0          pillar_1.6.0      
+ [82] haven_2.3.1        whisker_0.4        foreign_0.8-81    
+ [85] withr_2.4.2        abind_1.4-5        ztable_0.2.2      
+ [88] modelr_0.1.8       crayon_1.4.1       shinyWidgets_0.5.4
+ [91] uuid_0.1-4         utf8_1.2.1         tmvnsim_1.0-2     
+ [94] rmarkdown_2.6      officer_0.3.18     grid_4.0.5        
+ [97] readxl_1.3.1       data.table_1.13.6  git2r_0.27.1      
+[100] vcd_1.4-8          reprex_2.0.0       digest_0.6.27     
+[103] xtable_1.8-4       httpuv_1.5.4       munsell_0.5.0     </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
