@@ -37,3 +37,5 @@ Temas:
 -   [Clase 5: Gráficos con ggplot](Clase5_ggplot.html)
 
 -   [Clase 6: Supuestos de normalidad y varianza](Clase6_Supuestos.html)
+
+-   [Clase 7: Comparación de dos medias](Clase7_tstudent.html)
