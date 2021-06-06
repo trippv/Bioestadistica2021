@@ -49,7 +49,7 @@ knitr::include_graphics("https://nbisweden.github.io/RaukR-2019/ggplot/presentat
 
 # Los datos
 
-Para esta practica, utilizaremos la base de datos de `penguis_size.csv` la cual utilizamos previamente en la practica de gráficos base.
+Para esta practica, utilizaremos la base de datos de `penguis_size.csv` la cual utilizamos previamente en la practica de gráficos base. Puedes descargar los datos [aquí](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/penguins_size.csv).
 
 
 
