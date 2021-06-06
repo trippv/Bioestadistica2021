@@ -18,7 +18,7 @@ editor_options:
 
 
 
-```{r, echo=FALSE, out.width = '75%'}
+```{r, echo=FALSE, out.width = '65%'}
 knitr::include_graphics("https://ggplot2.tidyverse.org/logo.png")
 ```
 
@@ -28,7 +28,7 @@ knitr::include_graphics("https://ggplot2.tidyverse.org/logo.png")
 ggplot es un motor gráfico basado en la gramática grafica de Wilkinson [Wilkinson, 2005](https://www.youtube.com/watch?v=AbHU5tLCmuo&t=0s).  Bajo este contexto, un gráfico es una serie de capas (_layers_) similares a una transparecia, con algo impreso en ellas, que puede ser texto, puntos, lineas, barras, imagenes de pollitos o cualquier otro tipo de representación. La imagen final, cada una de estas capas se colocan una sobre otra.
 
 
-![imagen de Andy Field (R)](figure/AndyField.png)
+![imagen de Andy Field (R)](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/AndyField.png)
 
 # geoms y aesthetics
 
