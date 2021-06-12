@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-05-29" />
+
+<title>Comparación de dos o mas medias: ANOVA</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Comparación de dos o mas medias: ANOVA</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-05-29</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-06-12
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  analysis/images/
+    Untracked:  code/tarea_macrograd.R
+    Untracked:  data/CS_subset.csv
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Darwin_esp.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/DownloadFestival(No Outlier).dat
+    Untracked:  data/Festival.csv
+    Untracked:  data/LungCapData.txt
+    Untracked:  data/LungCapDataEsp.csv
+    Untracked:  data/RExam.dat
+    Untracked:  data/Rexamendat.csv
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/exp_macrogard_growth.tab
+    Untracked:  data/exp_macrogard_rna-dna.tab
+    Untracked:  data/macrogard_crecimiento.csv
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+    Untracked:  output/Plot_all_penguins.pdf
+    Untracked:  output/Plot_all_penguins.tiff
+    Untracked:  output/graficos/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase8_anova.Rmd</code>) and HTML (<code>docs/Clase8_anova.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/520708a094f07cc387fd457d36401b4782fe7db9/analysis/Clase8_anova.Rmd" target="_blank">520708a</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-12
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="generalidades" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
+<p>El análisis de varianza (ANOVA o ANDEVA) se emplea cuando se desea comparar las medias de dos o más grupos.</p>
+<p>EL termino ANOVA puede resultar confuso ya que a pesar del que el nombre hace referencia a las varianzas, la prueba se enfoca a investigar diferencias en las medias.</p>
+<p>La <strong>hipótesis nula</strong> de la que parten los diferentes tipos de ANOVA es que la media de la variable estudiada <strong>es la misma</strong> en los diferentes grupos, en contraposición de la <strong>hipótesis alternativa</strong> de que <strong>al menos dos medias difieren</strong> de forma significativa.</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: No hay diferencias entre las medias de los diferentes grupos: <span class="math inline">\(\mu_1 = \mu_2 ... \mu_k = \mu\)</span></p></li>
+<li><p><span class="math inline">\(H_1\)</span>: Al menos un par de medias son significativamente diferentes</p></li>
+</ul>
+<p>El funcionamiento básico de la ANOVA consiste en calcular la media de cada uno de los grupos para despúes comparar la varianza de estas medias (<em>varianza explicada por grupo</em>) frente a la varianza promedio dentro de los grupos.</p>
+<p>Bajo la hipótesis nula de que las observaciones de los distintos grupos proceden de la misma población (misma media y varianza), la varianza ponderara entre grupos será la misma que la varianza promedio dentro de los grupos.</p>
+<p>El estadístico estudiado en el ANOVA, conocido como <span class="math inline">\(F_{ratio}\)</span>, es el cociente entre la varianza de las medias de los grupos y el promedio de la varianza dentro de los grupos. Este estadístico sigue una distribución conocida como “F de Fisher-Snedecor”. Si se cumple la hipótesis nula, <em>el estadístico F adquiere el valor de 1</em> ya que la varianza dentro de los grupos será igual a la varianza entre grupos. Cuanto más difieran las medias de los grupos mayor será la varianza entre medias en comparación al promedio de la varianza dentro de los grupos, obteniéndose valores de F <em>superiores a 1 y por lo tanto menor la probabilidad de que la distribución adquiera valores tan extremos (menor el p-value)</em>.</p>
+</div>
+<div id="anova-paso-a-paso" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> ANOVA paso a paso</h1>
+<p>Para esta sección, utilizaremos los datos que estan disponibles por el paquete <code>agridat</code> y que se describe a detalle en el libro <a href="https://oxford.universitypressscholarship.com/view/10.1093/acprof:oso/9780198729051.001.0001/acprof-9780198729051"><em>The new statistics with R. An introduction for biologist</em></a>.</p>
+<p>Dichos datos consisten en observaciones realizadas por Darwin en 1876 de un experimento con plantas de maíz. Las semillas provenian de los mismos padres, pero algunas semillas fueron producidas por <em>autopolinización</em> de los padres mientras que otras fueron producidas por <em>fertilización cruzada</em>. Pares de semillas fueron plantadas en macetas. Darwin tenia la hipótesis que la fertilización cruzada produce plantas mas fuertes y vigorosas.</p>
+<p>Empecemos por cargar los paquetes necesarios y abrir la tabla <code>Darwin_esp.csv</code>. Estos datos los puedes descargar de <a href="https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Darwin_esp.csv">aqui</a></p>
+<pre class="r"><code>library(tidyverse)
+library(rstatix)</code></pre>
+<pre class="r"><code>darwin = read_csv(&quot;Data/Darwin_esp.csv&quot;)</code></pre>
+<p>Antes que nada, visualizamos los datos</p>
+<pre class="r"><code>ggplot(darwin, aes(x = tipo, y = altura, col = tipo, shape = tipo))+
+  geom_point()</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="anova-como-modelo-lineal" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> ANOVA como modelo lineal</h2>
+<p>En el fondo, tanto la ANOVA, el análisis de covarianza (ANCOVA) y la regresión lineal son modelos lineales muy relacionados.</p>
+<p>Para hacer una ANOVA usamos la función <code>lm()</code></p>
+<blockquote>
+<p>Antes de continuar, vamos a instalar el paquete <code>arm</code> el cual nos ppermite visualizar de manera simple y didactica los resultados de un modelo lineal</p>
+</blockquote>
+<pre class="r"><code>#install.packages(&quot;arm&quot;)
+library(arm)</code></pre>
+<pre class="r"><code>ls0 &lt;- lm(altura ~ 1, data = darwin)</code></pre>
+<p>En este caso, usamos 1 para especificar que no tenemos una variable explanatoria. Por lo que solo nos da el promedio total (gran media).</p>
+<p>que es igual:</p>
+<pre class="r"><code>mean(darwin$altura)</code></pre>
+<pre><code>[1] 18.88333</code></pre>
+<p>Ahora utilizaremos la función <code>display()</code> del paquete arm para extraer la información del modelo</p>
+<pre class="r"><code>display(ls0)</code></pre>
+<pre><code>lm(formula = altura ~ 1, data = darwin)
+            coef.est coef.se
+(Intercept) 18.88     0.58  
+---
+n = 30, k = 1
+residual sd = 3.18, R-Squared = 0.00</code></pre>
+<p>La primera fila corresponde al intercepto, que en este caso es simplemente la media total.</p>
+<p>El tamaño de muestra <em>n</em> nos dice el número de puntos (y de filas en la tabla) y el número de parámetros estimados -media total- indicado como <em>k</em>.</p>
+<p>Ahora ajustaremos el modelo lineal utilizando la <em>altura</em> de la planta como variable de respuesta en función del <em>tipo</em> de polinización</p>
+<pre class="r"><code>ls1 &lt;- lm(altura ~ 1 + tipo, data = darwin)</code></pre>
+<p>En este modelo, el intercepto ya no es la gran media, tal como se observa con la función display:</p>
+<pre class="r"><code>display(ls1)</code></pre>
+<pre><code>lm(formula = altura ~ 1 + tipo, data = darwin)
+            coef.est coef.se
+(Intercept) 17.58     0.76  
+tipocruzada  2.62     1.07  
+---
+n = 30, k = 2
+residual sd = 2.94, R-Squared = 0.18</code></pre>
+<p>En este caso, la segunda fila “<em>tipocruzada</em>” se produce con el nombre la variable explanatoria (tipo), seguido sin espacio del nombre de uno de los niveles de este factor (cruza). Por eliminación, la fila “intercepto” corresponde al primer factor (auto).</p>
+<p>Es importante notar que el valor del segundo factor (tipocruzada) corresponde a la diferencía entre este valor y la media del otro nivel.</p>
+<p>La parte inferior de los resultados con <code>display(ls1)</code> indica el número de parámetros calculados <em>k</em> que es de 2, que corresponde a los dos tratamientos de nuestro factor.</p>
+<p><em>R square</em> es la proporción de la suma de cuadrados explicado por el modelo estadistico.</p>
+<p><em>Residual sd</em> corresponde a la desviación de los residuales (no explicados por el modelo).</p>
+</div>
+<div id="tablas-anova" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Tablas ANOVA</h2>
+<p>Una tabla ANOVA resume los calculos de las sumas de cuadrados</p>
+<p>La tabla de anova resultante de modelo con la función <code>lm()</code>se puede obtener con la función <code>anova()</code></p>
+<pre class="r"><code>anova(ls1)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: altura
+          Df  Sum Sq Mean Sq F value  Pr(&gt;F)  
+tipo       1  51.352  51.352  5.9395 0.02141 *
+Residuals 28 242.083   8.646                  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>En esta tabla, la primera columna indica la fuente de variación (tratamiento) y la variación residual (no explicada por el modelo)</p>
+<p>El valor F se calcula dividiendo la varianza de tratamiento entre la varianza residual del error. En este caso, el valor de 5.9 significa que la <em>señal</em> es seis veces mayor que el <em>ruido</em></p>
+<p>El último argumento proporciona el valor de probabilidad el cual se calcula a partir del valor F.</p>
+<p>Finalmente, el resutlado se reportaria como:</p>
+<p><em>"La altura de las plantas con polinización cruzada fue significativamente mayor que la altura de las plantas auto-polinizadas (</em><span class="math inline">\(F_{1,28}\)</span> = 5.9; P = 0.02)."</p>
+</div>
+</div>
+<div id="anova-de-una-vía" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> ANOVA de una vía</h1>
+<div id="ejemplo-viagra" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Ejemplo: Viagra</h2>
+<div id="descripción-de-los-datos" class="section level3" number="3.1.1">
+<h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Descripción de los datos</h3>
+<p><img src="https://amp.65ymas.com/uploads/s1/16/18/0/la-viagra-y-otros-medicamentos-similares-cuales-son-sus-efectos-en-nuestro-organismo-big-stock_1_621x621.jpeg" width="421" /></p>
+<p>Para este ejemplo, tomaremos los datos descritos en el libro <em>Andy Field (2012)</em> sobre el uso de viagra. Los datos consisten en un análisis a tres grupos de participates: un grupo al que se le administro un placebo, un grupo con una dosis baja de viagra y un tercer grupo con una dosis alta de viagra. La variable dependiente fue una medida obetiva del libido la cual se midio en el transcurso de una semana.</p>
+<pre class="r"><code>dosis &lt;- gl(3,5, labels = c(&quot;Placebo&quot;, &quot;Dosis baja&quot;, &quot;Dosis alta&quot;))
+libido &lt;- c(3,2,1,1,4,5,2,4,2,3,7,4,5,3,6)
+
+Viagratab &lt;- data.frame(dosis, libido)</code></pre>
+<p>Lo siguiente en nuestro análisis es realizar una inspección visual de los datos, la cual se puede hacer con las diversas geometrias de ggplot vistas hasta el momento.</p>
+<pre class="r"><code>ggplot(Viagratab, aes(x = dosis, y = libido, fill = dosis))+
+  geom_boxplot()</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Ademas, podemos generar las estadisticas descriptivas por grupo utilizando la función <code>get_summary_stats()</code> del paquete <em>rstatixs</em></p>
+<pre class="r"><code>Viagratab %&gt;% 
+  group_by(dosis) %&gt;% 
+  get_summary_stats(libido)</code></pre>
+<pre><code># A tibble: 3 x 14
+  dosis    variable     n   min   max median    q1    q3   iqr   mad  mean    sd
+  &lt;fct&gt;    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Placebo  libido       5     1     4      2     1     3     2  1.48   2.2  1.30
+2 Dosis b~ libido       5     2     5      3     2     4     2  1.48   3.2  1.30
+3 Dosis a~ libido       5     3     7      5     4     6     2  1.48   5    1.58
+# ... with 2 more variables: se &lt;dbl&gt;, ci &lt;dbl&gt;</code></pre>
+<p>Posteriormente, verificamos que los supuestos de normalidad y homogeneidad de varianzas se cumplan, para lo cual podemos utilizar las pruebas de Shapiro-Wilk y Levene, respectivamente.</p>
+<pre class="r"><code>Viagratab %&gt;% 
+  group_by(dosis) %&gt;% 
+  shapiro_test(libido)</code></pre>
+<pre><code># A tibble: 3 x 4
+  dosis      variable statistic     p
+  &lt;fct&gt;      &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+1 Placebo    libido       0.902 0.421
+2 Dosis baja libido       0.902 0.421
+3 Dosis alta libido       0.987 0.967</code></pre>
+<pre class="r"><code>Viagratab %&gt;% 
+  levene_test(libido ~ dosis)</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     2    12     0.118 0.890</code></pre>
+<p>La prueba de Levene no es significativa, <span class="math inline">\(F(2,12) = 0.118, p = 0.89\)</span>, lo que indica que las varianza son similares. De hecho, la tabla generada con los estadisticos descriptivos demuestra que las desviaciones estandar (y por tanto las varianzas) entre el grupo placebo y dosis baja son identicas.</p>
+</div>
+<div id="anova-con-aov" class="section level3" number="3.1.2">
+<h3 number="3.1.2"><span class="header-section-number">3.1.2</span> ANOVA con <code>aov()</code></h3>
+<p>En el ejemplo anterior, para hacer el análisis de varianza utilizamos la función <code>lm()</code> ya que como se mencionó anteriormente, la ANOVA es un caso especial de <em>modelo lineal general</em>, de manera que bajo esta perspectiva, estamos prediciendo el libido a partir de un grupo (dosis de viagra) utilizando el siguiente modelo:</p>
+<p><span class="math inline">\(libido_i = dosis_i + error_i\)</span></p>
+<p>De manera que nuestro análisis de varianza utilizando <code>lm()</code>seria de la siguiente manera:</p>
+<pre class="r"><code>modeloViagra_lm &lt;- lm(libido ~ dosis, data = Viagratab)
+summary(modeloViagra_lm)</code></pre>
+<pre><code>
+Call:
+lm(formula = libido ~ dosis, data = Viagratab)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+  -2.0   -1.2   -0.2    0.9    2.0 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)       2.2000     0.6272   3.508  0.00432 **
+dosisDosis baja   1.0000     0.8869   1.127  0.28158   
+dosisDosis alta   2.8000     0.8869   3.157  0.00827 **
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 1.402 on 12 degrees of freedom
+Multiple R-squared:  0.4604,    Adjusted R-squared:  0.3704 
+F-statistic: 5.119 on 2 and 12 DF,  p-value: 0.02469</code></pre>
+<p>Alternativamente, podemos utilizar la función <code>aov()</code> cual realiza exactamente lo mismo, pero <em>aov</em> toma la salida de <em>lm</em> y nos muestra directamente el resultado de un ANOVA mas convencional.</p>
+<p>La sintaxis para realizar una ANOVA con <code>aov()</code> es igual a la anterior:</p>
+<pre class="r"><code>modeloViagra_aov &lt;- aov(libido ~ dosis, data = Viagratab)
+summary(modeloViagra_aov)</code></pre>
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)  
+dosis        2  20.13  10.067   5.119 0.0247 *
+Residuals   12  23.60   1.967                 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>De hecho, si evaluamos el tipo de objeto de <code>modeloViagra_aov</code>nos podemos dar cuenta que realmente tiene dos clases:</p>
+<pre class="r"><code>class(modeloViagra_aov)</code></pre>
+<pre><code>[1] &quot;aov&quot; &quot;lm&quot; </code></pre>
+<p>La primer clase nos dice que es un objetvo del tipo <code>aov</code> (Analysis of Variance) y el segundo objeto nos indica que es de tipo <code>lm</code> (linear model).</p>
+</div>
+<div id="residuales" class="section level3" number="3.1.3">
+<h3 number="3.1.3"><span class="header-section-number">3.1.3</span> Residuales</h3>
+<p>El estudio de las condiciones de normalidad y homogeneidad de varianzas puede realizarse previo cálculo del ANOVA, puesto que si no se cumplen no tiene mucho sentido seguir adelante. Sin embargo la forma más adecuada de comprobar que se satisfacen las condiciones necesarias es estudiando los residuos del modelo una vez generado el ANOVA. R permite graficar los residuos de forma directa con la función plot(objeto anova).</p>
+<pre class="r"><code>par(mfrow = c(2,2))
+plot(modeloViagra_aov)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>null device 
+          1 </code></pre>
+<p>Los resultados mostrarán cuatro gráficos aunque en realidad los que mas nos interesan son los primeros dos: <em>residuales vs fitted</em> y <em>Normal Q-Q</em>.</p>
+<p>El primer gráfico puede ser utilizado para evaluar la homogeneidad de las varianzas. De manera general, si el grafico tiene forma de embudo entonces nos esta indicando que hay diferencias en la disperción. En nuestro caso, los puntos estan distribuidos de manera uniforme en los tres tratamientos, lo que implica que las varianza son similares.</p>
+<p>El segundo gráfico es un Q-Q plot que nos indica si los residuales siguen una distribución normal. Queremos que los residuales esten distribuidos de acuerdo a una distribución normal, lo que significa que los puntos en la gráfica deberan ubicarse sobre la línea diagonal.</p>
+</div>
+<div id="anova-con-oneway.test-cuando-las-varianzas-no-son-iguales" class="section level3" number="3.1.4">
+<h3 number="3.1.4"><span class="header-section-number">3.1.4</span> ANOVA con <code>oneway.test()</code>: Cuando las varianzas no son iguales</h3>
+<p>En el caso de que la prueba de Levene nos indique que nuestros datos no tienen varianzas homogeneas (valor singificativo) es posible utilizar un ajuste de Welch al calculo de F, lo cual hace ajustes a los grados de libertad de manera similar a la prueba de Welch para dos medias.</p>
+<p>Esta prueba se realiza con la función <code>oneway.test()</code> con la misma sintaxis que las funciones anteriores pero especificando si las varianzas son o no son iguales con el parámetro <code>var.equal = TRUE/FALSE</code></p>
+<pre class="r"><code>modeloViagra_oneway &lt;- oneway.test(libido ~ dosis, data = Viagratab, var.equal = FALSE)
+
+modeloViagra_oneway</code></pre>
+<pre><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  libido and dosis
+F = 4.3205, num df = 2.0000, denom df = 7.9434, p-value = 0.05374</code></pre>
+<p>Para los datos de viagra realmente no es necesario hacer este ajuste, pero cuando la homogeneidad de varianza no se puede aceptar debemos fijarnos en este valor F ajustado. En importane notar que los grados de libertad han sido ajustados, por lo que es necesario tomar en cuenta este ajuste al momento de reportar los resultados de la prueba.</p>
+</div>
+<div id="anova-en-rstatix" class="section level3" number="3.1.5">
+<h3 number="3.1.5"><span class="header-section-number">3.1.5</span> ANOVA en rstatix</h3>
+<p>Para realizar la anova utilizando las funciones de rstatixs se puede utilizar:</p>
+<pre class="r"><code>Viagratab %&gt;% 
+  anova_test(libido ~ dosis) </code></pre>
+<pre><code>Coefficient covariances computed by hccm()</code></pre>
+<pre><code>ANOVA Table (type II tests)
+
+  Effect DFn DFd     F     p p&lt;.05  ges
+1  dosis   2  12 5.119 0.025     * 0.46</code></pre>
+<pre class="r"><code># para varianzas heterogeneas
+Viagratab %&gt;% 
+  welch_anova_test(libido ~ dosis)</code></pre>
+<pre><code># A tibble: 1 x 7
+  .y.        n statistic   DFn   DFd     p method     
+* &lt;chr&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      
+1 libido    15      4.32     2  7.94 0.054 Welch ANOVA</code></pre>
+</div>
+</div>
+</div>
+<div id="pruebas-post-hoc-y-comparaciones-multiple" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Pruebas post hoc y comparaciones multiple</h1>
+<p>Cuando realizamos una ANOVA con mas de dos grupos y obtenemos un efecto signficativo, la primera pregunta que nos viene a la mente es exactamente cual de los grupos es diferente de los otros.</p>
+<p>Recordemos que la hipotesis nula en una ANOVA es que los tres grupos (placebo, dosis baja y dosis alta) tienen exactamente el mismo efecto en el nivel de libido. De manera que en realidad nuestra hipotesis nula consiste de tres ideas a la vez:</p>
+<ul>
+<li>El placebo no es mejor que la dosis baja (<span class="math inline">\(\mu_p = \mu_b\)</span>)</li>
+<li>La dosis baja no es mejor que la dosis alta (<span class="math inline">\(\mu_b = \mu_a\)</span>)</li>
+<li>La dosis alta no es mejor que el placebo (<span class="math inline">\(\mu_a = \mu_p\)</span>)</li>
+</ul>
+<p><em>Si cualquiera de estas afirmaciones es falsa, entonce nuestra hipótesis nula tambien es falsa!</em> De manera que en nuestro ejemplo, que hemos rechazado la hipotesis nula, queremos saber cuales afirmaciones son falsas.</p>
+<p>Para identificarlas hay que comparar dos a dos las medias de todos los grupos introducidos en el análisis mediante un t-test u otro test que compare 2 grupos, ha esto se le conoce como análisis post-hoc. Debido a la inflación del error de tipo I, cuantas más comparaciones se hagan más aumenta la probabilidad de encontrar diferencias significativas (para α = 0.05, de cada 100 comparaciones se esperan 5 significativas solo por azar). Los niveles de significancia pueden ser ajustados en función del número de comparaciones (corrección de significancia). Si no se hace ningún tipo de corrección se aumenta la posibilidad de falsos positivos (error tipo I) pero si se es muy estricto con las correcciones se pueden considerar como no significativas diferencias que realmente podrían serlo (error tipo II).</p>
+<div id="comparaciones-pareadas-pairwise-t-tests" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Comparaciones pareadas (<em>pairwise t-tests</em>)</h2>
+<p>Para identificar cual de nuestras hipotesis nulas son falsas, podemos utilizar la función <code>pairwise.t.test()</code> la cual realiza t de Student para cada contraste</p>
+<p>Esta se ejecuta de la siguiente manera:</p>
+<pre class="r"><code>pairwise.t.test(x = variable respuesta, g = grupos, p.adjust.method = &quot;&quot; )</code></pre>
+<p>De manera que para nuestros datos viagra ejecutamos la siguiente línea:</p>
+<pre class="r"><code>pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = &quot;none&quot;)</code></pre>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  Viagratab$libido and Viagratab$dosis 
+
+           Placebo Dosis baja
+Dosis baja 0.2816  -         
+Dosis alta 0.0083  0.0652    
+
+P value adjustment method: none </code></pre>
+<p>Sin embargo, como ya se ha mecionado, al realizar multiples comparaciones corremos el riego de inflar nuestro error alfa. Por lo que es necesario incluir en el análisis una <em>corrección por comparaciones multiples</em>. Entre estas tenemos:</p>
+<ul>
+<li>Bonferroni</li>
+<li>Holm</li>
+<li>Benajim &amp; Hochber (BH) - <em>false discovery rate</em></li>
+</ul>
+<p>Comparaciones multiples con ajuste de <em>Bonferroni</em></p>
+<pre class="r"><code>pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = &quot;bonferroni&quot;)</code></pre>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  Viagratab$libido and Viagratab$dosis 
+
+           Placebo Dosis baja
+Dosis baja 0.845   -         
+Dosis alta 0.025   0.196     
+
+P value adjustment method: bonferroni </code></pre>
+<p>Comparaciones multiples con ajuste de <em>Holm</em></p>
+<pre class="r"><code>pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = &quot;holm&quot;)</code></pre>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  Viagratab$libido and Viagratab$dosis 
+
+           Placebo Dosis baja
+Dosis baja 0.282   -         
+Dosis alta 0.025   0.130     
+
+P value adjustment method: holm </code></pre>
+<p>De esta forma, podemos concluir que el grupo de dosis alta no tiene diferencia con el grupo de la dosis baja (<span class="math inline">\(p = 0.28\)</span>) pero es significativamente diferente con el grupo placebo (<span class="math inline">\(p = 0.02\)</span>)</p>
+<p>En <code>rstatix</code> dichas comparaciones multiples se ejecutan de la siguiente manera:</p>
+<pre class="r"><code>Viagratab %&gt;% 
+  pairwise_t_test(libido ~ dosis, p.adjust.method = &quot;bonferroni&quot;)</code></pre>
+<pre><code># A tibble: 3 x 9
+  .y.    group1     group2        n1    n2       p p.signif  p.adj p.adj.signif
+* &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       
+1 libido Placebo    Dosis baja     5     5 0.282   ns       0.845  ns          
+2 libido Placebo    Dosis alta     5     5 0.00827 **       0.0248 *           
+3 libido Dosis baja Dosis alta     5     5 0.0652  ns       0.196  ns          </code></pre>
+</div>
+<div id="comparaciones-pareadas-tukey-kramer-honest-significant-difference" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Comparaciones pareadas (<em>Tukey-Kramer Honest Significant Difference</em>)</h2>
+<p>Es el ajuste recomendado cuando el número de grupos a comparar es mayor de 6 y el diseño es equilibrado (mismo número de observaciones por grupo). En el caso de modelos no equilibrados el método HSD es conservativo, requiere diferencias grandes para que resulte significativo. Solo aplicable si se trata de datos no pareados.</p>
+<p>El Tukey’s test es muy similar a un t-test, excepto que corrige el experiment wise error rate <a href="https://www.cienciadedatos.net/documentos/19b_comparaciones_multiples_correccion_p-value_fdr">1</a>.</p>
+<pre class="r"><code>TukeyHSD(modeloViagra_aov)</code></pre>
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = libido ~ dosis, data = Viagratab)
+
+$dosis
+                      diff        lwr      upr     p adj
+Dosis baja-Placebo     1.0 -1.3662412 3.366241 0.5162761
+Dosis alta-Placebo     2.8  0.4337588 5.166241 0.0209244
+Dosis alta-Dosis baja  1.8 -0.5662412 4.166241 0.1474576</code></pre>
+<pre class="r"><code>plot(TukeyHSD(modeloViagra_aov))</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>En <code>rstatixs</code> las comparaciones multiples con TukeyHSD pueden realizarse directamente en la tabla de manera muy similar a las pruebas T pareadas</p>
+<pre class="r"><code>Viagratab %&gt;% 
+  tukey_hsd(libido ~ dosis)</code></pre>
+<pre><code># A tibble: 3 x 9
+  term  group1 group2 null.value estimate conf.low conf.high  p.adj p.adj.signif
+* &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;       
+1 dosis Place~ Dosis~          0     1.00   -1.37       3.37 0.516  ns          
+2 dosis Place~ Dosis~          0     2.8     0.434      5.17 0.0209 *           
+3 dosis Dosis~ Dosis~          0     1.8    -0.566      4.17 0.147  ns          </code></pre>
+<p>Una alternativa mas completa para realizar la prueba de TukeyHSD es la que incluye el paquete <code>agricolae</code> la cual, ademas de realizar la prueba, nos incluye diversos estadísticos adicionales</p>
+<p>La función <code>HSD.test()</code>se aplica sobre un objeto tipo <em>aov</em> o <em>lm</em> y se aplica de la siguiente manera:</p>
+<pre class="r"><code>HSD.test(y = modelo(lm o aov), trt = &quot;variable Independiente&quot;, group = TRUE/FALSE,  alpha = 0.5)</code></pre>
+<pre class="r"><code>#install.packages(&quot;agricolae&quot;)
+
+Tukey_test &lt;- agricolae::HSD.test(modeloViagra_aov, trt = &quot;dosis&quot;, group = TRUE)
+Tukey_test</code></pre>
+<pre><code>$statistics
+   MSerror Df     Mean       CV      MSD
+  1.966667 12 3.466667 40.45324 2.366241
+
+$parameters
+   test name.t ntr StudentizedRange alpha
+  Tukey  dosis   3         3.772929  0.05
+
+$means
+           libido      std r Min Max Q25 Q50 Q75
+Dosis alta    5.0 1.581139 5   3   7   4   5   6
+Dosis baja    3.2 1.303840 5   2   5   2   3   4
+Placebo       2.2 1.303840 5   1   4   1   2   3
+
+$comparison
+NULL
+
+$groups
+           libido groups
+Dosis alta    5.0      a
+Dosis baja    3.2     ab
+Placebo       2.2      b
+
+attr(,&quot;class&quot;)
+[1] &quot;group&quot;</code></pre>
+</div>
+</div>
+<div id="añadir-estadisticos-y-valores-de-significancia-a-gráficos-con-ggpubr" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Añadir estadisticos y valores de significancia a gráficos con <code>ggpubr</code></h1>
+<p>El paquete <code>ggpubr</code> es un complemento de ggplot el cual facilita la creación de gráficos y que tiene la versatilidad de incluir estadisticos.</p>
+<p>Puedes leer mas sobre este paquete <a href="http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/">aquí</a></p>
+<pre class="r"><code>#install.packages(&quot;ggpubr&quot;)
+library(ggpubr)</code></pre>
+<p>Algunos ejemplos de la funcionalidad de ggpubr son:</p>
+<pre class="r"><code>ggdensity(Viagratab, x = &quot;libido&quot;, add = &quot;mean&quot;, color = &quot;dosis&quot;, fill = &quot;dosis&quot;,
+          palette =c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;))</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggboxplot(Viagratab, x = &quot;dosis&quot;,y = &quot;libido&quot;,
+          add = &quot;jitter&quot;, color = &quot;dosis&quot;, palette =c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;))</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggline(Viagratab, x = &quot;dosis&quot;, y = &quot;libido&quot;, add = &quot;mean_sd&quot;)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggbarplot(Viagratab, x = &quot;dosis&quot;, y = &quot;libido&quot;, add = &quot;mean_sd&quot;, color = &quot;dosis&quot;, fill = &quot;dosis&quot;)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Sin embargo, la función que mas nos interesa de ggpubr es la función <code>stat_compare_means()</code>la cual puede ser aplicada en un objetivo ggpubr o ggplot:</p>
+<pre class="r"><code>ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
+  geom_boxplot(width = 0.2)+
+  geom_jitter(width = 0.1)+
+  stat_compare_means(method = &quot;anova&quot;)+
+   stat_compare_means(label = &quot;p.format&quot;, method = &quot;t.test&quot;,
+                     ref.group = &quot;Placebo&quot;) +
+  theme_classic()+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Alternativamente, se puede generar los contrastes de la siguiente manera:</p>
+<pre class="r"><code>contrastes &lt;- list( c(&quot;Placebo&quot;, &quot;Dosis baja&quot;), c(&quot;Placebo&quot;, &quot;Dosis alta&quot;), c(&quot;Dosis baja&quot;, &quot;Dosis alta&quot;) )
+
+ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
+  geom_boxplot(width = 0.2)+
+  geom_jitter(width = 0.1)+
+  stat_compare_means(method = &quot;anova&quot;, label.x = 0.5, label.y = 9)+
+   stat_compare_means(label = &quot;p.signif&quot;, method = &quot;t.test&quot;,comparisons = contrastes) +
+  theme_classic()+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente, podemos basarnos en los resultados de <code>apa</code> para reportar los resultados del efecto de la dosis</p>
+<pre class="r"><code>apa::anova_apa(x = modeloViagra_aov)</code></pre>
+<pre><code>       Effect                                             
+1 (Intercept) F(1, 12) = 91.66, p &lt; .001, petasq = .88 ***
+2       dosis F(2, 12) =  5.12, p = .025, petasq = .46 *  </code></pre>
+<p>Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante (<span class="math inline">\(F_{(2,12)} = 5.12; p = 0.25\)</span>). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58).</p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggpubr_0.4.0    arm_1.11-2      lme4_1.1-26     Matrix_1.3-2   
+ [5] MASS_7.3-53     rstatix_0.7.0   forcats_0.5.1   stringr_1.4.0  
+ [9] dplyr_1.0.5     purrr_0.3.4     readr_1.4.0     tidyr_1.1.3    
+[13] tibble_3.0.4    ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] minqa_1.2.4         colorspace_2.0-0    ggsignif_0.6.0     
+  [4] ellipsis_0.3.1      rio_0.5.16          rprojroot_2.0.2    
+  [7] htmlTable_2.1.0     base64enc_0.1-3     fs_1.5.0           
+ [10] rstudioapi_0.13     farver_2.0.3        fansi_0.4.2        
+ [13] lubridate_1.7.10    xml2_1.3.2          splines_4.0.5      
+ [16] knitr_1.30          Formula_1.2-4       jsonlite_1.7.2     
+ [19] nloptr_1.2.2.2      broom_0.7.6         cluster_2.1.0      
+ [22] dbplyr_2.1.1        png_0.1-7           shiny_1.5.0        
+ [25] compiler_4.0.5      httr_1.4.2          MBESS_4.8.0        
+ [28] backports_1.2.1     fastmap_1.0.1       assertthat_0.2.1   
+ [31] cli_2.5.0           later_1.1.0.1       htmltools_0.5.1.1  
+ [34] tools_4.0.5         coda_0.19-4         gtable_0.3.0       
+ [37] agricolae_1.3-5     glue_1.4.2          Rcpp_1.0.5         
+ [40] apa_0.3.3           carData_3.0-4       cellranger_1.1.0   
+ [43] vctrs_0.3.8         nlme_3.1-152        xfun_0.20          
+ [46] ps_1.5.0            openxlsx_4.2.3      rvest_1.0.0        
+ [49] mime_0.9            miniUI_0.1.1.1      lifecycle_1.0.0    
+ [52] statmod_1.4.35      scales_1.1.1        hms_1.0.0          
+ [55] promises_1.1.1      RColorBrewer_1.1-2  yaml_2.2.1         
+ [58] curl_4.3            gridExtra_2.3       labelled_2.7.0     
+ [61] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.5.3      
+ [64] AlgDesign_1.2.0     highr_0.8           klaR_0.6-15        
+ [67] checkmate_2.0.0     boot_1.3-27         zip_2.1.1          
+ [70] rlang_0.4.11        pkgconfig_2.0.3     evaluate_0.14      
+ [73] lattice_0.20-41     htmlwidgets_1.5.3   labeling_0.4.2     
+ [76] tidyselect_1.1.1    magrittr_2.0.1      R6_2.5.0           
+ [79] generics_0.1.0      Hmisc_4.4-2         combinat_0.0-8     
+ [82] DBI_1.1.0           pillar_1.6.0        haven_2.3.1        
+ [85] whisker_0.4         foreign_0.8-81      withr_2.4.2        
+ [88] survival_3.2-10     abind_1.4-5         nnet_7.3-14        
+ [91] modelr_0.1.8        crayon_1.4.1        car_3.0-10         
+ [94] questionr_0.7.4     utf8_1.2.1          rmarkdown_2.6      
+ [97] jpeg_0.1-8.1        grid_4.0.5          readxl_1.3.1       
+[100] data.table_1.13.6   git2r_0.27.1        reprex_2.0.0       
+[103] digest_0.6.27       xtable_1.8-4        httpuv_1.5.4       
+[106] munsell_0.5.0      </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

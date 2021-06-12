@@ -444,7 +444,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-05
+<strong>Last updated:</strong> 2021-06-12
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree624db7cbaae7bec3f471d3e90e7870927f224bd3targetblank624db7ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/624db7cbaae7bec3f471d3e90e7870927f224bd3" target="_blank">624db7c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree624db7cbaae7bec3f471d3e90e7870927f224bd3targetblank624db7ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/624db7cbaae7bec3f471d3e90e7870927f224bd3" target="_blank">624db7c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -561,8 +561,10 @@ Untracked files:
     Untracked:  README.html
     Untracked:  Resources/
     Untracked:  analysis/images/
+    Untracked:  code/tarea_macrograd.R
     Untracked:  data/CS_subset.csv
     Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Darwin_esp.csv
     Untracked:  data/Data_enzimas_Experimento1.txt
     Untracked:  data/Data_enzimas_Experimento2.txt
     Untracked:  data/Data_enzimas_Experimento3.txt
@@ -624,6 +626,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/520708a094f07cc387fd457d36401b4782fe7db9/analysis/Clase7_tstudent.Rmd" target="_blank">520708a</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-12
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/99c36447acbcd5a24027999ab24426a8ad2ce4e0/docs/Clase7_tstudent.html" target="_blank">99c3644</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -877,7 +913,8 @@ W = 0.88468, p-value = 0.1476</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Plantear las hipótesis</li>
 </ol>
-<p><span class="math inline">\(H_0: \mu = 500 gr\)</span> <span class="math inline">\(H_A: \mu \ne 500gr\)</span></p>
+<p><span class="math inline">\(H_0: \mu = 500 gr\)</span></p>
+<p><span class="math inline">\(H_A: \mu \ne 500gr\)</span></p>
 <ol start="3" style="list-style-type: decimal">
 <li>Realizar la prueba</li>
 </ol>
@@ -1377,12 +1414,7 @@ cols(
 1     1    18      4.42 0.0499</code></pre>
 <p>Prueba t de student pareada</p>
 <pre class="r"><code>mo2_log_ttest &lt;- mo2 %&gt;%
-  t_test(mo2_log ~ Temperatura, paired = TRUE, var.equal = TRUE) %&gt;% 
-  print()</code></pre>
-<pre><code># A tibble: 1 x 8
-  .y.     group1 group2    n1    n2 statistic    df         p
-* &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
-1 mo2_log 18     32        10    10     -8.17     9 0.0000187</code></pre>
+  t_test(mo2_log ~ Temperatura, paired = TRUE, var.equal = TRUE)</code></pre>
 <p>Y finalmente graficamos los datos</p>
 <pre class="r"><code>ggplot(mo2, aes(x = Temperatura, y = MO2, fill = Temperatura))+
   geom_boxplot(outlier.shape = &quot;&quot;)+
@@ -1390,6 +1422,23 @@ cols(
   geom_line(aes(group = Individuo), col = &quot;grey35&quot;)+
   labs(title = &quot;Cambio en el consumo de oxígeno tras un incremento en la temperatura&quot;)</code></pre>
 <p><img src="figure/Clase7_tstudent.Rmd/unnamed-chunk-58-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="reportar-los-resultados-de-una-prueba-t-con-apa" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Reportar los resultados de una prueba t con <code>apa</code></h1>
+<p>El paquete <code>apa</code> genera un reporte con los resultados de la prueba t de Student de acuerdo con las normas APA. Para esto se requiere un objeto <code>t.test</code>.</p>
+<pre class="r"><code>#install.packages(&quot;apa&quot;)
+library(apa)</code></pre>
+<pre><code>
+Attaching package: &#39;apa&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:rstatix&#39;:
+
+    cohens_d, t_test</code></pre>
+<pre class="r"><code># Ejemplo
+prueba_t &lt;- t.test(mo2_log ~ Temperatura, data = mo2, var.equal = TRUE, paired = FALSE)
+
+t_apa(prueba_t)</code></pre>
+<pre><code>t(18) = -8.42, p &lt; .001, d = -3.77</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1415,10 +1464,10 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] rstatix_0.7.0   car_3.0-10      carData_3.0-4   forcats_0.5.1  
- [5] stringr_1.4.0   dplyr_1.0.5     purrr_0.3.4     readr_1.4.0    
- [9] tidyr_1.1.3     tibble_3.0.4    ggplot2_3.3.3   tidyverse_1.3.1
-[13] patchwork_1.1.1 webr_0.1.6      workflowr_1.6.2
+ [1] apa_0.3.3       rstatix_0.7.0   car_3.0-10      carData_3.0-4  
+ [5] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5     purrr_0.3.4    
+ [9] readr_1.4.0     tidyr_1.1.3     tibble_3.0.4    ggplot2_3.3.3  
+[13] tidyverse_1.3.1 patchwork_1.1.1 webr_0.1.6      workflowr_1.6.2
 
 loaded via a namespace (and not attached):
   [1] rrtable_0.2.1      colorspace_2.0-0   ggsignif_0.6.0    
@@ -1430,33 +1479,33 @@ loaded via a namespace (and not attached):
  [19] knitr_1.30         sjmisc_2.8.7       polyclip_1.10-0   
  [22] jsonlite_1.7.2     broom_0.7.6        dbplyr_2.1.1      
  [25] ggforce_0.3.2      shiny_1.5.0        compiler_4.0.5    
- [28] httr_1.4.2         backports_1.2.1    assertthat_0.2.1  
- [31] fastmap_1.0.1      cli_2.5.0          later_1.1.0.1     
- [34] tweenr_1.0.1       moonBook_0.2.4     htmltools_0.5.1.1 
- [37] tools_4.0.5        gtable_0.3.0       glue_1.4.2        
- [40] Rcpp_1.0.5         cellranger_1.1.0   vctrs_0.3.8       
- [43] nlme_3.1-152       psych_2.0.12       lmtest_0.9-38     
- [46] insight_0.11.1     xfun_0.20          ps_1.5.0          
- [49] openxlsx_4.2.3     rvest_1.0.0        mime_0.9          
- [52] miniUI_0.1.1.1     lifecycle_1.0.0    devEMF_4.0-2      
- [55] MASS_7.3-53        zoo_1.8-8          scales_1.1.1      
- [58] hms_1.0.0          promises_1.1.1     parallel_4.0.5    
- [61] RColorBrewer_1.1-2 yaml_2.2.1         curl_4.3          
- [64] gdtools_0.2.3      stringi_1.5.3      zip_2.1.1         
- [67] rlang_0.4.11       pkgconfig_2.0.3    systemfonts_0.3.2 
- [70] evaluate_0.14      lattice_0.20-41    labeling_0.4.2    
- [73] htmlwidgets_1.5.3  rvg_0.2.5          tidyselect_1.1.1  
- [76] editData_0.1.8     magrittr_2.0.1     R6_2.5.0          
- [79] generics_0.1.0     DBI_1.1.0          pillar_1.6.0      
- [82] haven_2.3.1        whisker_0.4        foreign_0.8-81    
- [85] withr_2.4.2        abind_1.4-5        ztable_0.2.2      
- [88] modelr_0.1.8       crayon_1.4.1       shinyWidgets_0.5.4
- [91] uuid_0.1-4         utf8_1.2.1         tmvnsim_1.0-2     
- [94] rmarkdown_2.6      officer_0.3.18     grid_4.0.5        
- [97] readxl_1.3.1       data.table_1.13.6  git2r_0.27.1      
-[100] vcd_1.4-8          reprex_2.0.0       digest_0.6.27     
-[103] xtable_1.8-4       httpuv_1.5.4       munsell_0.5.0     </code></pre>
-</div>
+ [28] httr_1.4.2         MBESS_4.8.0        backports_1.2.1   
+ [31] assertthat_0.2.1   fastmap_1.0.1      cli_2.5.0         
+ [34] later_1.1.0.1      tweenr_1.0.1       moonBook_0.2.4    
+ [37] htmltools_0.5.1.1  tools_4.0.5        gtable_0.3.0      
+ [40] glue_1.4.2         Rcpp_1.0.5         cellranger_1.1.0  
+ [43] vctrs_0.3.8        nlme_3.1-152       psych_2.0.12      
+ [46] lmtest_0.9-38      insight_0.11.1     xfun_0.20         
+ [49] ps_1.5.0           openxlsx_4.2.3     rvest_1.0.0       
+ [52] mime_0.9           miniUI_0.1.1.1     lifecycle_1.0.0   
+ [55] devEMF_4.0-2       MASS_7.3-53        zoo_1.8-8         
+ [58] scales_1.1.1       hms_1.0.0          promises_1.1.1    
+ [61] parallel_4.0.5     RColorBrewer_1.1-2 yaml_2.2.1        
+ [64] curl_4.3           gdtools_0.2.3      stringi_1.5.3     
+ [67] zip_2.1.1          rlang_0.4.11       pkgconfig_2.0.3   
+ [70] systemfonts_0.3.2  evaluate_0.14      lattice_0.20-41   
+ [73] labeling_0.4.2     htmlwidgets_1.5.3  rvg_0.2.5         
+ [76] tidyselect_1.1.1   editData_0.1.8     magrittr_2.0.1    
+ [79] R6_2.5.0           generics_0.1.0     DBI_1.1.0         
+ [82] pillar_1.6.0       haven_2.3.1        whisker_0.4       
+ [85] foreign_0.8-81     withr_2.4.2        abind_1.4-5       
+ [88] ztable_0.2.2       modelr_0.1.8       crayon_1.4.1      
+ [91] shinyWidgets_0.5.4 uuid_0.1-4         utf8_1.2.1        
+ [94] tmvnsim_1.0-2      rmarkdown_2.6      officer_0.3.18    
+ [97] grid_4.0.5         readxl_1.3.1       data.table_1.13.6 
+[100] git2r_0.27.1       vcd_1.4-8          reprex_2.0.0      
+[103] digest_0.6.27      xtable_1.8-4       httpuv_1.5.4      
+[106] munsell_0.5.0     </code></pre>
 </div>
 </div>
 
