@@ -253,7 +253,9 @@ Como el valor P de la prueba de Shapiro-Wilk es mayor a 0.05, se puede asumir qu
 
 
 $H_0: \mu = 500 gr$
+
 $H_A:  \mu \ne 500gr$
+
 
 
 3. Realizar la prueba
@@ -776,8 +778,7 @@ mo2_log_leven <- mo2 %>%
 Prueba t de student pareada
 ```{r}
 mo2_log_ttest <- mo2 %>%
-  t_test(mo2_log ~ Temperatura, paired = TRUE, var.equal = TRUE) %>% 
-  print()
+  t_test(mo2_log ~ Temperatura, paired = TRUE, var.equal = TRUE)
 
 ```
 
@@ -790,4 +791,20 @@ ggplot(mo2, aes(x = Temperatura, y = MO2, fill = Temperatura))+
   labs(title = "Cambio en el consumo de oxígeno tras un incremento en la temperatura")
 ```
 
+# Reportar los resultados de una prueba t con `apa`
+
+El paquete `apa` genera un reporte con los resultados de la prueba t de Student de acuerdo con las normas APA. Para esto se requiere un objeto `t.test`.
+
+```{r}
+#install.packages("apa")
+library(apa)
+```
+
+
+```{r}
+# Ejemplo
+prueba_t <- t.test(mo2_log ~ Temperatura, data = mo2, var.equal = TRUE, paired = FALSE)
+
+t_apa(prueba_t)
+```
 

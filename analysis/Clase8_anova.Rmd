@@ -1,0 +1,418 @@
+---
+title: "Comparación de dos o mas medias: ANOVA"
+author: "Miguel Tripp"
+date: "2021-05-29"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+# Generalidades
+
+El análisis de varianza (ANOVA o ANDEVA) se emplea cuando se desea comparar las medias de dos o más grupos.
+
+EL termino ANOVA puede resultar confuso ya que a pesar del que el nombre hace referencia a las varianzas, la prueba se enfoca a investigar diferencias en las medias.
+
+La **hipótesis nula** de la que parten los diferentes tipos de ANOVA es que la media de la variable estudiada **es la misma** en los diferentes grupos, en contraposición de la **hipótesis alternativa** de que **al menos dos medias difieren** de forma significativa.
+
+-   $H_0$: No hay diferencias entre las medias de los diferentes grupos: $\mu_1 = \mu_2 ... \mu_k = \mu$
+
+-   $H_1$: Al menos un par de medias son significativamente diferentes
+
+El funcionamiento básico de la ANOVA consiste en calcular la media de cada uno de los grupos para despúes comparar la varianza de estas medias (*varianza explicada por grupo*) frente a la varianza promedio dentro de los grupos.
+
+Bajo la hipótesis nula de que las observaciones de los distintos grupos proceden de la misma población (misma media y varianza), la varianza ponderara entre grupos será la misma que la varianza promedio dentro de los grupos.
+
+El estadístico estudiado en el ANOVA, conocido como $F_{ratio}$, es el cociente entre la varianza de las medias de los grupos y el promedio de la varianza dentro de los grupos. Este estadístico sigue una distribución conocida como "F de Fisher-Snedecor". Si se cumple la hipótesis nula, *el estadístico F adquiere el valor de 1* ya que la varianza dentro de los grupos será igual a la varianza entre grupos. Cuanto más difieran las medias de los grupos mayor será la varianza entre medias en comparación al promedio de la varianza dentro de los grupos, obteniéndose valores de F *superiores a 1 y por lo tanto menor la probabilidad de que la distribución adquiera valores tan extremos (menor el p-value)*.
+
+# ANOVA paso a paso
+
+Para esta sección, utilizaremos los datos que estan disponibles por el paquete `agridat` y que se describe a detalle en el libro [*The new statistics with R. An introduction for biologist*](https://oxford.universitypressscholarship.com/view/10.1093/acprof:oso/9780198729051.001.0001/acprof-9780198729051).
+
+Dichos datos consisten en observaciones realizadas por Darwin en 1876 de un experimento con plantas de maíz. Las semillas provenian de los mismos padres, pero algunas semillas fueron producidas por *autopolinización* de los padres mientras que otras fueron producidas por *fertilización cruzada*. Pares de semillas fueron plantadas en macetas. Darwin tenia la hipótesis que la fertilización cruzada produce plantas mas fuertes y vigorosas.
+
+Empecemos por cargar los paquetes necesarios y abrir la tabla `Darwin_esp.csv`. Estos datos los puedes descargar de [aqui](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Darwin_esp.csv)
+
+```{r message=FALSE}
+library(tidyverse)
+library(rstatix)
+```
+
+```{r, message=FALSE}
+darwin = read_csv("Data/Darwin_esp.csv")
+```
+
+Antes que nada, visualizamos los datos
+
+```{r}
+ggplot(darwin, aes(x = tipo, y = altura, col = tipo, shape = tipo))+
+  geom_point()
+```
+
+## ANOVA como modelo lineal
+
+En el fondo, tanto la ANOVA, el análisis de covarianza (ANCOVA) y la regresión lineal son modelos lineales muy relacionados.
+
+Para hacer una ANOVA usamos la función `lm()`
+
+> Antes de continuar, vamos a instalar el paquete `arm` el cual nos ppermite visualizar de manera simple y didactica los resultados de un modelo lineal
+
+```{r, message=FALSE}
+#install.packages("arm")
+library(arm)
+```
+
+```{r}
+ls0 <- lm(altura ~ 1, data = darwin)
+```
+
+En este caso, usamos 1 para especificar que no tenemos una variable explanatoria. Por lo que solo nos da el promedio total (gran media).
+
+que es igual:
+
+```{r}
+mean(darwin$altura)
+```
+
+Ahora utilizaremos la función `display()` del paquete arm para extraer la información del modelo
+
+```{r}
+display(ls0)
+```
+
+La primera fila corresponde al intercepto, que en este caso es simplemente la media total.
+
+El tamaño de muestra *n* nos dice el número de puntos (y de filas en la tabla) y el número de parámetros estimados -media total- indicado como *k*.
+
+Ahora ajustaremos el modelo lineal utilizando la *altura* de la planta como variable de respuesta en función del *tipo* de polinización
+
+```{r}
+ls1 <- lm(altura ~ 1 + tipo, data = darwin)
+```
+
+En este modelo, el intercepto ya no es la gran media, tal como se observa con la función display:
+
+```{r}
+display(ls1)
+```
+
+En este caso, la segunda fila "*tipocruzada*" se produce con el nombre la variable explanatoria (tipo), seguido sin espacio del nombre de uno de los niveles de este factor (cruza). Por eliminación, la fila "intercepto" corresponde al primer factor (auto).
+
+Es importante notar que el valor del segundo factor (tipocruzada) corresponde a la diferencía entre este valor y la media del otro nivel.
+
+La parte inferior de los resultados con `display(ls1)` indica el número de parámetros calculados *k* que es de 2, que corresponde a los dos tratamientos de nuestro factor.
+
+*R square* es la proporción de la suma de cuadrados explicado por el modelo estadistico.
+
+*Residual sd* corresponde a la desviación de los residuales (no explicados por el modelo).
+
+## Tablas ANOVA
+
+Una tabla ANOVA resume los calculos de las sumas de cuadrados
+
+La tabla de anova resultante de modelo con la función `lm()`se puede obtener con la función `anova()`
+
+```{r}
+anova(ls1)
+```
+
+En esta tabla, la primera columna indica la fuente de variación (tratamiento) y la variación residual (no explicada por el modelo)
+
+El valor F se calcula dividiendo la varianza de tratamiento entre la varianza residual del error. En este caso, el valor de 5.9 significa que la *señal* es seis veces mayor que el *ruido*
+
+El último argumento proporciona el valor de probabilidad el cual se calcula a partir del valor F.
+
+Finalmente, el resutlado se reportaria como:
+
+*"La altura de las plantas con polinización cruzada fue significativamente mayor que la altura de las plantas auto-polinizadas (*$F_{1,28}$ = 5.9; P = 0.02)."
+
+# ANOVA de una vía
+
+## Ejemplo: Viagra
+
+### Descripción de los datos
+
+![](https://amp.65ymas.com/uploads/s1/16/18/0/la-viagra-y-otros-medicamentos-similares-cuales-son-sus-efectos-en-nuestro-organismo-big-stock_1_621x621.jpeg){width="421"}
+
+Para este ejemplo, tomaremos los datos descritos en el libro *Andy Field (2012)* sobre el uso de viagra. Los datos consisten en un análisis a tres grupos de participates: un grupo al que se le administro un placebo, un grupo con una dosis baja de viagra y un tercer grupo con una dosis alta de viagra. La variable dependiente fue una medida obetiva del libido la cual se midio en el transcurso de una semana.
+
+```{r}
+dosis <- gl(3,5, labels = c("Placebo", "Dosis baja", "Dosis alta"))
+libido <- c(3,2,1,1,4,5,2,4,2,3,7,4,5,3,6)
+
+Viagratab <- data.frame(dosis, libido)
+```
+
+Lo siguiente en nuestro análisis es realizar una inspección visual de los datos, la cual se puede hacer con las diversas geometrias de ggplot vistas hasta el momento.
+
+```{r}
+ggplot(Viagratab, aes(x = dosis, y = libido, fill = dosis))+
+  geom_boxplot()
+
+```
+
+Ademas, podemos generar las estadisticas descriptivas por grupo utilizando la función `get_summary_stats()` del paquete *rstatixs*
+
+```{r}
+Viagratab %>% 
+  group_by(dosis) %>% 
+  get_summary_stats(libido)
+```
+
+Posteriormente, verificamos que los supuestos de normalidad y homogeneidad de varianzas se cumplan, para lo cual podemos utilizar las pruebas de Shapiro-Wilk y Levene, respectivamente.
+
+```{r}
+Viagratab %>% 
+  group_by(dosis) %>% 
+  shapiro_test(libido)
+```
+
+```{r}
+Viagratab %>% 
+  levene_test(libido ~ dosis)
+```
+
+La prueba de Levene no es significativa, $F(2,12) = 0.118, p = 0.89$, lo que indica que las varianza son similares. De hecho, la tabla generada con los estadisticos descriptivos demuestra que las desviaciones estandar (y por tanto las varianzas) entre el grupo placebo y dosis baja son identicas.
+
+### ANOVA con `aov()`
+
+En el ejemplo anterior, para hacer el análisis de varianza utilizamos la función `lm()` ya que como se mencionó anteriormente, la ANOVA es un caso especial de *modelo lineal general*, de manera que bajo esta perspectiva, estamos prediciendo el libido a partir de un grupo (dosis de viagra) utilizando el siguiente modelo:
+
+$libido_i = dosis_i + error_i$
+
+De manera que nuestro análisis de varianza utilizando `lm()`seria de la siguiente manera:
+
+```{r}
+modeloViagra_lm <- lm(libido ~ dosis, data = Viagratab)
+summary(modeloViagra_lm)
+```
+
+Alternativamente, podemos utilizar la función `aov()` cual realiza exactamente lo mismo, pero *aov* toma la salida de *lm* y nos muestra directamente el resultado de un ANOVA mas convencional.
+
+La sintaxis para realizar una ANOVA con `aov()` es igual a la anterior:
+
+```{r}
+modeloViagra_aov <- aov(libido ~ dosis, data = Viagratab)
+summary(modeloViagra_aov)
+
+```
+
+De hecho, si evaluamos el tipo de objeto de `modeloViagra_aov`nos podemos dar cuenta que realmente tiene dos clases:
+
+```{r}
+class(modeloViagra_aov)
+```
+
+La primer clase nos dice que es un objetvo del tipo `aov` (Analysis of Variance) y el segundo objeto nos indica que es de tipo `lm` (linear model).
+
+```{r}
+
+```
+
+### Residuales
+
+El estudio de las condiciones de normalidad y homogeneidad de varianzas puede realizarse previo cálculo del ANOVA, puesto que si no se cumplen no tiene mucho sentido seguir adelante. Sin embargo la forma más adecuada de comprobar que se satisfacen las condiciones necesarias es estudiando los residuos del modelo una vez generado el ANOVA. R permite graficar los residuos de forma directa con la función plot(objeto anova).
+
+```{r}
+par(mfrow = c(2,2))
+plot(modeloViagra_aov)
+dev.off()
+```
+
+Los resultados mostrarán cuatro gráficos aunque en realidad los que mas nos interesan son los primeros dos: *residuales vs fitted* y *Normal Q-Q*.
+
+El primer gráfico puede ser utilizado para evaluar la homogeneidad de las varianzas. De manera general, si el grafico tiene forma de embudo entonces nos esta indicando que hay diferencias en la disperción. En nuestro caso, los puntos estan distribuidos de manera uniforme en los tres tratamientos, lo que implica que las varianza son similares.
+
+El segundo gráfico es un Q-Q plot que nos indica si los residuales siguen una distribución normal. Queremos que los residuales esten distribuidos de acuerdo a una distribución normal, lo que significa que los puntos en la gráfica deberan ubicarse sobre la línea diagonal.
+
+### ANOVA con `oneway.test()`: Cuando las varianzas no son iguales
+
+En el caso de que la prueba de Levene nos indique que nuestros datos no tienen varianzas homogeneas (valor singificativo) es posible utilizar un ajuste de Welch al calculo de F, lo cual hace ajustes a los grados de libertad de manera similar a la prueba de Welch para dos medias. 
+
+Esta prueba se realiza con la función `oneway.test()` con la misma sintaxis que las funciones anteriores pero especificando si las varianzas son o no son iguales con el parámetro `var.equal = TRUE/FALSE`
+
+```{r}
+modeloViagra_oneway <- oneway.test(libido ~ dosis, data = Viagratab, var.equal = FALSE)
+
+modeloViagra_oneway
+```
+
+Para los datos de viagra realmente no es necesario hacer este ajuste, pero cuando la homogeneidad de varianza no se puede aceptar debemos fijarnos en este valor F ajustado. En importane notar que los grados de libertad han sido ajustados, por lo que es necesario tomar en cuenta este ajuste al momento de reportar los resultados de la prueba.
+
+### ANOVA en rstatix
+
+Para realizar la anova utilizando las funciones de rstatixs se puede utilizar:
+
+```{r}
+Viagratab %>% 
+  anova_test(libido ~ dosis) 
+
+# para varianzas heterogeneas
+Viagratab %>% 
+  welch_anova_test(libido ~ dosis)
+
+```
+
+# Pruebas post hoc y comparaciones multiple
+
+Cuando realizamos una ANOVA con mas de dos grupos y obtenemos un efecto signficativo, la primera pregunta que nos viene a la mente es exactamente cual de los grupos es diferente de los otros.
+
+Recordemos que la hipotesis nula en una ANOVA es que los tres grupos (placebo, dosis baja y dosis alta) tienen exactamente el mismo efecto en el nivel de libido. De manera que en realidad nuestra hipotesis nula consiste de tres ideas a la vez:
+
+-   El placebo no es mejor que la dosis baja ($\mu_p = \mu_b$)
+-   La dosis baja no es mejor que la dosis alta ($\mu_b = \mu_a$)
+-   La dosis alta no es mejor que el placebo ($\mu_a = \mu_p$)
+
+*Si cualquiera de estas afirmaciones es falsa, entonce nuestra hipótesis nula tambien es falsa!* De manera que en nuestro ejemplo, que hemos rechazado la hipotesis nula, queremos saber cuales afirmaciones son falsas.
+
+Para identificarlas hay que comparar dos a dos las medias de todos los grupos introducidos en el análisis mediante un t-test u otro test que compare 2 grupos, ha esto se le conoce como análisis post-hoc. Debido a la inflación del error de tipo I, cuantas más comparaciones se hagan más aumenta la probabilidad de encontrar diferencias significativas (para α = 0.05, de cada 100 comparaciones se esperan 5 significativas solo por azar). Los niveles de significancia pueden ser ajustados en función del número de comparaciones (corrección de significancia). Si no se hace ningún tipo de corrección se aumenta la posibilidad de falsos positivos (error tipo I) pero si se es muy estricto con las correcciones se pueden considerar como no significativas diferencias que realmente podrían serlo (error tipo II).
+
+## Comparaciones pareadas (*pairwise t-tests*)
+
+Para identificar cual de nuestras hipotesis nulas son falsas, podemos utilizar la función `pairwise.t.test()` la cual realiza t de Student para cada contraste
+
+Esta se ejecuta de la siguiente manera:
+
+```{r, eval = FALSE}
+pairwise.t.test(x = variable respuesta, g = grupos, p.adjust.method = "" )
+```
+
+De manera que para nuestros datos viagra ejecutamos la siguiente línea:
+
+```{r}
+pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = "none")
+```
+
+Sin embargo, como ya se ha mecionado, al realizar multiples comparaciones corremos el riego de inflar nuestro error alfa. Por lo que es necesario incluir en el análisis una *corrección por comparaciones multiples*. Entre estas tenemos:
+
+-   Bonferroni
+-   Holm
+-   Benajim & Hochber (BH) - *false discovery rate*
+
+Comparaciones multiples con ajuste de *Bonferroni*
+
+```{r}
+pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = "bonferroni")
+```
+
+Comparaciones multiples con ajuste de *Holm*
+
+```{r}
+pairwise.t.test(Viagratab$libido, g = Viagratab$dosis, p.adjust.method = "holm")
+```
+
+De esta forma, podemos concluir que el grupo de dosis alta no tiene diferencia con el grupo de la dosis baja ($p = 0.28$) pero es significativamente diferente con el grupo placebo ($p = 0.02$)
+
+En `rstatix` dichas comparaciones multiples se ejecutan de la siguiente manera:
+
+```{r}
+Viagratab %>% 
+  pairwise_t_test(libido ~ dosis, p.adjust.method = "bonferroni")
+```
+
+## Comparaciones pareadas (*Tukey-Kramer Honest Significant Difference*)
+
+Es el ajuste recomendado cuando el número de grupos a comparar es mayor de 6 y el diseño es equilibrado (mismo número de observaciones por grupo). En el caso de modelos no equilibrados el método HSD es conservativo, requiere diferencias grandes para que resulte significativo. Solo aplicable si se trata de datos no pareados.
+
+El Tukey's test es muy similar a un t-test, excepto que corrige el experiment wise error rate [1](https://www.cienciadedatos.net/documentos/19b_comparaciones_multiples_correccion_p-value_fdr).
+
+```{r}
+TukeyHSD(modeloViagra_aov)
+
+plot(TukeyHSD(modeloViagra_aov))
+```
+
+En `rstatixs` las comparaciones multiples con TukeyHSD pueden realizarse directamente en la tabla de manera muy similar a las pruebas T pareadas
+
+```{r}
+Viagratab %>% 
+  tukey_hsd(libido ~ dosis)
+```
+
+Una alternativa mas completa para realizar la prueba de TukeyHSD es la que incluye el paquete `agricolae` la cual, ademas de realizar la prueba, nos incluye diversos estadísticos adicionales
+
+La función `HSD.test()`se aplica sobre un objeto tipo *aov* o *lm* y se aplica de la siguiente manera:
+
+```{r, eval = FALSE}
+HSD.test(y = modelo(lm o aov), trt = "variable Independiente", group = TRUE/FALSE,  alpha = 0.5)
+```
+
+```{r}
+#install.packages("agricolae")
+
+Tukey_test <- agricolae::HSD.test(modeloViagra_aov, trt = "dosis", group = TRUE)
+Tukey_test
+```
+
+# Añadir estadisticos y valores de significancia a gráficos con `ggpubr`
+
+El paquete `ggpubr` es un complemento de ggplot el cual facilita la creación de gráficos y que tiene la versatilidad de incluir estadisticos.
+
+Puedes leer mas sobre este paquete [aquí](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+
+```{r}
+#install.packages("ggpubr")
+library(ggpubr)
+```
+
+Algunos ejemplos de la funcionalidad de ggpubr son:
+
+```{r}
+ggdensity(Viagratab, x = "libido", add = "mean", color = "dosis", fill = "dosis",
+          palette =c("#00AFBB", "#E7B800", "#FC4E07"))
+```
+
+```{r}
+ggboxplot(Viagratab, x = "dosis",y = "libido",
+          add = "jitter", color = "dosis", palette =c("#00AFBB", "#E7B800", "#FC4E07"))
+```
+
+```{r}
+ggline(Viagratab, x = "dosis", y = "libido", add = "mean_sd")
+```
+
+```{r}
+ggbarplot(Viagratab, x = "dosis", y = "libido", add = "mean_sd", color = "dosis", fill = "dosis")
+```
+
+Sin embargo, la función que mas nos interesa de ggpubr es la función `stat_compare_means()`la cual puede ser aplicada en un objetivo ggpubr o ggplot:
+
+```{r}
+ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
+  geom_boxplot(width = 0.2)+
+  geom_jitter(width = 0.1)+
+  stat_compare_means(method = "anova")+
+   stat_compare_means(label = "p.format", method = "t.test",
+                     ref.group = "Placebo") +
+  theme_classic()+
+  theme(legend.position = "none")
+```
+
+Alternativamente, se puede generar los contrastes de la siguiente manera:
+
+```{r}
+contrastes <- list( c("Placebo", "Dosis baja"), c("Placebo", "Dosis alta"), c("Dosis baja", "Dosis alta") )
+
+ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
+  geom_boxplot(width = 0.2)+
+  geom_jitter(width = 0.1)+
+  stat_compare_means(method = "anova", label.x = 0.5, label.y = 9)+
+   stat_compare_means(label = "p.signif", method = "t.test",comparisons = contrastes) +
+  theme_classic()+
+  theme(legend.position = "none")
+```
+
+Finalmente, podemos basarnos en los resultados de `apa` para reportar los resultados del efecto de la dosis 
+```{r}
+apa::anova_apa(x = modeloViagra_aov)
+```
+
+Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante ($F_{(2,12)} = 5.12; p = 0.25$). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58). 
