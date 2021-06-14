@@ -352,7 +352,7 @@ Tukey_test <- agricolae::HSD.test(modeloViagra_aov, trt = "dosis", group = TRUE)
 Tukey_test
 ```
 
-# Añadir estadisticos y valores de significancia a gráficos con `ggpubr`
+# Añadir estadisticos y valores de significancia a gráficos con `ggpubr` y `rstatixs`
 
 El paquete `ggpubr` es un complemento de ggplot el cual facilita la creación de gráficos y que tiene la versatilidad de incluir estadisticos.
 
@@ -383,32 +383,46 @@ ggline(Viagratab, x = "dosis", y = "libido", add = "mean_sd")
 ggbarplot(Viagratab, x = "dosis", y = "libido", add = "mean_sd", color = "dosis", fill = "dosis")
 ```
 
-Sin embargo, la función que mas nos interesa de ggpubr es la función `stat_compare_means()`la cual puede ser aplicada en un objetivo ggpubr o ggplot:
+Sin embargo, la función que mas nos interesa de ggpubr es la función `stat_pvalue_manual()`la cual puede ser aplicada en un objetivo ggpubr o ggplot:
+
+Para esto, nos vamos a apoyar en las funciones de rstatixs para generar un objetvo _anova_ y un objeto _pairwise_t_test_ o **tukey_hsd**.
 
 ```{r}
-ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
-  geom_boxplot(width = 0.2)+
-  geom_jitter(width = 0.1)+
-  stat_compare_means(method = "anova")+
-   stat_compare_means(label = "p.format", method = "t.test",
-                     ref.group = "Placebo") +
-  theme_classic()+
-  theme(legend.position = "none")
+viagra_aov <- Viagratab %>% 
+  anova_test(libido ~ dosis)
+viagra_aov
 ```
 
-Alternativamente, se puede generar los contrastes de la siguiente manera:
+Posteriormente generamos las comparaciones multiples
 
 ```{r}
-contrastes <- list( c("Placebo", "Dosis baja"), c("Placebo", "Dosis alta"), c("Dosis baja", "Dosis alta") )
-
-ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
-  geom_boxplot(width = 0.2)+
-  geom_jitter(width = 0.1)+
-  stat_compare_means(method = "anova", label.x = 0.5, label.y = 9)+
-   stat_compare_means(label = "p.signif", method = "t.test",comparisons = contrastes) +
-  theme_classic()+
-  theme(legend.position = "none")
+viagra_pwc <- Viagratab %>% 
+  tukey_hsd(libido ~ dosis, paired = FALSE)
 ```
+
+
+Posteriormente, usamos la función `add_xy_position` sobre el objetvo pairwise_t_test
+
+```{r}
+viagra_pwc_plot <- viagra_pwc %>% 
+  add_xy_position(x = "dosis")
+```
+
+
+y finalmente generamos el gráfico al cual le añadimos la función `stat_pvalue_manua()`
+
+```{r}
+ggplot(Viagratab, aes(x = dosis, y= libido, color = dosis))+
+  geom_boxplot()+
+  stat_pvalue_manual(viagra_pwc_plot, hide.ns = TRUE)+
+  labs(subtitle = get_test_label(viagra_aov, detailed = TRUE),
+    caption = get_pwc_label(viagra_pwc_plot)
+    )+
+  theme(legend.position = "none")
+  
+```
+
+
 
 Finalmente, podemos basarnos en los resultados de `apa` para reportar los resultados del efecto de la dosis 
 ```{r}
