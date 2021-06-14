@@ -444,7 +444,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-12
+<strong>Last updated:</strong> 2021-06-14
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treebabe6f9b2c48444f4989025c94cfb52003cd0340targetblankbabe6f9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/babe6f9b2c48444f4989025c94cfb52003cd0340" target="_blank">babe6f9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree520708a094f07cc387fd457d36401b4782fe7db9targetblank520708aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treebabe6f9b2c48444f4989025c94cfb52003cd0340targetblankbabe6f9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/520708a094f07cc387fd457d36401b4782fe7db9" target="_blank">520708a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/babe6f9b2c48444f4989025c94cfb52003cd0340" target="_blank">babe6f9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -626,6 +626,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/babe6f9b2c48444f4989025c94cfb52003cd0340/analysis/Clase8_anova.Rmd" target="_blank">babe6f9</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-14
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/2352c47ae31b1714b80962224b8c0c6b4c212da1/docs/Clase8_anova.html" target="_blank">2352c47</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-12
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -997,8 +1031,8 @@ attr(,&quot;class&quot;)
 [1] &quot;group&quot;</code></pre>
 </div>
 </div>
-<div id="añadir-estadisticos-y-valores-de-significancia-a-gráficos-con-ggpubr" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Añadir estadisticos y valores de significancia a gráficos con <code>ggpubr</code></h1>
+<div id="añadir-estadisticos-y-valores-de-significancia-a-gráficos-con-ggpubr-y-rstatixs" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Añadir estadisticos y valores de significancia a gráficos con <code>ggpubr</code> y <code>rstatixs</code></h1>
 <p>El paquete <code>ggpubr</code> es un complemento de ggplot el cual facilita la creación de gráficos y que tiene la versatilidad de incluir estadisticos.</p>
 <p>Puedes leer mas sobre este paquete <a href="http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/">aquí</a></p>
 <pre class="r"><code>#install.packages(&quot;ggpubr&quot;)
@@ -1014,27 +1048,31 @@ library(ggpubr)</code></pre>
 <p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggbarplot(Viagratab, x = &quot;dosis&quot;, y = &quot;libido&quot;, add = &quot;mean_sd&quot;, color = &quot;dosis&quot;, fill = &quot;dosis&quot;)</code></pre>
 <p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Sin embargo, la función que mas nos interesa de ggpubr es la función <code>stat_compare_means()</code>la cual puede ser aplicada en un objetivo ggpubr o ggplot:</p>
-<pre class="r"><code>ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
-  geom_boxplot(width = 0.2)+
-  geom_jitter(width = 0.1)+
-  stat_compare_means(method = &quot;anova&quot;)+
-   stat_compare_means(label = &quot;p.format&quot;, method = &quot;t.test&quot;,
-                     ref.group = &quot;Placebo&quot;) +
-  theme_classic()+
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Alternativamente, se puede generar los contrastes de la siguiente manera:</p>
-<pre class="r"><code>contrastes &lt;- list( c(&quot;Placebo&quot;, &quot;Dosis baja&quot;), c(&quot;Placebo&quot;, &quot;Dosis alta&quot;), c(&quot;Dosis baja&quot;, &quot;Dosis alta&quot;) )
+<p>Sin embargo, la función que mas nos interesa de ggpubr es la función <code>stat_pvalue_manual()</code>la cual puede ser aplicada en un objetivo ggpubr o ggplot:</p>
+<p>Para esto, nos vamos a apoyar en las funciones de rstatixs para generar un objetvo <em>anova</em> y un objeto <em>pairwise_t_test</em> o <strong>tukey_hsd</strong>.</p>
+<pre class="r"><code>viagra_aov &lt;- Viagratab %&gt;% 
+  anova_test(libido ~ dosis)</code></pre>
+<pre><code>Coefficient covariances computed by hccm()</code></pre>
+<pre class="r"><code>viagra_aov</code></pre>
+<pre><code>ANOVA Table (type II tests)
 
-ggplot(Viagratab, aes(x = dosis, y = libido, color = dosis)) + 
-  geom_boxplot(width = 0.2)+
-  geom_jitter(width = 0.1)+
-  stat_compare_means(method = &quot;anova&quot;, label.x = 0.5, label.y = 9)+
-   stat_compare_means(label = &quot;p.signif&quot;, method = &quot;t.test&quot;,comparisons = contrastes) +
-  theme_classic()+
+  Effect DFn DFd     F     p p&lt;.05  ges
+1  dosis   2  12 5.119 0.025     * 0.46</code></pre>
+<p>Posteriormente generamos las comparaciones multiples</p>
+<pre class="r"><code>viagra_pwc &lt;- Viagratab %&gt;% 
+  tukey_hsd(libido ~ dosis, paired = FALSE)</code></pre>
+<p>Posteriormente, usamos la función <code>add_xy_position</code> sobre el objetvo pairwise_t_test</p>
+<pre class="r"><code>viagra_pwc_plot &lt;- viagra_pwc %&gt;% 
+  add_xy_position(x = &quot;dosis&quot;)</code></pre>
+<p>y finalmente generamos el gráfico al cual le añadimos la función <code>stat_pvalue_manua()</code></p>
+<pre class="r"><code>ggplot(Viagratab, aes(x = dosis, y= libido, color = dosis))+
+  geom_boxplot()+
+  stat_pvalue_manual(viagra_pwc_plot, hide.ns = TRUE)+
+  labs(subtitle = get_test_label(viagra_aov, detailed = TRUE),
+    caption = get_pwc_label(viagra_pwc_plot)
+    )+
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Finalmente, podemos basarnos en los resultados de <code>apa</code> para reportar los resultados del efecto de la dosis</p>
 <pre class="r"><code>apa::anova_apa(x = modeloViagra_aov)</code></pre>
 <pre><code>       Effect                                             
@@ -1086,7 +1124,7 @@ loaded via a namespace (and not attached):
  [34] tools_4.0.5         coda_0.19-4         gtable_0.3.0       
  [37] agricolae_1.3-5     glue_1.4.2          Rcpp_1.0.5         
  [40] apa_0.3.3           carData_3.0-4       cellranger_1.1.0   
- [43] vctrs_0.3.8         nlme_3.1-152        xfun_0.20          
+ [43] vctrs_0.3.8         nlme_3.1-152        xfun_0.23          
  [46] ps_1.5.0            openxlsx_4.2.3      rvest_1.0.0        
  [49] mime_0.9            miniUI_0.1.1.1      lifecycle_1.0.0    
  [52] statmod_1.4.35      scales_1.1.1        hms_1.0.0          
