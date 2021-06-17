@@ -444,7 +444,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-14
+<strong>Last updated:</strong> 2021-06-16
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treebabe6f9b2c48444f4989025c94cfb52003cd0340targetblankbabe6f9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/babe6f9b2c48444f4989025c94cfb52003cd0340" target="_blank">babe6f9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree28f09a5533131abb488d73c498e591baad7d73edtargetblank28f09a5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/28f09a5533131abb488d73c498e591baad7d73ed" target="_blank">28f09a5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021treebabe6f9b2c48444f4989025c94cfb52003cd0340targetblankbabe6f9a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree28f09a5533131abb488d73c498e591baad7d73edtargetblank28f09a5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/babe6f9b2c48444f4989025c94cfb52003cd0340" target="_blank">babe6f9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/28f09a5533131abb488d73c498e591baad7d73ed" target="_blank">28f09a5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -560,6 +560,7 @@ Untracked files:
     Untracked:  Diapositivas/
     Untracked:  README.html
     Untracked:  Resources/
+    Untracked:  analysis/Clase9_anova2vias.Rmd
     Untracked:  analysis/images/
     Untracked:  code/tarea_macrograd.R
     Untracked:  data/CS_subset.csv
@@ -578,6 +579,9 @@ Untracked files:
     Untracked:  data/Tabla1_Muestreo.txt
     Untracked:  data/Transcriptome_Anotacion.csv
     Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/Vinogradov_2004_Titanic.tab
+    Untracked:  data/Vinogradov_2004_Titanic.tab.csv
+    Untracked:  data/data_tukey.txt
     Untracked:  data/datasets_Pokemon.csv
     Untracked:  data/datasets_Pokemon.xls
     Untracked:  data/exp_macrogard_growth.tab
@@ -626,6 +630,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/28f09a5533131abb488d73c498e591baad7d73ed/analysis/Clase8_anova.Rmd" target="_blank">28f09a5</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-16
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/c5dfe6aa68a1601f875758a32c1ff9208d78f3e8/docs/Clase8_anova.html" target="_blank">c5dfe6a</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1067,12 +1105,55 @@ library(ggpubr)</code></pre>
 <p>y finalmente generamos el gráfico al cual le añadimos la función <code>stat_pvalue_manua()</code></p>
 <pre class="r"><code>ggplot(Viagratab, aes(x = dosis, y= libido, color = dosis))+
   geom_boxplot()+
-  stat_pvalue_manual(viagra_pwc_plot, hide.ns = TRUE)+
+  stat_pvalue_manual(viagra_pwc_plot, hide.ns = FALSE, tip.length = 0.01, label = &quot;p.adj&quot;)+
   labs(subtitle = get_test_label(viagra_aov, detailed = TRUE),
     caption = get_pwc_label(viagra_pwc_plot)
     )+
   theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Alternativamente, podemos generar una tabla con los resultados de los grupos generados con la función HSD.test del paquete <code>agricolae</code>. Para esto primero necesitamos obtener los valores máximos de cada grupo (para ubicar la etiqueta) y las etiquetas de los grupos</p>
+<pre class="r"><code>#resultados de Tukey HSD con el paquete agricolae
+Tukey_test</code></pre>
+<pre><code>$statistics
+   MSerror Df     Mean       CV      MSD
+  1.966667 12 3.466667 40.45324 2.366241
+
+$parameters
+   test name.t ntr StudentizedRange alpha
+  Tukey  dosis   3         3.772929  0.05
+
+$means
+           libido      std r Min Max Q25 Q50 Q75
+Dosis alta    5.0 1.581139 5   3   7   4   5   6
+Dosis baja    3.2 1.303840 5   2   5   2   3   4
+Placebo       2.2 1.303840 5   1   4   1   2   3
+
+$comparison
+NULL
+
+$groups
+           libido groups
+Dosis alta    5.0      a
+Dosis baja    3.2     ab
+Placebo       2.2      b
+
+attr(,&quot;class&quot;)
+[1] &quot;group&quot;</code></pre>
+<pre class="r"><code>#obtenemos la table con las etiquetas de los grupos y agregamos los valores maximos
+grupos &lt;- Tukey_test$groups
+grupos$maximos &lt;- Tukey_test$means$Max
+grupos$dosis &lt;- row.names(grupos)
+
+grupos</code></pre>
+<pre><code>           libido groups maximos      dosis
+Dosis alta    5.0      a       7 Dosis alta
+Dosis baja    3.2     ab       5 Dosis baja
+Placebo       2.2      b       4    Placebo</code></pre>
+<pre class="r"><code>#hacemos la gráfica utilizando geom_text
+ggplot(Viagratab, aes(x = dosis, y= libido))+
+  geom_boxplot()+
+  geom_text(data = grupos, aes(x=dosis, y = 0.1 + maximos, label = groups))</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Finalmente, podemos basarnos en los resultados de <code>apa</code> para reportar los resultados del efecto de la dosis</p>
 <pre class="r"><code>apa::anova_apa(x = modeloViagra_aov)</code></pre>
 <pre><code>       Effect                                             
