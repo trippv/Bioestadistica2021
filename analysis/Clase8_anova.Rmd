@@ -414,12 +414,35 @@ y finalmente generamos el gráfico al cual le añadimos la función `stat_pvalue
 ```{r}
 ggplot(Viagratab, aes(x = dosis, y= libido, color = dosis))+
   geom_boxplot()+
-  stat_pvalue_manual(viagra_pwc_plot, hide.ns = TRUE)+
+  stat_pvalue_manual(viagra_pwc_plot, hide.ns = FALSE, tip.length = 0.01, label = "p.adj")+
   labs(subtitle = get_test_label(viagra_aov, detailed = TRUE),
     caption = get_pwc_label(viagra_pwc_plot)
     )+
   theme(legend.position = "none")
   
+```
+
+
+Alternativamente, podemos generar una tabla con los resultados de los grupos generados con la función HSD.test del paquete `agricolae`. Para esto primero necesitamos obtener los valores máximos de cada grupo (para ubicar la etiqueta) y las etiquetas de los grupos
+
+```{r}
+#resultados de Tukey HSD con el paquete agricolae
+Tukey_test
+
+
+#obtenemos la table con las etiquetas de los grupos y agregamos los valores maximos
+grupos <- Tukey_test$groups
+grupos$maximos <- Tukey_test$means$Max
+grupos$dosis <- row.names(grupos)
+
+grupos
+
+#hacemos la gráfica utilizando geom_text
+ggplot(Viagratab, aes(x = dosis, y= libido))+
+  geom_boxplot()+
+  geom_text(data = grupos, aes(x=dosis, y = 0.1 + maximos, label = groups))
+
+
 ```
 
 
