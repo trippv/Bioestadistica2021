@@ -444,7 +444,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-16
+<strong>Last updated:</strong> 2021-06-17
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -535,16 +535,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree28f09a5533131abb488d73c498e591baad7d73edtargetblank28f09a5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/28f09a5533131abb488d73c498e591baad7d73ed" target="_blank">28f09a5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree7eacd2e68bd39c5c525b724bdb090ad24cdcd58etargetblank7eacd2ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/7eacd2e68bd39c5c525b724bdb090ad24cdcd58e" target="_blank">7eacd2e</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree28f09a5533131abb488d73c498e591baad7d73edtargetblank28f09a5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree7eacd2e68bd39c5c525b724bdb090ad24cdcd58etargetblank7eacd2ea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/28f09a5533131abb488d73c498e591baad7d73ed" target="_blank">28f09a5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/7eacd2e68bd39c5c525b724bdb090ad24cdcd58e" target="_blank">7eacd2e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -630,6 +630,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/7eacd2e68bd39c5c525b724bdb090ad24cdcd58e/analysis/Clase8_anova.Rmd" target="_blank">7eacd2e</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-17
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/fb9e91edd041e3da86b61fe47529f3e9c7cbd035/docs/Clase8_anova.html" target="_blank">fb9e91e</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-16
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1160,6 +1194,108 @@ ggplot(Viagratab, aes(x = dosis, y= libido))+
 1 (Intercept) F(1, 12) = 91.66, p &lt; .001, petasq = .88 ***
 2       dosis F(2, 12) =  5.12, p = .025, petasq = .46 *  </code></pre>
 <p>Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante (<span class="math inline">\(F_{(2,12)} = 5.12; p = 0.25\)</span>). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58).</p>
+</div>
+<div id="ejercicio.-hay-diferencias-en-el-peso-corporal-de-los-pingüinos-adelie-entre-islas" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Ejercicio. ¿Hay diferencias en el peso corporal de los pingüinos <em>Adelie</em> entre islas?</h1>
+<p>Para este ejercicio, vamos a utilziar los datos de <code>penguins_size.csv</code> y filtramos solamente los machos de la especie Adelie</p>
+<pre class="r"><code>penguins &lt;- read_csv(&quot;Data/penguins_size.csv&quot;) 
+
+penguins_Ade &lt;- penguins %&gt;%
+  filter(species == &quot;Adelie&quot;)</code></pre>
+<ol style="list-style-type: decimal">
+<li>Descripciónd de los datos utilizando histogramas de frecuencia.</li>
+</ol>
+<pre class="r"><code>ggplot(penguins_Ade, aes(x = body_mass_g, col = island, fill = island))+
+  geom_histogram(alpha = 0.3)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Probar si los datos siguen una distribución normal utilizando qqplots</li>
+</ol>
+<pre class="r"><code>ggplot(penguins_Ade, aes(sample = body_mass_g, col = island))+
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ island)</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_qq).</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_qq_line).</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Prueba de Normalidad con Shapiro-Wilks</li>
+</ol>
+<pre class="r"><code>penguins_Ade %&gt;%
+  group_by(island) %&gt;%
+  shapiro_test(body_mass_g)</code></pre>
+<pre><code># A tibble: 3 x 4
+  island    variable    statistic     p
+  &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;
+1 Biscoe    body_mass_g     0.977 0.526
+2 Dream     body_mass_g     0.966 0.110
+3 Torgersen body_mass_g     0.972 0.264</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Probar si las varianzas de los datos son homogeneas entre las islas mediante una prueba de Levene</li>
+</ol>
+<pre class="r"><code>penguins_Ade %&gt;%
+  levene_test(body_mass_g ~ island)</code></pre>
+<pre><code>Warning in leveneTest.default(y = y, group = group, ...): group coerced to
+factor.</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     2   148     0.110 0.896</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Generamos el modelo para realizar el análisis de varianza</li>
+</ol>
+<pre class="r"><code>pin_modelo &lt;- lm(body_mass_g ~ island, data = penguins_Ade)
+display(pin_modelo)</code></pre>
+<pre><code>lm(formula = body_mass_g ~ island, data = penguins_Ade)
+                coef.est coef.se
+(Intercept)     3709.66    69.58
+islandDream      -21.27    92.98
+islandTorgersen   -3.29    94.97
+---
+n = 151, k = 3
+residual sd = 461.55, R-Squared = 0.00</code></pre>
+<p>Graficas de los residuales</p>
+<pre class="r"><code>par(mfrow = c(2,2))
+plot(pin_modelo)</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>null device 
+          1 </code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Finalmente usamos la función <code>anova</code> para generar la tabla ANOVA</li>
+</ol>
+<pre class="r"><code>anova(pin_modelo)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: body_mass_g
+           Df   Sum Sq Mean Sq F value Pr(&gt;F)
+island      2    13655    6827   0.032 0.9685
+Residuals 148 31528779  213032               </code></pre>
+<p>6.1. Anova con rstatixs</p>
+<pre class="r"><code>pin_anova &lt;- penguins_Ade %&gt;%
+  anova_test(body_mass_g ~ island)</code></pre>
+<pre><code>Warning: NA detected in rows: 4.
+Removing this rows before the analysis.</code></pre>
+<pre><code>Coefficient covariances computed by hccm()</code></pre>
+<pre class="r"><code>pin_anova</code></pre>
+<pre><code>ANOVA Table (type II tests)
+
+  Effect DFn DFd     F     p p&lt;.05      ges
+1 island   2 148 0.032 0.968       0.000433</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Visualizacióin de los datos con boxplots</li>
+</ol>
+<pre class="r"><code>ggplot(penguins_Ade, aes(x = island, y = body_mass_g, fill = island))+
+  geom_boxplot(outlier.shape = &quot;&quot;)+
+  geom_point(position = position_jitter(0.1))+
+  labs(x = &quot;Isla&quot;, y = &quot;Peso corporal (g)&quot;,
+       caption = &quot;No hay diferencias en el peso corporal entre las tres islas \n F(2,148) = 0.032; P = 0.96&quot;)+
+  theme_light()</code></pre>
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/Clase8_anova.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
