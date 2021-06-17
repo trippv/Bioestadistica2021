@@ -453,3 +453,91 @@ apa::anova_apa(x = modeloViagra_aov)
 ```
 
 Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante ($F_{(2,12)} = 5.12; p = 0.25$). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58). 
+
+
+# Ejercicio. ¿Hay diferencias en el peso corporal de los pingüinos _Adelie_  entre islas? 
+
+Para este ejercicio, vamos a utilziar los datos de `penguins_size.csv` y filtramos solamente los machos de la especie Adelie
+
+```{r, message=FALSE}
+penguins <- read_csv("Data/penguins_size.csv") 
+
+penguins_Ade <- penguins %>%
+  filter(species == "Adelie")
+```
+
+1. Descripciónd de los datos utilizando histogramas de frecuencia.
+
+```{r}
+ggplot(penguins_Ade, aes(x = body_mass_g, col = island, fill = island))+
+  geom_histogram(alpha = 0.3)
+```
+
+2. Probar si los datos siguen una distribución normal utilizando qqplots
+
+```{r}
+ggplot(penguins_Ade, aes(sample = body_mass_g, col = island))+
+  stat_qq()+
+  stat_qq_line()+
+  facet_grid(.~ island)
+```
+
+3. Prueba de Normalidad con Shapiro-Wilks
+```{r}
+penguins_Ade %>%
+  group_by(island) %>%
+  shapiro_test(body_mass_g)
+
+```
+
+4. Probar si las varianzas de los datos son homogeneas entre las islas mediante una prueba de Levene
+
+```{r}
+penguins_Ade %>%
+  levene_test(body_mass_g ~ island)
+```
+
+
+
+5. Generamos el modelo para realizar el análisis de varianza
+```{r}
+pin_modelo <- lm(body_mass_g ~ island, data = penguins_Ade)
+display(pin_modelo)
+```
+
+Graficas de los residuales
+```{r, message=FALSE}
+par(mfrow = c(2,2))
+plot(pin_modelo)
+dev.off()
+```
+
+
+6. Finalmente usamos la función `anova` para generar la tabla ANOVA
+```{r}
+anova(pin_modelo)
+```
+
+
+6.1. Anova con rstatixs
+```{r}
+pin_anova <- penguins_Ade %>%
+  anova_test(body_mass_g ~ island)
+pin_anova
+```
+
+
+
+
+7. Visualizacióin de los datos con boxplots
+```{r}
+ggplot(penguins_Ade, aes(x = island, y = body_mass_g, fill = island))+
+  geom_boxplot(outlier.shape = "")+
+  geom_point(position = position_jitter(0.1))+
+  labs(x = "Isla", y = "Peso corporal (g)",
+       caption = "No hay diferencias en el peso corporal entre las tres islas \n F(2,148) = 0.032; P = 0.96")+
+  theme_light()
+  
+```
+
+
