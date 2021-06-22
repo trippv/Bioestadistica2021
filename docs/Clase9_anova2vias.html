@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-05-29" />
+
+<title>Modelo factorial: ANOVA de dos vias</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Modelo factorial: ANOVA de dos vias</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-05-29</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-06-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree851d5af8fd96f91bb2bf4ef3b9098d25ba716936targetblank851d5afa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/851d5af8fd96f91bb2bf4ef3b9098d25ba716936" target="_blank">851d5af</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree851d5af8fd96f91bb2bf4ef3b9098d25ba716936targetblank851d5afa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/851d5af8fd96f91bb2bf4ef3b9098d25ba716936" target="_blank">851d5af</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  Prueba_markdown.Rmd
+    Untracked:  Prueba_markdown.pdf
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  Tarea_Tstudent.Rmd
+    Untracked:  Tarea_Tstudent.docx
+    Untracked:  Tarea_Tstudent.html
+    Untracked:  Tarea_Tstudent.pdf
+    Untracked:  analysis/images/
+    Untracked:  code/tarea_macrograd.R
+    Untracked:  data/CS_subset.csv
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Darwin_esp.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/DownloadFestival(No Outlier).dat
+    Untracked:  data/Festival.csv
+    Untracked:  data/LungCapData.txt
+    Untracked:  data/LungCapDataEsp.csv
+    Untracked:  data/RExam.dat
+    Untracked:  data/Rexamendat.csv
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/Vinogradov_2004_Titanic.tab
+    Untracked:  data/Vinogradov_2004_Titanic.tab.csv
+    Untracked:  data/data_tukey.txt
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/exp_macrogard_growth.tab
+    Untracked:  data/exp_macrogard_rna-dna.tab
+    Untracked:  data/fertilizantes_luz.csv
+    Untracked:  data/macrogard_crecimiento.csv
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+    Untracked:  output/Plot_all_penguins.pdf
+    Untracked:  output/Plot_all_penguins.tiff
+    Untracked:  output/graficos/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase9_anova2vias.Rmd</code>) and HTML (<code>docs/Clase9_anova2vias.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/851d5af8fd96f91bb2bf4ef3b9098d25ba716936/analysis/Clase9_anova2vias.Rmd" target="_blank">851d5af</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-21
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="generalidades" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
+<p>En el capítulo anterior revisamos situaciones en donde evaluamos las diferencias entre grupos en donde hay una sola variable dependiente (es decir, solo hay una variable que se manipula). En este capitulo, vamos a extender el análisis a situaciones donde tenemos dos o mas variables independientes.</p>
+<p>El análisis de varianza de dos vías, también conocido como análisis factorial con dos factores, nos permite evaluar la relación entre una variable dependiente cuantitativa y dos (o mas) variables independientes cualitativas (factores) cada uno con varios niveles.</p>
+<p>El ANOVA de dos vías permite estudiar cómo influyen por si solos cada uno de los factores sobre la variable dependiente (<strong>modelo aditivo</strong>) así como la influencia de las combinaciones que se pueden dar entre ellas (<strong>modelo con interacción</strong>).</p>
+<blockquote>
+<p>Cuando nuestro diseño experimental factorial tiene el mismo número de individuos por grupo decimos que tenemos un diseño <strong>balanceado</strong> y en este caso podemos aplicar una ANOVA de dos vias estandar.</p>
+</blockquote>
+<blockquote>
+<p>Cuando no tenemos el mismo número de individuos por grupo, entonces nos encontramos con un diseño <strong>desbalanceado</strong> por lo que el análisis se trata diferente (ver al final de este módulo)</p>
+</blockquote>
+</div>
+<div id="beer-goggles" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Beer goggles</h1>
+<p><img src="https://images.unsplash.com/photo-1585293624837-d0de6cc38530?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=750&amp;q=80" /></p>
+<p>Para explorar el análisis factorial, utilizaremos la base de datos <em>beer-goggles effect</em> del libro de <em>Andy Fied. Discovering Statistics Using R</em><a href="https://www.discoveringstatistics.com/books/discovering-statistics-using-r/">1</a>. En este ejemplo, se describen las investigaciones sobre el efecto del alcohol en la selección de pareja en clubes nocturnos. Su hipótesis es que el consumo de alcohol producia una persepción subjetiva del atractivo físico.</p>
+<p>Para esto, seleccionó 24 hombre sy 24 mujeres en un club nocturno y les ofreció (1) placebo (cerveza sin alchol), (2) 2 vasos de cerveza y (3) 4 vasos de cerveza</p>
+<p>Datos:</p>
+<pre class="r"><code>library(tidyverse)
+library(rstatix)
+library(ggpubr)
+
+goggle_url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/goggles_esp.csv&quot;
+goggle &lt;- read_csv(goggle_url)</code></pre>
+<p>Convertimos las variables independientes a factor y cambiamos el orden de los niveles con <code>level</code></p>
+<pre class="r"><code>goggle &lt;- goggle %&gt;% 
+  mutate(genero = factor(genero),
+         alcohol = factor(alcohol, level = c(&quot;Nada&quot;,
+                                             &quot;2 vasos&quot;,
+                                             &quot;4 vasos&quot;)))</code></pre>
+<div id="explorando-los-datos" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Explorando los datos</h2>
+<p>Hacemos gráfico:</p>
+<pre class="r"><code>ggplot(goggle, aes(x = alcohol, y = atractivo))+
+  geom_boxplot()+
+  facet_wrap(~ genero)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Con este gráfico podemos empezar a ver que para el caso de las mujeres, el valor promedio no cambia mucho con las distintas dosis de alcohol; sin embargo, para los hombres se observa una mayor dispersión de los datos y el atractivo promedio cae dramaticamente despues de 4 cervezas.</p>
+<p>A continuación vamos a obtener estadisticos descriptivos de los datos con ayuda de <code>rstatix</code>. En este caso, es de particular importancía evaluar los dato no solo de cada factor (alcohol y genero) sino como interactuan ambas variables, por lo que requerimos los estadísticos de todas las combinaciones</p>
+<pre class="r"><code>goggle %&gt;% 
+  group_by(genero, alcohol) %&gt;% 
+  get_summary_stats(atractivo)</code></pre>
+<pre><code># A tibble: 6 x 15
+  genero alcohol variable     n   min   max median    q1    q3   iqr   mad  mean
+  &lt;fct&gt;  &lt;fct&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 Hombre Nada    atracti~     8    50    80   67.5  62.5  75   12.5  11.1   66.9
+2 Hombre 2 vasos atracti~     8    45    85   67.5  60    72.5 12.5  11.1   66.9
+3 Hombre 4 vasos atracti~     8    20    55   32.5  30    41.2 11.2   7.41  35.6
+4 Mujer  Nada    atracti~     8    55    70   60    58.8  61.2  2.5   3.71  60.6
+5 Mujer  2 vasos atracti~     8    50    70   62.5  60    66.2  6.25  3.71  62.5
+6 Mujer  4 vasos atracti~     8    50    70   55    53.8  61.2  7.5   7.41  57.5
+# ... with 3 more variables: sd &lt;dbl&gt;, se &lt;dbl&gt;, ci &lt;dbl&gt;</code></pre>
+<pre class="r"><code>ggplot(goggle, aes(x = atractivo, fill = genero))+
+  geom_density()+
+  facet_grid(genero ~ alcohol)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>De la misma manera, es posible probar la normalidad con Shapiro-Wilk por grupo:</p>
+<pre class="r"><code>goggle %&gt;% 
+  group_by(genero, alcohol) %&gt;% 
+  shapiro_test(atractivo)</code></pre>
+<pre><code># A tibble: 6 x 5
+  genero alcohol variable  statistic     p
+  &lt;fct&gt;  &lt;fct&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;
+1 Hombre Nada    atractivo     0.941 0.622
+2 Hombre 2 vasos atractivo     0.967 0.870
+3 Hombre 4 vasos atractivo     0.951 0.720
+4 Mujer  Nada    atractivo     0.872 0.156
+5 Mujer  2 vasos atractivo     0.899 0.283
+6 Mujer  4 vasos atractivo     0.897 0.273</code></pre>
+<p>Por úlitmo vamos a calcular la prueba de Levene para evaluar si las varianzas en los valores de <em>atractivo</em> difieren entre los grupos. Al igual que en los casos anteriores, idealmente queremos saber si la varianza difieren entre los seis grupos, por lo que es necesario agregar la interacción de la siguiente manera:</p>
+<pre class="r"><code>goggle %&gt;% 
+  levene_test(atractivo ~ interaction(genero, alcohol))</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     5    42      1.43 0.235</code></pre>
+<p>alternativamente:</p>
+<pre class="r"><code>goggle %&gt;% 
+  levene_test(atractivo ~ genero * alcohol)</code></pre>
+<pre><code># A tibble: 1 x 4
+    df1   df2 statistic     p
+  &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1     5    42      1.43 0.235</code></pre>
+<p>o utilizando la función <code>leveneTest</code>dentro del paquete car:</p>
+<pre class="r"><code>car::leveneTest(atractivo ~ genero * alcohol, data = goggle)</code></pre>
+<pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
+      Df F value Pr(&gt;F)
+group  5  1.4252 0.2351
+      42               </code></pre>
+</div>
+<div id="ajustar-un-modelo-factorial" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Ajustar un modelo factorial</h2>
+<p>Para crear un modelo ANOVA factorial es posible utilizar las mismas funciones que se revisaron en el <a href="https://trippv.github.io/Bioestadistica2021/Clase8_anova.html">modulo de anova</a> que son: <code>lm()</code> y <code>aov()</code>.</p>
+<p>Para agregar un nuevo predictor a nuestor modelo simplemente escribimos <strong>+ nombreVariable</strong> en el modelo, por lo que si quisieramos predecir el <strong>atractivo</strong> a partir del <strong>genero</strong> y <strong>alcohol</strong> simplemente escribiriamos <code>atractivo ~ genero + alcohol</code>. A esto se le conoce como <strong>modelo aditivo</strong>.</p>
+<p>Sin embargo, quereos incluir la posible interacción entre ambos predictores debemos por lo que esta interacción se debe inlcuir en el modelo de la siguiente forma:</p>
+<pre class="r"><code>goggle_modelo1 &lt;- lm(atractivo ~ genero + alcohol + genero:alcohol, data = goggle)
+anova(goggle_modelo1)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: atractivo
+               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+genero          1  168.7  168.75  2.0323    0.1614    
+alcohol         2 3332.3 1666.15 20.0654 7.649e-07 ***
+genero:alcohol  2 1978.1  989.06 11.9113 7.987e-05 ***
+Residuals      42 3487.5   83.04                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>O en su defecto, de manera resumida:</p>
+<pre class="r"><code>goggle_modelo2 &lt;- lm(atractivo ~ genero * alcohol, data = goggle)
+anova(goggle_modelo2)</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: atractivo
+               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+genero          1  168.7  168.75  2.0323    0.1614    
+alcohol         2 3332.3 1666.15 20.0654 7.649e-07 ***
+genero:alcohol  2 1978.1  989.06 11.9113 7.987e-05 ***
+Residuals      42 3487.5   83.04                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>la cual tambien puede aplicarse con la función aov:</p>
+<pre class="r"><code>goggle_modeloaov &lt;- aov(atractivo ~ genero * alcohol, data = goggle)</code></pre>
+</div>
+<div id="interpretación-de-los-resultados" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Interpretación de los resultados</h2>
+<p>De los resultados obtenidos en la tabla ANOVA:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Df</th>
+<th align="right">Sum Sq</th>
+<th align="right">Mean Sq</th>
+<th align="right">F value</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">genero</td>
+<td align="right">1</td>
+<td align="right">168.750</td>
+<td align="right">168.75000</td>
+<td align="right">2.032258</td>
+<td align="right">0.1613818</td>
+</tr>
+<tr class="even">
+<td align="left">alcohol</td>
+<td align="right">2</td>
+<td align="right">3332.292</td>
+<td align="right">1666.14583</td>
+<td align="right">20.065412</td>
+<td align="right">0.0000008</td>
+</tr>
+<tr class="odd">
+<td align="left">genero:alcohol</td>
+<td align="right">2</td>
+<td align="right">1978.125</td>
+<td align="right">989.06250</td>
+<td align="right">11.911290</td>
+<td align="right">0.0000799</td>
+</tr>
+<tr class="even">
+<td align="left">Residuals</td>
+<td align="right">42</td>
+<td align="right">3487.500</td>
+<td align="right">83.03571</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Lo primero que se aprecia es un efecto significativo del <strong>alcohol</strong> (<span class="math inline">\(P &lt; 0.05\)</span>) lo que nos indica que la cantidad de alcohol consumo afecta significativamente la persepción del atractivo. Esto significa que cuando ignoramos si el participante es hombre o mujer, la cantidad de alcohol influye en su persepción.</p>
+<pre class="r"><code>ggbarplot(goggle, x = &quot;alcohol&quot;, y = &quot;atractivo&quot;, add = &quot;mean_se&quot;)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Por otro lado, de los resultados de la ANOVA podemos observar que el efecto del género no es significativ (<span class="math inline">\(P=0.161\)</span>). Este efecto significa que, cuando ignoramos la cantidad de alcohol que se ha consumido, el género del participante no influye en la persepción del atractivo.</p>
+<pre class="r"><code>ggbarplot(goggle, x = &quot;genero&quot;, y = &quot;atractivo&quot;, add = &quot;mean_se&quot;)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finalmente, la tabla ANOVA nos muestra que la <strong>interacción</strong> entre el efecto de <strong>género</strong> y <strong>alcohol</strong> es altamente significativa (<span class="math inline">\(P &lt; 0.001\)</span>) lo cual nos indica que el efecto del alcohol sobre la persepción del atractivo difiere entre ambos géneros. <em>En presencia de una interacción significativa, no tiene sentido interpretar cada efecto principal de manera aislada</em>.</p>
+<pre class="r"><code>ggline(goggle, x = &quot;alcohol&quot;, y = &quot;atractivo&quot;, add = &quot;mean_se&quot;, 
+       color = &quot;genero&quot;, position = position_dodge(0.1))</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggline(goggle, x = &quot;genero&quot;, y = &quot;atractivo&quot;, color = &quot;alcohol&quot;, add = &quot;mean_se&quot;,
+       position = position_dodge(0.1))</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Las líneas no paralelas usualmente indican un efecto de interacción significativo</p>
+</blockquote>
+<p>En ggplot, esto se puede gráficar de la siguiente manera:</p>
+<pre class="r"><code>ggplot(data = goggle, aes(x = alcohol, y = atractivo, colour = genero,
+                         group = genero)) +
+    stat_summary(fun = mean, geom = &quot;point&quot;) +
+    stat_summary(fun = mean, geom = &quot;line&quot;) +
+    labs(y  =  &#39;mean (resistencia)&#39;) +
+    theme_bw()</code></pre>
+<p>Finalmente, el paquete <code>HH</code> nos permite visualizar cada uno los effectos asi como la interacción</p>
+<pre class="r"><code>#install.packages(&quot;HH&quot;)
+
+HH::interaction2wt(atractivo ~ genero * alcohol, data = goggle)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="validación-del-modelo-a-partir-del-análisis-de-residuales" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Validación del modelo a partir del análisis de residuales</h2>
+<p>Para poder dar por válidos los resultados del ANOVA es necesario verificar que se satisfacen las condiciones de un ANOVA.</p>
+<pre class="r"><code>par(mfrow = c(2,2))
+plot(goggle_modelo1, which = 1:4)</code></pre>
+<p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>null device 
+          1 </code></pre>
+<p>Los residuos muestran la misma varianza para los distintos niveles (homocedasticidad) y se distribuyen de forma normal.</p>
+</div>
+<div id="anova-de-dos-vías-con-diseño-desbalanceado" class="section level2" number="2.5">
+<h2 number="2.5"><span class="header-section-number">2.5</span> ANOVA de dos vías con diseño desbalanceado</h2>
+<p>Un diseño con datos no balanceados tiene un número desigual de invididuos en cada grupo.</p>
+<p>Existen tres diferentes maneras de aplicar una ANOVA de dos vías con diseño desbalanceado. Estos se conocen como suma de cuadrados <strong>Tipo I</strong>, <strong>Tipo II</strong> y <strong>Tipo III</strong>. El análisis detallado de cada uno va mas allá de los objetivos de este curso pero una explicación detallada puede encontrarse <a href="https://learningstatisticswithr-bookdown.netlify.app/anova2.html#posthoc2">aquí</a>.</p>
+<p>En general, el método recomendado cuando tenemos interés en la interacción de los efectos es el *Tipo III**.</p>
+<blockquote>
+<p>Cuando tenemos un diseño balanceado, los tres métodos arrojan el mismo resultad. Sin embargo, cauando tenemos un diseño desbalanceado el análisis arrojara resultados distintos</p>
+</blockquote>
+<p>Para utilizarlo, necesitamos aplicar la función <code>Anova()</code> del paquete <strong>car</strong>.</p>
+<pre class="r"><code>car::Anova(goggle_modeloaov, type = &quot;III&quot;)</code></pre>
+<pre><code>Anova Table (Type III tests)
+
+Response: atractivo
+               Sum Sq Df  F value    Pr(&gt;F)    
+(Intercept)     35778  1 430.8763 &lt; 2.2e-16 ***
+genero            156  1   1.8817    0.1774    
+alcohol          5208  2  31.3620 4.648e-09 ***
+genero:alcohol   1978  2  11.9113 7.987e-05 ***
+Residuals        3488 42                       
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggpubr_0.4.0    rstatix_0.7.0   forcats_0.5.1   stringr_1.4.0  
+ [5] dplyr_1.0.5     purrr_0.3.4     readr_1.4.0     tidyr_1.1.3    
+ [9] tibble_3.0.4    ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+  [1] TH.data_1.0-10      colorspace_2.0-0    ggsignif_0.6.0     
+  [4] ellipsis_0.3.1      rio_0.5.16          rprojroot_2.0.2    
+  [7] htmlTable_2.1.0     base64enc_0.1-3     fs_1.5.0           
+ [10] rstudioapi_0.13     farver_2.0.3        fansi_0.4.2        
+ [13] mvtnorm_1.1-1       lubridate_1.7.10    xml2_1.3.2         
+ [16] codetools_0.2-18    splines_4.0.5       leaps_3.1          
+ [19] knitr_1.30          Formula_1.2-4       jsonlite_1.7.2     
+ [22] broom_0.7.6         Rmpfr_0.8-2         cluster_2.1.0      
+ [25] dbplyr_2.1.1        png_0.1-7           shiny_1.5.0        
+ [28] compiler_4.0.5      httr_1.4.2          backports_1.2.1    
+ [31] assertthat_0.2.1    Matrix_1.3-2        fastmap_1.0.1      
+ [34] cli_2.5.0           later_1.1.0.1       htmltools_0.5.1.1  
+ [37] tools_4.0.5         gmp_0.6-2           gtable_0.3.0       
+ [40] glue_1.4.2          reshape2_1.4.4      Rcpp_1.0.5         
+ [43] carData_3.0-4       cellranger_1.1.0    vctrs_0.3.8        
+ [46] lmtest_0.9-38       xfun_0.23           ps_1.5.0           
+ [49] openxlsx_4.2.3      rvest_1.0.0         mime_0.9           
+ [52] lifecycle_1.0.0     MASS_7.3-53         zoo_1.8-8          
+ [55] scales_1.1.1        hms_1.0.0           promises_1.1.1     
+ [58] HH_3.1-43           sandwich_3.0-0      RColorBrewer_1.1-2 
+ [61] yaml_2.2.1          curl_4.3            gridExtra_2.3      
+ [64] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.5.3      
+ [67] highr_0.8           checkmate_2.0.0     zip_2.1.1          
+ [70] rlang_0.4.11        pkgconfig_2.0.3     evaluate_0.14      
+ [73] lattice_0.20-41     htmlwidgets_1.5.3   labeling_0.4.2     
+ [76] tidyselect_1.1.1    plyr_1.8.6          magrittr_2.0.1     
+ [79] R6_2.5.0            Hmisc_4.4-2         generics_0.1.0     
+ [82] multcomp_1.4-15     DBI_1.1.0           pillar_1.6.0       
+ [85] haven_2.3.1         whisker_0.4         foreign_0.8-81     
+ [88] withr_2.4.2         nnet_7.3-14         survival_3.2-10    
+ [91] abind_1.4-5         modelr_0.1.8        crayon_1.4.1       
+ [94] car_3.0-10          utf8_1.2.1          rmarkdown_2.6      
+ [97] jpeg_0.1-8.1        grid_4.0.5          readxl_1.3.1       
+[100] data.table_1.13.6   git2r_0.27.1        vcd_1.4-8          
+[103] reprex_2.0.0        digest_0.6.27       xtable_1.8-4       
+[106] httpuv_1.5.4        munsell_0.5.0      </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
