@@ -1,0 +1,257 @@
+---
+title: "Modelo factorial: ANOVA de dos vias"
+author: "Miguel Tripp"
+date: "2021-05-29"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+
+ 
+# Generalidades
+
+En el capítulo anterior revisamos situaciones en donde evaluamos las diferencias entre grupos en donde hay una sola variable dependiente (es decir, solo hay una variable que se manipula). En este capitulo, vamos a extender el análisis a situaciones donde tenemos dos o mas variables independientes. 
+
+El análisis de varianza de dos vías, también conocido como análisis factorial con dos factores, nos permite evaluar la relación entre una variable dependiente cuantitativa y dos (o mas) variables independientes cualitativas (factores) cada uno con varios niveles. 
+
+El ANOVA de dos vías permite estudiar cómo influyen por si solos cada uno de los factores sobre la variable dependiente (**modelo aditivo**) así como la influencia de las combinaciones que se pueden dar entre ellas (**modelo con interacción**).
+
+
+
+
+>Cuando nuestro diseño experimental factorial tiene el mismo número de individuos por grupo decimos que tenemos un diseño **balanceado** y en este caso podemos aplicar una ANOVA de dos vias estandar.
+  
+>Cuando no tenemos el mismo número de individuos por grupo, entonces nos encontramos con un diseño **desbalanceado** por lo que el análisis se trata diferente (ver al final de este módulo)
+
+
+
+# Beer goggles
+
+![](https://images.unsplash.com/photo-1585293624837-d0de6cc38530?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80)
+
+
+Para explorar el análisis factorial, utilizaremos la base de datos *beer-goggles effect* del libro de _Andy Fied. Discovering Statistics Using R_[1](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). En este ejemplo, se describen las investigaciones sobre el efecto del alcohol en la selección de pareja en clubes nocturnos. Su hipótesis es que el consumo de alcohol producia una persepción subjetiva del atractivo físico. 
+
+Para esto, seleccionó 24 hombre sy 24 mujeres en un club nocturno y les ofreció (1) placebo (cerveza sin alchol), (2) 2 vasos de cerveza y (3) 4 vasos de cerveza
+
+Datos:
+```{r, message = FALSE}
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+
+goggle_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/goggles_esp.csv"
+goggle <- read_csv(goggle_url)
+
+```
+
+Convertimos las variables independientes a factor y cambiamos el orden de los niveles con `level`
+
+```{r}
+goggle <- goggle %>% 
+  mutate(genero = factor(genero),
+         alcohol = factor(alcohol, level = c("Nada",
+                                             "2 vasos",
+                                             "4 vasos")))
+```
+
+
+
+## Explorando los datos
+
+
+Hacemos gráfico:
+```{r}
+ggplot(goggle, aes(x = alcohol, y = atractivo))+
+  geom_boxplot()+
+  facet_wrap(~ genero)
+```
+
+Con este gráfico podemos empezar a ver que para el caso de las mujeres, el valor promedio no cambia mucho con las distintas dosis de alcohol; sin embargo, para los hombres se observa una mayor dispersión de los datos y el atractivo promedio cae dramaticamente despues de 4 cervezas.
+
+A continuación vamos a obtener estadisticos descriptivos de los datos con ayuda de `rstatix`. En este caso, es de particular importancía evaluar los dato no solo de cada factor (alcohol y genero) sino como interactuan ambas variables, por lo que requerimos los estadísticos de todas las combinaciones
+
+```{r}
+goggle %>% 
+  group_by(genero, alcohol) %>% 
+  get_summary_stats(atractivo)
+```
+
+```{r}
+ggplot(goggle, aes(x = atractivo, fill = genero))+
+  geom_density()+
+  facet_grid(genero ~ alcohol)
+```
+
+De la misma manera, es posible probar la normalidad con Shapiro-Wilk por grupo:
+
+```{r}
+goggle %>% 
+  group_by(genero, alcohol) %>% 
+  shapiro_test(atractivo)
+```
+
+Por úlitmo vamos a calcular la prueba de Levene para evaluar si las varianzas en los valores de *atractivo* difieren entre los grupos. Al igual que en los casos anteriores, idealmente queremos saber si la varianza difieren entre los seis grupos, por lo que es necesario agregar la interacción de la siguiente manera:
+
+```{r}
+goggle %>% 
+  levene_test(atractivo ~ interaction(genero, alcohol))
+```
+ 
+ alternativamente:
+ 
+```{r}
+goggle %>% 
+  levene_test(atractivo ~ genero * alcohol)
+```
+ 
+o utilizando la función `leveneTest`dentro del paquete car:
+
+```{r}
+car::leveneTest(atractivo ~ genero * alcohol, data = goggle)
+```
+
+## Ajustar un modelo factorial
+
+Para crear un modelo ANOVA factorial es posible utilizar las mismas funciones que se revisaron en el [modulo de anova](https://trippv.github.io/Bioestadistica2021/Clase8_anova.html) que son: `lm()` y `aov()`. 
+
+Para agregar un nuevo predictor a nuestor modelo simplemente escribimos **+ nombreVariable** en el modelo, por lo que si quisieramos predecir el **atractivo** a partir del **genero** y **alcohol** simplemente escribiriamos `atractivo ~ genero + alcohol`. A esto se le conoce como **modelo aditivo**. 
+
+Sin embargo, quereos incluir la posible interacción entre ambos predictores debemos por lo que esta interacción se debe inlcuir en el modelo de la siguiente forma:
+
+
+```{r}
+goggle_modelo1 <- lm(atractivo ~ genero + alcohol + genero:alcohol, data = goggle)
+anova(goggle_modelo1)
+```
+
+O en su defecto, de manera resumida:
+
+```{r}
+goggle_modelo2 <- lm(atractivo ~ genero * alcohol, data = goggle)
+anova(goggle_modelo2)
+```
+
+
+la cual tambien puede aplicarse con la función aov:
+
+```{r}
+goggle_modeloaov <- aov(atractivo ~ genero * alcohol, data = goggle)
+```
+
+
+## Interpretación de los resultados
+
+De los resultados obtenidos en la tabla ANOVA:
+
+```{r, echo=FALSE}
+knitr::kable(anova(goggle_modelo1))
+```
+
+Lo primero que se aprecia es un efecto significativo del **alcohol** ($P < 0.05$) lo que nos indica que la cantidad de alcohol consumo afecta significativamente la persepción del atractivo. Esto significa que cuando ignoramos si el participante es hombre o mujer, la cantidad de alcohol influye en su persepción. 
+
+```{r}
+ggbarplot(goggle, x = "alcohol", y = "atractivo", add = "mean_se")
+```
+
+Por otro lado, de los resultados de la ANOVA podemos observar que el efecto del género no es significativ ($P=0.161$). Este efecto significa que, cuando ignoramos la cantidad de alcohol que se ha consumido, el género del participante no influye en la persepción del atractivo. 
+
+
+```{r}
+ggbarplot(goggle, x = "genero", y = "atractivo", add = "mean_se")
+```
+
+
+Finalmente, la tabla ANOVA nos muestra que la **interacción** entre el efecto de **género** y **alcohol** es altamente significativa ($P < 0.001$) lo cual nos indica que el efecto del alcohol sobre la persepción del atractivo difiere entre ambos géneros. *En presencia de una interacción significativa, no tiene sentido interpretar cada efecto principal de manera aislada*. 
+
+```{r}
+ggline(goggle, x = "alcohol", y = "atractivo", add = "mean_se", 
+       color = "genero", position = position_dodge(0.1))
+```
+
+
+```{r}
+ggline(goggle, x = "genero", y = "atractivo", color = "alcohol", add = "mean_se",
+       position = position_dodge(0.1))
+```
+
+
+> Las líneas no paralelas usualmente indican un efecto de interacción significativo
+
+En ggplot, esto se puede gráficar de la siguiente manera:
+
+```{r, eval=FALSE}
+ggplot(data = goggle, aes(x = alcohol, y = atractivo, colour = genero,
+                         group = genero)) +
+    stat_summary(fun = mean, geom = "point") +
+    stat_summary(fun = mean, geom = "line") +
+    labs(y  =  'mean (resistencia)') +
+    theme_bw()
+```
+
+Finalmente, el paquete `HH` nos permite visualizar cada uno los effectos asi como la interacción
+
+```{r}
+#install.packages("HH")
+
+HH::interaction2wt(atractivo ~ genero * alcohol, data = goggle)
+```
+
+
+## Validación del modelo a partir del análisis de residuales
+
+Para poder dar por válidos los resultados del ANOVA es necesario verificar que se satisfacen las condiciones de un ANOVA.
+
+```{r}
+par(mfrow = c(2,2))
+plot(goggle_modelo1, which = 1:4)
+dev.off()
+```
+Los residuos muestran la misma varianza para los distintos niveles (homocedasticidad) y se distribuyen de forma normal.
+
+
+## ANOVA de dos vías con diseño desbalanceado
+
+Un diseño con datos no balanceados tiene un número desigual de invididuos en cada grupo. 
+
+Existen tres diferentes maneras de aplicar una ANOVA de dos vías con diseño desbalanceado. Estos se conocen como suma de cuadrados **Tipo I**, **Tipo II** y **Tipo III**. El análisis detallado de cada uno va mas allá de los objetivos de este curso pero una explicación detallada puede encontrarse [aquí](https://learningstatisticswithr-bookdown.netlify.app/anova2.html#posthoc2). 
+
+En general, el método recomendado cuando tenemos interés en la interacción de los efectos es el *Tipo III**.
+
+>Cuando tenemos un diseño balanceado, los tres métodos arrojan el mismo resultad. Sin embargo, cauando tenemos un diseño desbalanceado el análisis arrojara resultados distintos
+
+
+Para utilizarlo, necesitamos aplicar la función `Anova()` del paquete **car**.
+
+```{r}
+car::Anova(goggle_modeloaov, type = "III")
+```
+
+
+
+
+```{r, echo = FALSE, eval=FALSE, include=FALSE}
+car::Anova(goggle_modeloaov, type = "III")
+anova(goggle_modeloaov)
+
+
+goggle_2 <- goggle
+goggle_2$intx <- with(goggle_2, interaction(genero, alcohol))
+
+modelo_aov_2 <- aov(atractivo ~ alcohol + genero + intx, data = goggle_2)
+anova(modelo_aov_2)
+
+comp <- HSD.test(modelo_aov_2, trt = "intx", group = TRUE)
+
+
+```
+

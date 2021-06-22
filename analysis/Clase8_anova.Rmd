@@ -235,7 +235,7 @@ El segundo gráfico es un Q-Q plot que nos indica si los residuales siguen una d
 
 ### ANOVA con `oneway.test()`: Cuando las varianzas no son iguales
 
-En el caso de que la prueba de Levene nos indique que nuestros datos no tienen varianzas homogeneas (valor singificativo) es posible utilizar un ajuste de Welch al calculo de F, lo cual hace ajustes a los grados de libertad de manera similar a la prueba de Welch para dos medias. 
+En el caso de que la prueba de Levene nos indique que nuestros datos no tienen varianzas homogeneas (valor singificativo) es posible utilizar un ajuste de Welch al calculo de F, lo cual hace ajustes a los grados de libertad de manera similar a la prueba de Welch para dos medias.
 
 Esta prueba se realiza con la función `oneway.test()` con la misma sintaxis que las funciones anteriores pero especificando si las varianzas son o no son iguales con el parámetro `var.equal = TRUE/FALSE`
 
@@ -318,7 +318,23 @@ Viagratab %>%
   pairwise_t_test(libido ~ dosis, p.adjust.method = "bonferroni")
 ```
 
-## Comparaciones pareadas (*Tukey-Kramer Honest Significant Difference*)
+
+## Multiples comparaciones; multiples correcciones
+
+A continuación se muestra una tabla con seis comparaciones entre 4 muestras imaginarias. Como se observa, los diferentes ajustes producen diferentes interpretaciones:
+
+|   | $P$   |Bonferroni $P_{crit} = \frac{\alpha}{k}$ |    |  $j$ | Holm $P_{crit}=\frac{\alpha}{j}$   |   | j   | Benjamin-Hochberg $P_{crit}= (\frac{j}{k})\alpha$   |   |
+|--------|----------|---------|-----|---|---|---|---|---|---|
+| A - B  | 0.000    | 0.0083  | *   | 6 | 0.0083  | *   | 1   | 0.0083   | *   |
+| B - C  | 0.0014   | 0.0083  | *   | 5 | 0.0100  | *   | 2   | 0.0167   | *  |
+| D - B  | 0.0127   | 0.0083  |     | 4 | 0.0125  |     | 3   | 0.0250   | *  |
+| A - D  | 0.0252   | 0.0083  |     | 3 | 0.0167  |     | 4   | 0.0333   | * |
+| A - C  | 0.1704   | 0.0083  |     | 2 | 0.0250  |     | 5   | 0.0417   |   |
+| D -C   | 0.3431   |  0.0083 |     | 1 | 0.05    |     | 6   | 0.0500   |   |
+
+
+
+## Comparaciones pareadas con *Tukey-Kramer Honest Significant Difference*
 
 Es el ajuste recomendado cuando el número de grupos a comparar es mayor de 6 y el diseño es equilibrado (mismo número de observaciones por grupo). En el caso de modelos no equilibrados el método HSD es conservativo, requiere diferencias grandes para que resulte significativo. Solo aplicable si se trata de datos no pareados.
 
@@ -344,6 +360,8 @@ La función `HSD.test()`se aplica sobre un objeto tipo *aov* o *lm* y se aplica 
 ```{r, eval = FALSE}
 HSD.test(y = modelo(lm o aov), trt = "variable Independiente", group = TRUE/FALSE,  alpha = 0.5)
 ```
+
+Alternativamente podemos utilizar la prueba del paquete `agricolae` la cual nos permite generar los grupos.
 
 ```{r}
 #install.packages("agricolae")
@@ -385,7 +403,7 @@ ggbarplot(Viagratab, x = "dosis", y = "libido", add = "mean_sd", color = "dosis"
 
 Sin embargo, la función que mas nos interesa de ggpubr es la función `stat_pvalue_manual()`la cual puede ser aplicada en un objetivo ggpubr o ggplot:
 
-Para esto, nos vamos a apoyar en las funciones de rstatixs para generar un objetvo _anova_ y un objeto _pairwise_t_test_ o **tukey_hsd**.
+Para esto, nos vamos a apoyar en las funciones de rstatixs para generar un objetvo *anova* y un objeto *pairwise_t\_test* o **tukey_hsd**.
 
 ```{r}
 viagra_aov <- Viagratab %>% 
@@ -400,14 +418,12 @@ viagra_pwc <- Viagratab %>%
   tukey_hsd(libido ~ dosis, paired = FALSE)
 ```
 
-
-Posteriormente, usamos la función `add_xy_position` sobre el objetvo pairwise_t_test
+Posteriormente, usamos la función `add_xy_position` sobre el objetvo pairwise_t\_test
 
 ```{r}
 viagra_pwc_plot <- viagra_pwc %>% 
   add_xy_position(x = "dosis")
 ```
-
 
 y finalmente generamos el gráfico al cual le añadimos la función `stat_pvalue_manua()`
 
@@ -421,7 +437,6 @@ ggplot(Viagratab, aes(x = dosis, y= libido, color = dosis))+
   theme(legend.position = "none")
   
 ```
-
 
 Alternativamente, podemos generar una tabla con los resultados de los grupos generados con la función HSD.test del paquete `agricolae`. Para esto primero necesitamos obtener los valores máximos de cada grupo (para ubicar la etiqueta) y las etiquetas de los grupos
 
@@ -445,17 +460,15 @@ ggplot(Viagratab, aes(x = dosis, y= libido))+
 
 ```
 
+Finalmente, podemos basarnos en los resultados de `apa` para reportar los resultados del efecto de la dosis
 
-
-Finalmente, podemos basarnos en los resultados de `apa` para reportar los resultados del efecto de la dosis 
 ```{r}
 apa::anova_apa(x = modeloViagra_aov)
 ```
 
-Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante ($F_{(2,12)} = 5.12; p = 0.25$). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58). 
+Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo sobre el nivel de libido de los participante ($F_{(2,12)} = 5.12; p = 0.25$). Comparaciones posterioes usando la prueba Tukey HSD indica que hay diferencias entre el placebo (M = 2.2, SD = 1.30) y la dosis alta (M = 5.0, SD = 1.58).
 
-
-# Ejercicio. ¿Hay diferencias en el peso corporal de los pingüinos _Adelie_  entre islas? 
+# Ejercicio. ¿Hay diferencias en el peso corporal de los pingüinos *Adelie* entre islas?
 
 Para este ejercicio, vamos a utilziar los datos de `penguins_size.csv` y filtramos solamente los machos de la especie Adelie
 
@@ -466,14 +479,14 @@ penguins_Ade <- penguins %>%
   filter(species == "Adelie")
 ```
 
-1. Descripciónd de los datos utilizando histogramas de frecuencia.
+1.  Descripciónd de los datos utilizando histogramas de frecuencia.
 
 ```{r}
 ggplot(penguins_Ade, aes(x = body_mass_g, col = island, fill = island))+
   geom_histogram(alpha = 0.3)
 ```
 
-2. Probar si los datos siguen una distribución normal utilizando qqplots
+2.  Probar si los datos siguen una distribución normal utilizando qqplots
 
 ```{r}
 ggplot(penguins_Ade, aes(sample = body_mass_g, col = island))+
@@ -482,7 +495,8 @@ ggplot(penguins_Ade, aes(sample = body_mass_g, col = island))+
   facet_grid(.~ island)
 ```
 
-3. Prueba de Normalidad con Shapiro-Wilks
+3.  Prueba de Normalidad con Shapiro-Wilks
+
 ```{r}
 penguins_Ade %>%
   group_by(island) %>%
@@ -490,46 +504,44 @@ penguins_Ade %>%
 
 ```
 
-4. Probar si las varianzas de los datos son homogeneas entre las islas mediante una prueba de Levene
+4.  Probar si las varianzas de los datos son homogeneas entre las islas mediante una prueba de Levene
 
 ```{r}
 penguins_Ade %>%
   levene_test(body_mass_g ~ island)
 ```
 
+5.  Generamos el modelo para realizar el análisis de varianza
 
-
-5. Generamos el modelo para realizar el análisis de varianza
 ```{r}
 pin_modelo <- lm(body_mass_g ~ island, data = penguins_Ade)
 display(pin_modelo)
 ```
 
 Graficas de los residuales
+
 ```{r, message=FALSE}
 par(mfrow = c(2,2))
 plot(pin_modelo)
 dev.off()
 ```
 
+6.  Finalmente usamos la función `anova` para generar la tabla ANOVA
 
-6. Finalmente usamos la función `anova` para generar la tabla ANOVA
 ```{r}
 anova(pin_modelo)
 ```
 
-
 6.1. Anova con rstatixs
+
 ```{r}
 pin_anova <- penguins_Ade %>%
   anova_test(body_mass_g ~ island)
 pin_anova
 ```
 
+7.  Visualizacióin de los datos con boxplots
 
-
-
-7. Visualizacióin de los datos con boxplots
 ```{r}
 ggplot(penguins_Ade, aes(x = island, y = body_mass_g, fill = island))+
   geom_boxplot(outlier.shape = "")+
@@ -539,5 +551,3 @@ ggplot(penguins_Ade, aes(x = island, y = body_mass_g, fill = island))+
   theme_light()
   
 ```
-
-

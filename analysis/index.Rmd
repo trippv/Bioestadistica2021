@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Bioestadística en R"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -10,18 +10,43 @@ editor_options:
 
 
 
-```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
-knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/monster_support.jpg")
+
+```{r logoCICESE, echo=FALSE}
+htmltools::img(src = knitr::image_uri("docs/figure/ciceselogo.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:100px; left:75%; padding:10px;width:155px;')
 ```
 
-# **Curso de Bioestadística en R**
+
+
+```{r logoPosgrado, echo=FALSE}
+htmltools::img(src = knitr::image_uri("docs/figure/PosgradoLogo.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:200px; left:77%; padding:10px;width:80px;')
+```
+
+
+```{r logoConacyt, echo=FALSE}
+htmltools::img(src = knitr::image_uri("docs/figure/ConacytLogo.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:325px; left:75%; padding:10px;width:155px;')
+```
+
+
 
 Miguel A. Tripp Valdez
 
 correo: [tripp\@cicese.edu.mx](mailto:tripp@cicese.edu.mx){.email}
 
 
-Temas:
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri("docs/figure/Rlogo.png"), 
+               alt = 'logo', 
+               style = 'position:relative; top:0; right:0; padding:10px; width: 255px; height: 160px')
+```
+
+
+# Temas:
 
 
 
@@ -37,9 +62,19 @@ Temas:
 
 -   [Modulo 5: Gráficos con ggplot](Clase5_ggplot.html)
 
+
+## Parte II: Inferencía estadística
+
 -   [Modulo 6: Supuestos de normalidad y varianza](Clase6_Supuestos.html)
 
 -   [Modulo 7: Comparación de dos medias; T de Student](Clase7_tstudent.html)
 
 -   [Modulo 8: Comparación de dos o mas medias; ANOVA](Clase8_anova.html)
 
+-   [Modulo 9: Comparación de dos o mas medias; ANOVA factorial](Clase9_anova2vias.html)
+
+
+
+```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
+knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/monster_support.jpg")
+```
