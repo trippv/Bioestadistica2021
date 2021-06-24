@@ -25,14 +25,17 @@ El análisis de varianza de dos vías, también conocido como análisis factoria
 
 El ANOVA de dos vías permite estudiar cómo influyen por si solos cada uno de los factores sobre la variable dependiente (**modelo aditivo**) así como la influencia de las combinaciones que se pueden dar entre ellas (**modelo con interacción**).
 
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
 
-
->Cuando nuestro diseño experimental factorial tiene el mismo número de individuos por grupo decimos que tenemos un diseño **balanceado** y en este caso podemos aplicar una ANOVA de dos vias estandar.
+   - Cuando nuestro diseño experimental factorial tiene el mismo número de individuos por grupo decimos que tenemos un diseño **balanceado** y en este caso podemos aplicar una ANOVA de dos vias estandar.
   
->Cuando no tenemos el mismo número de individuos por grupo, entonces nos encontramos con un diseño **desbalanceado** por lo que el análisis se trata diferente (ver al final de este módulo)
+ - Cuando no tenemos el mismo número de individuos por grupo, entonces nos encontramos con un diseño **desbalanceado** por lo que el análisis se trata diferente (ver al final de este módulo)
 
-
+</div>
 
 # Beer goggles
 
@@ -227,9 +230,14 @@ Existen tres diferentes maneras de aplicar una ANOVA de dos vías con diseño de
 
 En general, el método recomendado cuando tenemos interés en la interacción de los efectos es el *Tipo III**.
 
->Cuando tenemos un diseño balanceado, los tres métodos arrojan el mismo resultad. Sin embargo, cauando tenemos un diseño desbalanceado el análisis arrojara resultados distintos
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
 
+Cuando tenemos un diseño balanceado, los tres métodos arrojan el mismo resultad. Sin embargo, cauando tenemos un diseño desbalanceado el análisis arrojara resultados distintos
 
+</div>
 Para utilizarlo, necesitamos aplicar la función `Anova()` del paquete **car**.
 
 ```{r}
