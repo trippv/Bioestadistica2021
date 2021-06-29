@@ -279,7 +279,7 @@ dientes_leven
 Vamos a empezar nuestro análisis revisando cada uno de los factores principales (_main effects_)`supp` y `dose` 
 
 ```{r}
-me_supp <- lm(len ~ supp, data = dientes)
+me_supp <- aov(len ~ supp, data = dientes)
 anova(me_supp)
 ```
 
@@ -293,7 +293,7 @@ ggplot(dientes, aes(x = supp, y = len))+
 Ahora, ajustemos un modelo con el siguiente efecto principal, `dose`.
 
 ```{r}
-me_dose <- lm(len ~ dose, data = dientes)
+me_dose <- aov(len ~ dose, data = dientes)
 anova(me_dose)
 ```
  En este caso, hay evidencia para rechazar la hipótesis nula de manera que la dosis tene un efecto en la longitud del diente:
@@ -307,7 +307,7 @@ ggplot(dientes, aes(x = dose, y = len))+
 
 ahora ajustemos un modelo con interacción
 ```{r}
-dientes_mod_int <- lm(len ~ supp * dose, data = dientes)
+dientes_mod_int <- aov(len ~ supp * dose, data = dientes)
 anova(dientes_mod_int)
 ```
 
@@ -338,7 +338,15 @@ library(HH)
 interaction2wt(len ~ supp * dose, data = dientes)
 ```
 
+## Comparaciones multiples
 
+Si los resultados de la ANOVA son significativos, entonces es necesario realizar pruebas _post hoc_. Esto se puede realizar con la función `TukeyHSD` sobre un objetvo `aov`
+
+Si la interacción es *no significativa* entonces se interpretan los resultados de los efectos principales. Pero si la interaccón *es significativa* entonces debemos interpretar las comparaciones mulitples de la interacción. 
+
+```{r}
+TukeyHSD(dientes_mod_int)
+```
 
 
 # ANOVA de dos vías con diseño desbalanceado
