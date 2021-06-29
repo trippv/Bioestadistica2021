@@ -222,7 +222,126 @@ dev.off()
 Los residuos muestran la misma varianza para los distintos niveles (homocedasticidad) y se distribuyen de forma normal.
 
 
-## ANOVA de dos vías con diseño desbalanceado
+# Conejillo de indias y jugo de naranja
+
+
+
+```{r logoCICESE, echo=FALSE}
+htmltools::img(src = knitr::image_uri("docs/figure/guinea.jpg"),
+               style = 'width:355px')
+```
+
+
+
+Para este ejemplo, utilizaremos la base de datos `toothgrowth`. Esta corresponde a un experimento realizado en conejillos de indias para demostrar el efecto de adminstrar jugo de naranja (OJ) y vitamina c (VC) a diferentes dosis (0.5, 1.0 y 2.0 mg).
+
+Para abrir la tabla ejecutamos
+```{r}
+data("ToothGrowth")
+dientes <- ToothGrowth
+summary(dientes)
+
+dientes <- dientes %>%
+  mutate(dose = factor(dose))
+```
+
+Obten el resumen de los datos
+```{r}
+dientes_sum <- dientes %>%
+  group_by(supp, dose) %>%
+  get_summary_stats(len, type = "mean_sd")
+dientes_sum
+```
+
+Visualización de los datos
+```{r}
+ggplot(dientes, aes(x = supp, y = len, col = dose))+
+  geom_boxplot()
+```
+
+A partir de la representación gráfica y el calculo de las medias se puede intuir que existe una diferncia en el crecimiento del diente con la dosis.
+
+A priori, parece que se satisfacen las condiciones necesarios para realizar un ANOVA, aunque se requiere hacer las pruebas correspondientes.
+
+```{r}
+dientes_shap <- dientes %>%
+  group_by(dose, supp) %>%
+  shapiro_test(len)
+dientes_shap
+```
+
+```{r}
+dientes_leven <- dientes %>%
+  levene_test(len ~ supp * dose)
+dientes_leven
+```
+
+Vamos a empezar nuestro análisis revisando cada uno de los factores principales (_main effects_)`supp` y `dose` 
+
+```{r}
+me_supp <- lm(len ~ supp, data = dientes)
+anova(me_supp)
+```
+
+Esto nos indica que no hay evidencia para rechazar la hipotesis nula que las medias por el suplemento son diferentes. Por si solo, pareciera que el tipo de suppemento (OJ y VC) no tuvieran efecto en la longitud del diente, lo cual se puede visualizar en la siguiente gráfica:
+
+```{r}
+ggplot(dientes, aes(x = supp, y = len))+
+  geom_boxplot()
+```
+
+Ahora, ajustemos un modelo con el siguiente efecto principal, `dose`.
+
+```{r}
+me_dose <- lm(len ~ dose, data = dientes)
+anova(me_dose)
+```
+ En este caso, hay evidencia para rechazar la hipótesis nula de manera que la dosis tene un efecto en la longitud del diente:
+ 
+```{r}
+ggplot(dientes, aes(x = dose, y = len))+
+  geom_boxplot()
+```
+ 
+
+
+ahora ajustemos un modelo con interacción
+```{r}
+dientes_mod_int <- lm(len ~ supp * dose, data = dientes)
+anova(dientes_mod_int)
+```
+
+Dado que el modelo `len ~ dose` mostró diferencias significativas en las medias, esperariamos que el modelo factorial diera los mismos resultados.
+
+Por otro lado, observamos que el efecto principal `supp` ahora es significativo. Esto indica que al controlar por el nivel de la dosis y la interacción `dose*supp` hay un efecto independiente por el tipo de suplemento. 
+
+```{r}
+ggline(dientes, x = "supp", y = "len", col = "dose", add = "mean_se")
+
+```
+
+
+```{r}
+ggline(dientes, x = "dose", y = "len", col = "supp", add = "mean_se")
+```
+
+
+Podemos usar la herramienta del paquete `HH` para visualizar esta interacción
+
+```{r eval=FALSE}
+install.packages("HH")
+```
+
+```{r message=FALSE, warning=FALSE}
+library(HH)
+
+interaction2wt(len ~ supp * dose, data = dientes)
+```
+
+
+
+
+# ANOVA de dos vías con diseño desbalanceado
 
 Un diseño con datos no balanceados tiene un número desigual de invididuos en cada grupo. 
 
