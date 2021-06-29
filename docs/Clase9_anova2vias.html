@@ -441,7 +441,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-28
+<strong>Last updated:</strong> 2021-06-29
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -532,16 +532,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree1e31e561569513ec43a32450b18f2cf2df728ffftargetblank1e31e56a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/1e31e561569513ec43a32450b18f2cf2df728fff" target="_blank">1e31e56</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree1957148cbc6107010bf270daecf0b8fae01972abtargetblank1957148a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/1957148cbc6107010bf270daecf0b8fae01972ab" target="_blank">1957148</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree1e31e561569513ec43a32450b18f2cf2df728ffftargetblank1e31e56a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree1957148cbc6107010bf270daecf0b8fae01972abtargetblank1957148a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/1e31e561569513ec43a32450b18f2cf2df728fff" target="_blank">1e31e56</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/1957148cbc6107010bf270daecf0b8fae01972ab" target="_blank">1957148</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -636,6 +636,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/1957148cbc6107010bf270daecf0b8fae01972ab/analysis/Clase9_anova2vias.Rmd" target="_blank">1957148</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-29
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/11367684c9d7340f3551fa87e184e13bdb37f814/docs/Clase9_anova2vias.html" target="_blank">1136768</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-06-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1002,7 +1036,7 @@ dientes_leven</code></pre>
   &lt;int&gt; &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;
 1     5    54      1.71 0.148</code></pre>
 <p>Vamos a empezar nuestro análisis revisando cada uno de los factores principales (<em>main effects</em>)<code>supp</code> y <code>dose</code></p>
-<pre class="r"><code>me_supp &lt;- lm(len ~ supp, data = dientes)
+<pre class="r"><code>me_supp &lt;- aov(len ~ supp, data = dientes)
 anova(me_supp)</code></pre>
 <pre><code>Analysis of Variance Table
 
@@ -1017,7 +1051,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
   geom_boxplot()</code></pre>
 <p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Ahora, ajustemos un modelo con el siguiente efecto principal, <code>dose</code>.</p>
-<pre class="r"><code>me_dose &lt;- lm(len ~ dose, data = dientes)
+<pre class="r"><code>me_dose &lt;- aov(len ~ dose, data = dientes)
 anova(me_dose)</code></pre>
 <pre><code>Analysis of Variance Table
 
@@ -1032,7 +1066,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
   geom_boxplot()</code></pre>
 <p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>ahora ajustemos un modelo con interacción</p>
-<pre class="r"><code>dientes_mod_int &lt;- lm(len ~ supp * dose, data = dientes)
+<pre class="r"><code>dientes_mod_int &lt;- aov(len ~ supp * dose, data = dientes)
 anova(dientes_mod_int)</code></pre>
 <pre><code>Analysis of Variance Table
 
@@ -1056,6 +1090,44 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 
 interaction2wt(len ~ supp * dose, data = dientes)</code></pre>
 <p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="comparaciones-multiples" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Comparaciones multiples</h2>
+<p>Si los resultados de la ANOVA son significativos, entonces es necesario realizar pruebas <em>post hoc</em>. Esto se puede realizar con la función <code>TukeyHSD</code> sobre un objetvo <code>aov</code></p>
+<p>Si la interacción es <em>no significativa</em> entonces se interpretan los resultados de los efectos principales. Pero si la interaccón <em>es significativa</em> entonces debemos interpretar las comparaciones mulitples de la interacción.</p>
+<pre class="r"><code>TukeyHSD(dientes_mod_int)</code></pre>
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = len ~ supp * dose, data = dientes)
+
+$supp
+      diff       lwr       upr     p adj
+VC-OJ -3.7 -5.579828 -1.820172 0.0002312
+
+$dose
+        diff       lwr       upr   p adj
+1-0.5  9.130  6.362488 11.897512 0.0e+00
+2-0.5 15.495 12.727488 18.262512 0.0e+00
+2-1    6.365  3.597488  9.132512 2.7e-06
+
+$`supp:dose`
+               diff        lwr        upr     p adj
+VC:0.5-OJ:0.5 -5.25 -10.048124 -0.4518762 0.0242521
+OJ:1-OJ:0.5    9.47   4.671876 14.2681238 0.0000046
+VC:1-OJ:0.5    3.54  -1.258124  8.3381238 0.2640208
+OJ:2-OJ:0.5   12.83   8.031876 17.6281238 0.0000000
+VC:2-OJ:0.5   12.91   8.111876 17.7081238 0.0000000
+OJ:1-VC:0.5   14.72   9.921876 19.5181238 0.0000000
+VC:1-VC:0.5    8.79   3.991876 13.5881238 0.0000210
+OJ:2-VC:0.5   18.08  13.281876 22.8781238 0.0000000
+VC:2-VC:0.5   18.16  13.361876 22.9581238 0.0000000
+VC:1-OJ:1     -5.93 -10.728124 -1.1318762 0.0073930
+OJ:2-OJ:1      3.36  -1.438124  8.1581238 0.3187361
+VC:2-OJ:1      3.44  -1.358124  8.2381238 0.2936430
+OJ:2-VC:1      9.29   4.491876 14.0881238 0.0000069
+VC:2-VC:1      9.37   4.571876 14.1681238 0.0000058
+VC:2-OJ:2      0.08  -4.718124  4.8781238 1.0000000</code></pre>
+</div>
 </div>
 <div id="anova-de-dos-vías-con-diseño-desbalanceado" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> ANOVA de dos vías con diseño desbalanceado</h1>
