@@ -1,0 +1,236 @@
+---
+title: "Correlación"
+author: "Miguel Tripp"
+date: "2021-07-04"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+# Generalidades
+
+La correlación lineal y la regresión lineal simple son métodos estadísticos que estudian la relación lineal existente entre dos variables.
+
+La correlación cuantifica como dos variables estan correlacionadas sin considerar dependencias. A nivel experimental, la correlación se suele emplear cuando ninguna de las variables se ha controlado, simplemente se han medido ambas y se desea saber si estan relacionadas. 
+
+Los **coeficientes de correlación** se pueden calcular mediante métodos paramétricos y no paramétricos. Un coeficiente paramétrico es el Coeficiente de Correlación de **Pearson**, que se usa para observaciones obtenidas sobre una escala de intervalos y esta sujeto a condiciones mas restrictivas que las alternativas no paramétricas. De estas, una de las mas ampliamente utilizadas es el Coeficiente de Correlación por Rangos de **Spearman.**
+
+Todos los coeficientes de corelación varían entre +1 y -1, siendo +1 una correlación positiva perfecta y -1 una correlación negativa perfecta:
+
+![](http://www.disfrutalasmatematicas.com/datos/images/correlation-examples.svg)
+Además del valor obtenido para el coeficiente de correlación, es necesario calcular su significancia. Solo si el **valor p** es significativo se puede aceptar que existe correlación, y esta será de la magnitud que indique el coeficiente. 
+
+Por muy cercano que sea el valor del coeficiente de correlación a +1 o −1, si no es significativo, se ha de interpretar que **la correlación de ambas variables es 0**, ya que el valor observado puede deberse a simple aleatoriedad.
+
+# Ejemplo1:  Calor y venta de helados
+
+![](https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80)
+Como primer ejemplo para el análisis de correlación, supongamos que una heladería realiza un seguimiento de la cantidad de helado que venden en relación con la temperatura de ese día. A continuación se muestran sus cifras de los últimos 12 días:
+
+```{r, message=FALSE}
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+
+temp <- c(14.2, 16.4, 11.9, 15.2, 18.5, 22.1, 19.4, 25.1, 23.4, 18.1, 22.6, 17.2)
+
+ventas <- c(215, 325, 185, 332, 406, 522, 412, 614, 544, 421, 445, 408)
+
+helados <- data.frame(temp, ventas)
+
+helados
+
+```
+
+## Dispersión de los datos
+
+En primer lugar se representan las dos variables mediante un diagrama de dispersión. Este se puede construir simplemte con la función **plot** o con la función **pairs()**
+
+```{r}
+plot(helados)
+```
+
+
+```{r}
+pairs(helados$temp ~ helados$ventas)
+```
+
+
+```{r}
+ggplot(helados, aes(x = temp, y = ventas))+
+  geom_point()+
+  labs(x = "Temperatura (°C)", y = "Ventas ($)", 
+       title = "ventas de helados")
+```
+
+El diagrama de dispersión parecer indicar que existe una posible relación entre la temperatura del día con el número de ventas de helado. 
+
+Para poder elegir el coeficiente de correlación adecuando, se tiene que analizar el tipo de variable que se esta analizando y la distribución que presenta.
+
+## Análisis de normalidad 
+
+Utilizando métodos visuales con R base:
+
+```{r}
+par(mfrow = c(2,2))
+hist(helados$temp, col = "darkred")
+qqnorm(helados$temp, col = "darkred")
+qqline(helados$temp)
+
+hist(helados$ventas, col = "blue")
+qqnorm(helados$ventas, col = "blue")
+qqline(helados$ventas)
+```
+
+Realizando una prueba de Shapiro
+
+```{r}
+sapply(helados, shapiro_test)
+```
+
+El análisis gráfico y el contraste de normalidad muestran que para ambas variables se puede asumir normalidad. En caso contrario, se debe considerar el uso de alternativas como el calculo del coeficiente de _Spearman_ o de _Kendall_.
+
+
+## Estimación de la correlación
+
+Para realizar la estimación de la correlación se puede utilizar la función `cor()`. Dentro del parámetro *method* podemos establecer cual coeficiente queremos utilizar (Pearson, Kendall o Spearman).
+
+```{r}
+cor(helados$ventas, helados$temp, method = "pearson")
+
+#La función tambien acepta data.frame o matrices, lo que nos arroja los coeficientes para todas las variables contenidas en la tabla
+
+cor(helados)
+```
+
+La función nos arroja un coeficiente de correlación bastante alta (0.957). Sin embargo, por muy alto que pudiera ser, si no es significativa se ha de considerar inexistente. Para realizar la prueba de significancía de la correlación, se utiliza la función `cor.test()`
+
+```{r}
+cor.test(helados$temp, helados$ventas, method = "pearson", alternative = "two.sided")
+
+```
+
+El coeficiente de correlación es altamente significativo por lo que podemos concluir que hay una correlación significativa entre la temperatura del día y la venta de helados en el dia ($r = 0.957, valor p < 0.0001$)
+
+
+## Importancia de la visualización en la correlación
+```{r, warning=FALSE}
+library(pastecs)
+ascombe <- datasets::anscombe
+
+sapply(ascombe, stat.desc)
+```
+
+
+Ahora estimamos los coeficientes de correlación para cada par de variables (x1, y1; x2, y2; x3, y3, etc)
+```{r}
+cor(ascombe)
+```
+
+Ahora gráficamos cada uno de los pares
+```{r}
+par(mfrow = c(2,2))
+
+plot(ascombe$x1, ascombe$y1, col = "red", pch = 19)
+plot(ascombe$x2, ascombe$y2, col = "blue", pch = 19)
+plot(ascombe$x3, ascombe$y3, col = "darkorange", pch = 19)
+plot(ascombe$x4, ascombe$y4, col = "salmon", pch = 19)
+
+dev.off()
+
+```
+
+# Ejemplo 2: Pokemon 
+
+
+![](https://images.unsplash.com/photo-1605979257913-1704eb7b6246?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)
+
+Ahora vamos a análizar la correlación entre las distintas variables de la bases de datos de pokemon
+
+```{r}
+pokemon<- readxl::read_excel("data/datasets_Pokemon.xls")
+
+plot(pokemon)
+```
+
+Seleccionar el nombre y todas las variables numéricas
+```{r}
+pokemon_sub <- pokemon %>% 
+  select(where(is.numeric), -Generation, -ID)
+
+plot(pokemon_sub)
+```
+
+Ivestigar variables correlacionadas
+```{r}
+cor(pokemon_sub)
+
+```
+
+Podemos usar la funcion `pairs.panel()` del paquete **psych** para visualziar los diagramas de disperción entre todas las variables asi como su valor de correlación.
+
+```{r}
+psych::pairs.panels(pokemon_sub, method = "pearson", show.points = TRUE,stars = TRUE)
+```
+
+El paquete Psych tambien contien la función multi.hist()la cual nos ayudaria a evaluar la distribución de los datos:
+Donde la linea roja corresponde a la distribución normal ajustada y la linea azul a la densidad observada.
+```{r}
+psych::multi.hist(pokemon_sub, density = TRUE,  dcol = c("blue", "red"))
+```
+
+La función `corrplot()` del paquete **corrplot** recibe como argumento la matriz de correlaciones generada por la función cor() y genera diferentes tipos de heat maps mucho más visuales que la matriz numérica.
+
+```{r}
+library(corrplot)
+corrplot(corr = cor(x = pokemon_sub, method = "pearson"), method = "number", type = "upper")
+```
+
+La función `ggpairs()` del paquete **GGally** basada en ggplot2 representa los diagramas de dispersión, el valor de la correlación e incluso interpreta el tipo de variable para que, en caso de ser categórica, representarla en forma de boxplot.
+
+```{r}
+library(GGally)
+
+ggpairs(pokemon_sub, lower = list(continuous = "smooth"), 
+        diag = list(continuous = "bar"), axisLabels = "none")
+```
+
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+# Preguntas frecuentes
+
+Esta sección esta tomada del libro de Motuslky. [Intuitive Biostatistics](https://books.google.com.mx/books?hl=en&lr=&id=ZLDWAgAAQBAJ&oi=fnd&pg=PP1&dq=motulsky+intuitive+biostatistics+pdf&ots=J1d8onYaXZ&sig=c_dqfN7zgDoG5Tjy2-lSFll-Eew#v=onepage&q=motulsky%20intuitive%20biostatistics%20pdf&f=false)
+
+  * ¿Importa cual variable sea denominada _x_ y cual es _y_?
+  
+  No. X y Y son completamente simétricas en los calculo de correlación. Sin embargo, esto no es cierto en el caso de la regresión (siguiente capitulo).
+  
+  * ¿_X_ y _Y_ tienen que ser medidas en la misma unidad para realizar los calculos de correlación?
+  
+  X y Y no tienen que ser medidas en la misma unidad pero pueden serlo.
+  
+  * ¿Por qué no hay una línea con el mejor ajuste en los gráficos de este capitulo?
+  
+  La correlación cuantifica la relación entre dos variables pero no ajusta un modelo a los datos, a diferencia de la regresión.
+  
+  * ¿Si se cambia el orden de _X_ y _Y_ también cambiará el valor de $r$?
+  
+  No. X y Y son completamente simetricos en el calculo e interpretación del coeficiente de correlación.
+  
+  * Puede el valor de $r$ ser expresado en porcentaje? 
+  
+  No. El valor de r va de -1 a 1. No es una fracción por lo que no puede expresarse en porcentaje. 
+</div>
