@@ -73,6 +73,7 @@ htmltools::img(src = knitr::image_uri("docs/figure/Rlogo.png"),
 
 -   [Modulo 9: Comparación de dos o mas medias; ANOVA factorial](Clase9_anova2vias.html)
 
+-   [Modulo 10: Correlación](Clase10_correlacion.html)
 
 
 ```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
