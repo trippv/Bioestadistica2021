@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Tripp" />
+
+<meta name="date" content="2021-07-05" />
+
+<title>Regresión lineal simple</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/trippv/Bioestadistica2021">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Regresión lineal simple</h1>
+<h4 class="author">Miguel Tripp</h4>
+<h4 class="date">2021-07-05</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-07-07
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210412code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210412)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210412code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210412)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree66fe2bf8ec749d384bdceb38e6d29c52d320487ctargetblank66fe2bfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/66fe2bf8ec749d384bdceb38e6d29c52d320487c" target="_blank">66fe2bf</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree66fe2bf8ec749d384bdceb38e6d29c52d320487ctargetblank66fe2bfa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/66fe2bf8ec749d384bdceb38e6d29c52d320487c" target="_blank">66fe2bf</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
+    Untracked:  Curso_Bioestadistica_MTripp_cuatriII.pdf
+    Untracked:  Diapositivas/
+    Untracked:  Prueba_markdown.Rmd
+    Untracked:  Prueba_markdown.pdf
+    Untracked:  README.html
+    Untracked:  Resources/
+    Untracked:  Tarea_Tstudent.Rmd
+    Untracked:  Tarea_Tstudent.docx
+    Untracked:  Tarea_Tstudent.html
+    Untracked:  Tarea_Tstudent.pdf
+    Untracked:  analysis/Clase12_regresionMulti.Rmd
+    Untracked:  analysis/images/
+    Untracked:  code/tarea_macrograd.R
+    Untracked:  data/CS_subset.csv
+    Untracked:  data/Consumo_oxigeno_wide.csv
+    Untracked:  data/Darwin_esp.csv
+    Untracked:  data/Data_enzimas_Experimento1.txt
+    Untracked:  data/Data_enzimas_Experimento2.txt
+    Untracked:  data/Data_enzimas_Experimento3.txt
+    Untracked:  data/Data_enzimas_Experimento4.txt
+    Untracked:  data/DownloadFestival(No Outlier).dat
+    Untracked:  data/Festival.csv
+    Untracked:  data/LungCapData.txt
+    Untracked:  data/LungCapDataEsp.csv
+    Untracked:  data/RExam.dat
+    Untracked:  data/Rexamendat.csv
+    Untracked:  data/Tabla1_Muestreo.txt
+    Untracked:  data/Transcriptome_Anotacion.csv
+    Untracked:  data/Transcriptome_DGE.csv
+    Untracked:  data/Vinogradov_2004_Titanic.tab
+    Untracked:  data/Vinogradov_2004_Titanic.tab.csv
+    Untracked:  data/data_tukey.txt
+    Untracked:  data/datasets_Pokemon.csv
+    Untracked:  data/datasets_Pokemon.xls
+    Untracked:  data/exp_macrogard_growth.tab
+    Untracked:  data/exp_macrogard_rna-dna.tab
+    Untracked:  data/fertilizantes_luz.csv
+    Untracked:  data/gatos_sueno.csv
+    Untracked:  data/macrogard_crecimiento.csv
+    Untracked:  data/penguins_size.csv
+    Untracked:  data/pokemon_extended.csv
+    Untracked:  output/Plot_all_penguins.pdf
+    Untracked:  output/Plot_all_penguins.tiff
+    Untracked:  output/graficos/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/Clase11_regresion.Rmd</code>) and HTML (<code>docs/Clase11_regresion.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/Bioestadistica2021/blob/66fe2bf8ec749d384bdceb38e6d29c52d320487c/analysis/Clase11_regresion.Rmd" target="_blank">66fe2bf</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-07
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="generalidades" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
+<p>La correlación lineal y la regresión lineal simple son métodos estadísticos que estudian la relación lineal existente entre dos variables.Sin embargo, es importante recalcar las diferencias entre ambos métodos:</p>
+<ul>
+<li><p>En la correlación no es necesario pensar en la relación causa y efecto, solamente nos interesa saber como dos variables están relacionadas entre ellas. Por otro lado, en la regresión si debemos pensar en causa y efecto. La regresión <strong>encuentra la línea que mejor prediga Y a partir de X, y que esa linea no es la misma que la predicción de X a partir de Y</strong>.</p></li>
+<li><p>A nivel experimental, la correlación se suele emplear cuando ninguna de las variables se ha controlado, simplemente se han medido ambas y se desea saber si están relacionadas. En el caso de estudios de regresión lineal, es más común que una de las variables se controle (tiempo, concentración de reactivo, temperatura…) y se mida la otra.</p></li>
+<li><p>Normalmente los estudios de correlación lineal preceden a la generación de modelos de regresión lineal. Primero se analiza si ambas variables están correlacionadas y, en caso de estarlo, se procede a generar el modelo de regresión.</p></li>
+</ul>
+<p>En la descripción de la ANOVA, vimos como los minimos cuadrados son implementaods dentro la función lm() para ajustar un modelo con variables categoricas (factores). A diferencia de la ANOVA y la T de Student, el objetivo de la regresión no es probar una hipótesis sino estimar una relación que pueda ser usado para predicción.</p>
+<p>La construcción de un modelo nos permite entender las relaciones entre las variables y hacer predicciones usando futuras observaciones.</p>
+<div id="modelo-lineal" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Modelo lineal</h2>
+<p>La regresión lineal simple consiste en generar un modelo de regresión (ecuación de una recta) que permita explicar la relación lineal que existe entre dos variables. A la variable dependiente o respuesta se le identifica como <span class="math inline">\(Y\)</span> y a la variable predictora o independiente como <span class="math inline">\(X\)</span>.</p>
+<p>El modelo de regresión lineal simple se describe de acuerdo a la ecuación:</p>
+<p><span class="math inline">\(Y=\beta_0 + \beta_1 X_i + \epsilon\)</span></p>
+<p>Siendo <span class="math inline">\(\beta_0\)</span> la ordenada en el origen, <span class="math inline">\(\beta_1\)</span> la pendiente y <span class="math inline">\(\epsilon\)</span> el error aleatorio. Este último representa la diferencia entre el valor ajustado por la recta y el valor real. Recoge el efecto de todas aquellas variables que influyen en Y pero que no se incluyen en el modelo como predictores. Al error aleatorio también se le conoce como residuo.</p>
+<p>Usualmente los estudios de regresión tienen el objetivo de estimar un modelo que explique la relación entre dos variables de una población, lo cual se realiza a partir de la relación que se observa en la muestra y que, por lo tanto, esta sujeta a variaciones. Por lo tanto, para cada uno de los parámetros de la ecuación de regresión lineal simple (<span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span>) se alcula su significancia (valor p) y su intervalo de confianza. El test estadístico más empleado es el t-test (existen alternativas no paramétricas).</p>
+<p>De esta manera, el test de significancia para la pendiente (<span class="math inline">\(\beta_1\)</span>) del modelo lineal considera como hipótesis:</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: No hay relación lineal entre ambas variables por lo que la pendiente del modelo lineal es cero. <span class="math inline">\(\beta_1 = 0\)</span></p></li>
+<li><p><span class="math inline">\(H_A\)</span>: Sí hay relación lineal entre ambas variables por lo que la pendiente del modelo lineal es distinta de cero. <span class="math inline">\(\beta_1 \neq 0\)</span></p></li>
+</ul>
+<p>De esta misma forma también se aplica a (<span class="math inline">\(\beta_0\)</span>)</p>
+</div>
+</div>
+<div id="ejemplo-gatos-y-horas-de-sueño" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Ejemplo Gatos y horas de sueño</h1>
+<p>Estos datos son una adaptación del ejemplo descrito en <a href="https://learningstatisticswithr-bookdown.netlify.app/"><em>Navarro, Learning statistics with R: A tutorial for psychology students and other beginners.</em></a>. Supongan que queremos saber que tanto afecta los hábitos de sueño de mi gato en mi estado de animo. Para esto, se califica mi nivel de irritabilidad en una escala de 0 (nada irritado) al 100 (muy irritado). Supongan también que se ha medido mi estado de animo, las horas de sueño del gato y mis horas de sueños por 100 días.</p>
+<p><img src="https://images.unsplash.com/photo-1612812166620-a072f77ec45b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1898&amp;q=80" /></p>
+<pre class="r"><code>library(tidyverse)
+
+
+gatos_url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/gatos_sueno.csv&quot;
+gatos &lt;- read_csv(gatos_url)</code></pre>
+<div id="representación-gráfica-y-relación-entre-variables" class="section level3" number="2.0.1">
+<h3 number="2.0.1"><span class="header-section-number">2.0.1</span> Representación gráfica y relación entre variables</h3>
+<p>El primer paso antes de generar un modelo de regresión es representar los datos para poder intuir si existe una relación y cuantificar dicha relación mediante un coeficiente de correlación. Si en este paso no se detecta la posible relación lineal, no tiene sentido seguir adelante generando un modelo lineal (se tendrían que probar otros modelos).</p>
+<pre class="r"><code>ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point()+
+  labs(x = &quot;Horas de sueño&quot;, y = &quot;Irritabilidad&quot;,
+       title = &quot;Relación entre mis horas de sueño y mi irritabildiad&quot;)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cor.test(gatos$horas_sueno, gatos$irritabilidad, method = &quot;pearson&quot;)</code></pre>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  gatos$horas_sueno and gatos$irritabilidad
+t = -20.854, df = 98, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.9340614 -0.8594714
+sample estimates:
+      cor 
+-0.903384 </code></pre>
+<p>El gráfico y la prueba de correlación muestran una relación lineal negativa (r = -0.90) y significativa (p &lt; 0.0001). Tiene sentido generar un modelo de regresión lineal que permita predecir mi irritabildiad en función de mis horas de sueño.</p>
+</div>
+<div id="modelo" class="section level3" number="2.0.2">
+<h3 number="2.0.2"><span class="header-section-number">2.0.2</span> modelo</h3>
+<pre class="r"><code>regresion.1 &lt;- lm(irritabilidad ~ horas_sueno, data = gatos)</code></pre>
+<p>Como vimos en el capitulo de ANOVA, el objeto <code>lm()</code> contiene una gran cantidad de información con respecto a los coeficientes. Pero podemos obtener la información básica si simplemente ejemcutamos</p>
+<pre class="r"><code>print(regresion.1)</code></pre>
+<pre><code>
+Call:
+lm(formula = irritabilidad ~ horas_sueno, data = gatos)
+
+Coefficients:
+(Intercept)  horas_sueno  
+    125.956       -8.937  </code></pre>
+<p>Esto nos proporciona información de (1) el modelo que le especificamos a R y (2) los valores de intercepto (<span class="math inline">\(\beta_0 = 125.956\)</span>) y la pendiente (<span class="math inline">\(\beta_1 = -8.93\)</span>). Esto significa que el modelo lineal que mejor se ajusta a nuestro datos tiene la forma:</p>
+<p><span class="math inline">\(Y = -8.94 X_i + 125.96\)</span></p>
+<p>es decir:</p>
+<p><span class="math inline">\(Irritabilidad = -8.94(horas sueño) + 125.96\)</span></p>
+<p>En este modelo, <span class="math inline">\(\beta_1\)</span> (la pendiente) implica que <strong>por cada unidad de sueño que se incremente, mi irritabilidad se disminuira por 8.94 puntos</strong>. Por otro lado <span class="math inline">\(\beta_0\)</span> (el intercepto) corresponde al valor espeerado de <span class="math inline">\(Y_i\)</span> cuando <span class="math inline">\(X_i = 0\)</span>, es decir, si tengo 0 horas de sueño, mi nivel de irritabilidad estará en niveles exorbitantes ($Y_i = 125.9)</p>
+<p>Para ver la validez del modelo podemos usar la función summary()</p>
+<pre class="r"><code>summary(regresion.1)</code></pre>
+<pre><code>
+Call:
+lm(formula = irritabilidad ~ horas_sueno, data = gatos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-11.025  -2.213  -0.399   2.681  11.750 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 125.9563     3.0161   41.76   &lt;2e-16 ***
+horas_sueno  -8.9368     0.4285  -20.85   &lt;2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.332 on 98 degrees of freedom
+Multiple R-squared:  0.8161,    Adjusted R-squared:  0.8142 
+F-statistic: 434.9 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>La primera columna (Estimate) devuelve el valor estimado para los dos parámetros de la ecuación del modelo lineal (a y b) que equivalen a la ordenada en el origen y la pendiente.</p>
+<p>Se muestran los errores estándar, el valor del estadístico t y el p-value (dos colas) de cada uno de los dos parámetros. Esto permite determinar si los parámetros son significativamente distintos de 0.</p>
+<p>Para el modelo generado, tanto la ordenada en el origen (intercepto) como la pendiente son significativas (p-values &lt; 0.001).</p>
+<p>Es posibl eobtener los intervalos de confianza para los parámetros del modelo</p>
+<pre class="r"><code>confint(regresion.1)</code></pre>
+<pre><code>                 2.5 %    97.5 %
+(Intercept) 119.971000 131.94158
+horas_sueno  -9.787161  -8.08635</code></pre>
+<p>El valor de R2 indica que el modelo calculado explica el 81% de la variabilidad presente en la variable respuesta mediante la variable independiente.</p>
+<p>El p-value obtenido en el test F determina que sí es significativamente superior la varianza explicada por el modelo en comparación a la varianza total. Es el parámetro que determina si el modelo es significativo y por lo tanto se puede aceptar.</p>
+</div>
+<div id="línea-de-regresión" class="section level3" number="2.0.3">
+<h3 number="2.0.3"><span class="header-section-number">2.0.3</span> Línea de regresión</h3>
+<p>Una vez generado un modelo es posible predecir el valor de la variable dependiente <span class="math inline">\(Y\)</span> para un set nuevo de valores de nuestra variable predictroa <span class="math inline">\(X\)</span>. Sin embargo es importante considerar que las predicciones deben limitarse al intervalo de valores con los que se ha generado el modelo. Esto es importante puesto que solo en esta región se tiene certeza de que se cumplen las condiciones para que el modelo sea válido. Para calcular las predicciones se emplea la ecuación generada por regresión.</p>
+<p>Para extraer los valores ajustados del modelo para cada valor observado podemos utilizar la función <code>fitted()</code></p>
+<pre class="r"><code>fit &lt;- fitted(regresion.1)
+head(fit)</code></pre>
+<pre><code>       1        2        3        4        5        6 
+58.12631 55.26655 80.02137 57.05390 66.25876 72.42512 </code></pre>
+<pre class="r"><code># Graficar los valores ajsutados. Recordar que nuestro modelo lo definimos como irritabilidad ~ horas de sueño
+plot(gatos$horas_sueno, fit)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>y de igual manera podemos extraer los residuales (diferencia entre el valor observado - el valor esperado) con la función <code>residuals()</code></p>
+<pre class="r"><code>residuales &lt;- residuals(regresion.1)
+head(residuales)</code></pre>
+<pre><code>         1          2          3          4          5          6 
+-2.1263150  4.7334469  1.9786333 -2.0539043  0.7412372 -0.4251243 </code></pre>
+<p>Para realizar la representación gráfica de nuestro modelo, podemos utilizar diferentes alternativas</p>
+<ol style="list-style-type: lower-alpha">
+<li>R base</li>
+</ol>
+<pre class="r"><code>plot(gatos$horas_sueno, gatos$irritabilidad, col = &quot;firebrick&quot;, pch = 19,  ylab = &quot;Irritabilidad&quot;, xlab = &quot;Horas sueño&quot;)
+abline(regresion.1)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Alternativamente, Para poder representar el intervalo de confianza a lo largo de todo el modelo se recurre a la función <code>predict()</code>. Con esto es posible generar una gráfica de regresión con los <strong>intervalos de confianza</strong> superiores e inferiores del 95%. Esto permite identificar la región en la que, según el modelo generado y para un determinado nivel de confianza, se encuentra el valor promedio de la variable dependiente.</p>
+<p>Para poder representar el intervalo de confianza a lo largo de todo el modelo se recurre a la función <code>predict()</code> para predecir valores que abarquen todo el eje <span class="math inline">\(X\)</span>.</p>
+<pre class="r"><code>xseq &lt;- seq(from = min(gatos$horas_sueno),
+              to = max(gatos$horas_sueno),
+              length.out = 100)
+
+# se genera la predicción de los valores de irritabilidad utilizando el modelo generado
+
+irritabilidad_pred &lt;- predict(object = regresion.1,
+                              newdata = data.frame(horas_sueno = xseq),
+                              interval = &quot;confidence&quot;, level = 0.95)
+
+head(irritabilidad_pred)</code></pre>
+<pre><code>       fit      lwr      upr
+1 82.70239 80.70111 84.70368
+2 82.32687 80.35779 84.29595
+3 81.95134 80.01435 83.88834
+4 81.57582 79.67079 83.48085
+5 81.20030 79.32708 83.07351
+6 80.82477 78.98324 82.66631</code></pre>
+<p>y añadimos al gráfico las lineas formadas por los limites inferior y superior</p>
+<pre class="r"><code>plot(gatos$horas_sueno, gatos$irritabilidad, col = &quot;firebrick&quot;, pch = 19,  ylab = &quot;Irritabilidad&quot;, xlab = &quot;Horas sueño&quot;)
+abline(regresion.1)
+lines(x = xseq, y = irritabilidad_pred[,2],type = &quot;l&quot;, col = 2, lty = 3)
+lines(x = xseq, y = irritabilidad_pred[,3],type = &quot;l&quot;, col = 3, lty = 3)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>La función geom_smooth() del paquete ggplot2 genera la regresión y su intervalo de forma directa.</li>
+</ol>
+<pre class="r"><code>ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point(color = &quot;firebrick&quot;)+
+  geom_smooth(method = &quot;lm&quot;, se = TRUE, color = &quot;black&quot;)+
+  labs(x = &quot;Horas de sueño&quot;, y = &quot;Irritabildiad&quot;)+
+  theme_classic()</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="validez-del-modelo" class="section level3" number="2.0.4">
+<h3 number="2.0.4"><span class="header-section-number">2.0.4</span> Validez del modelo</h3>
+<p>Tal como hemos visto hasta ahora, la función <code>lm()</code> realiza un análisis de minimos cuadrados el cual asume que los residuales tienen una distribución cercana a la normal. La varianza (o desviación estandar) debe ser aproximadamente constante a lo largo de la variable de respuesta.</p>
+<p>Podemos usar la función <code>plot()</code> en nuestro modelo para evaluar visualmente si los residuales del modelo cumplen con estas condiciones.</p>
+<pre class="r"><code>par(mfrow = c(2,2))
+plot(regresion.1)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>null device 
+          1 </code></pre>
+<blockquote>
+<p>Ejercicio: Calcula de forma manual asi como con la función predict (incluye los intervalos de confianza) cual sería mi valor de irritabilidad cuando duermo 3 y 12 horas</p>
+</blockquote>
+<pre class="r fold-hide"><code>#función predict
+
+E1 &lt;- data.frame(horas_sueno = c(3, 12))
+
+predict(object = regresion.1,
+        newdata = E1,
+        interval = &quot;confidence&quot;, level = 0.95)
+
+# Manualmente
+
+E1_3h &lt;- coef(regresion.1)[2] * E1[1,1] + coef(regresion.1)[1]
+
+E1_12h &lt;- coef(regresion.1)[2] * E1[2,1] + coef(regresion.1)[1]</code></pre>
+</div>
+<div id="añadir-la-ecuación-del-modelo-al-gráfico" class="section level3" number="2.0.5">
+<h3 number="2.0.5"><span class="header-section-number">2.0.5</span> Añadir la ecuación del modelo al gráfico</h3>
+<p>Para realizar esto, <strong>ggpubr</strong> tiene una función que nos va a facilitar mucho la vida la cual es <code>stat_regline_equatio</code> y que se incluye como un nuevo layer dentro de ggplot. Puedes econtrar mas información de esta función <a href="https://rdrr.io/cran/ggpubr/man/stat_regline_equation.html">aqui</a></p>
+<pre class="r"><code>library(ggpubr)
+
+ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point(color = &quot;firebrick&quot;)+
+  geom_smooth(method = &quot;lm&quot;, se = TRUE, color = &quot;black&quot;)+
+  stat_cor(label.y = 105, geom = &quot;label&quot;) +
+  stat_regline_equation(label.y = 98, 
+                        aes(label =  paste(..eq.label.., ..rr.label.., sep = &quot;~~~~&quot;)),
+                        geom = &quot;label&quot;)+
+  labs(x = &quot;Horas de sueño&quot;, y = &quot;Irritabildiad&quot;)+
+  theme_classic()</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggscatter(gatos, x = &quot;horas_sueno&quot;, y = &quot;irritabilidad&quot;, add = &quot;reg.line&quot;, conf.int = TRUE)+
+  stat_regline_equation(label.y = 100)</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="sueño-del-gato" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Sueño del gato</h2>
+<p>Ahora vamos ajustar un modelo lineal para predecir mi nivel de irritabilidad en función que de que tanto duerman los gatos en la noche</p>
+<pre class="r"><code>regresion.2 &lt;- lm(irritabilidad ~ sueno_gatos, data = gatos)
+summary(regresion.2)</code></pre>
+<pre><code>
+Call:
+lm(formula = irritabilidad ~ sueno_gatos, data = gatos)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-21.4190  -5.0049  -0.0587   4.9567  23.7275 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  85.7817     3.3528  25.585  &lt; 2e-16 ***
+sueno_gatos  -2.7421     0.4035  -6.796 8.45e-10 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 8.327 on 98 degrees of freedom
+Multiple R-squared:  0.3203,    Adjusted R-squared:  0.3134 
+F-statistic: 46.18 on 1 and 98 DF,  p-value: 8.448e-10</code></pre>
+<p>Evaluación del modelo</p>
+<pre class="r"><code>par(mfrow = c(2,2))
+plot(regresion.2)</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>y gráficamos la disperción de los datos con el modelo de regresión</p>
+<pre class="r"><code>ggplot(gatos, aes(x = sueno_gatos, y = irritabilidad))+
+  geom_point(color = &quot;firebrick&quot;)+
+  geom_smooth(method = &quot;lm&quot;, se = TRUE, color = &quot;black&quot;)+
+  stat_cor(label.y = 105, geom = &quot;label&quot;) +
+  stat_regline_equation(label.y = 98, 
+                        aes(label =  paste(..eq.label.., ..rr.label.., sep = &quot;~~~~&quot;)),
+                        geom = &quot;label&quot;)+
+  labs(x = &quot;Horas de sueño del gato&quot;, y = &quot;Irritabildiad&quot;)+
+  theme_classic()</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/Clase11_regresion.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+</div>
+</div>
+<div id="preguntas-frecuentes" class="section level1 blue" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Preguntas frecuentes</h1>
+<p>Esta sección esta tomada del libro de Motuslky. <a href="https://books.google.com.mx/books?hl=en&amp;lr=&amp;id=ZLDWAgAAQBAJ&amp;oi=fnd&amp;pg=PP1&amp;dq=motulsky+intuitive+biostatistics+pdf&amp;ots=J1d8onYaXZ&amp;sig=c_dqfN7zgDoG5Tjy2-lSFll-Eew#v=onepage&amp;q=motulsky%20intuitive%20biostatistics%20pdf&amp;f=false">Intuitive Biostatistics</a></p>
+<ul>
+<li>¿La línea de regresión será la misma si intercambiamos <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span>?</li>
+</ul>
+<p>La regresión lineal ajusta un modelo que predice <span class="math inline">\(Y\)</span> a partir de <span class="math inline">\(X\)</span>. Si intercambiamos las definiciones de <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span> la línea de regresión será diferente a menos que los puntos esten alineados perfectamente. Sin embargo, intercambiar <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span> no cambiará el valor de <span class="math inline">\(R^2\)</span></p>
+<ul>
+<li>¿Puede <span class="math inline">\(R^2\)</span> tener un valor de 0 o negativo?</li>
+</ul>
+<p><span class="math inline">\(R^2\)</span> tendrá un valor de 0 si no hay ninguna tendencia en lo absoluto entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span> por lo que la línea de mejor ajuste será una línea horizontal. <span class="math inline">\(R^2\)</span> no puede tener valores negativos en una regresión lineal pero es posible observarlos en regresiones no lineales.</p>
+<ul>
+<li>Si analizamos un mismo set de datos con regresión lineal y correlación ¿como podemos comparar ambos resultados?</li>
+</ul>
+<p>Si elevas al cuadrado el coeficiente de correlacion (<span class="math inline">\(r\)</span>), el valor será igual a <span class="math inline">\(R^2\)</span> de una regresión lineal. El valor <span class="math inline">\(P\)</span> de la hipótesis nula de que el coeficiente de correlación de la población es 0 será equivalente a el valor <span class="math inline">\(P\)</span> de la hipótesis nula de que la pendiente de la poblacion es 0.</p>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19041)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggpubr_0.4.0    forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5    
+ [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.0.4   
+ [9] ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.2        jsonlite_1.7.2    splines_4.0.5     carData_3.0-4    
+ [5] modelr_0.1.8      assertthat_0.2.1  cellranger_1.1.0  yaml_2.2.1       
+ [9] pillar_1.6.0      backports_1.2.1   lattice_0.20-41   glue_1.4.2       
+[13] digest_0.6.27     promises_1.1.1    ggsignif_0.6.0    rvest_1.0.0      
+[17] colorspace_2.0-0  htmltools_0.5.1.1 httpuv_1.5.4      Matrix_1.3-2     
+[21] pkgconfig_2.0.3   broom_0.7.6       haven_2.3.1       scales_1.1.1     
+[25] whisker_0.4       openxlsx_4.2.3    later_1.1.0.1     rio_0.5.16       
+[29] git2r_0.27.1      mgcv_1.8-33       generics_0.1.0    farver_2.0.3     
+[33] car_3.0-10        ellipsis_0.3.1    withr_2.4.2       cli_2.5.0        
+[37] magrittr_2.0.1    crayon_1.4.1      readxl_1.3.1      evaluate_0.14    
+[41] ps_1.5.0          fs_1.5.0          fansi_0.4.2       nlme_3.1-152     
+[45] foreign_0.8-81    rstatix_0.7.0     xml2_1.3.2        data.table_1.13.6
+[49] tools_4.0.5       hms_1.0.0         lifecycle_1.0.0   munsell_0.5.0    
+[53] reprex_2.0.0      zip_2.1.1         compiler_4.0.5    rlang_0.4.11     
+[57] grid_4.0.5        rstudioapi_0.13   labeling_0.4.2    rmarkdown_2.6    
+[61] gtable_0.3.0      abind_1.4-5       DBI_1.1.0         curl_4.3         
+[65] polynom_1.4-0     R6_2.5.0          lubridate_1.7.10  knitr_1.30       
+[69] utf8_1.2.1        rprojroot_2.0.2   stringi_1.5.3     Rcpp_1.0.5       
+[73] vctrs_0.3.8       dbplyr_2.1.1      tidyselect_1.1.1  xfun_0.23        </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
