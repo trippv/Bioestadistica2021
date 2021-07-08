@@ -1,0 +1,318 @@
+---
+title: "Regresión lineal simple"
+author: "Miguel Tripp"
+date: "2021-07-05"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+# Generalidades
+
+La correlación lineal y la regresión lineal simple son métodos estadísticos que estudian la relación lineal existente entre dos variables.Sin embargo, es importante recalcar las diferencias entre ambos métodos: 
+
+  * En la correlación no es necesario pensar en la relación causa y efecto, solamente nos interesa saber como dos variables están relacionadas entre ellas. Por otro lado, en la regresión si debemos pensar en causa y efecto. La regresión **encuentra  la línea que mejor prediga Y a partir de X, y que esa linea no es la misma que la predicción de X a partir de Y**.
+
+  * A nivel experimental, la correlación se suele emplear cuando ninguna de las variables se ha controlado, simplemente se han medido ambas y se desea saber si están relacionadas. En el caso de estudios de regresión lineal, es más común que una de las variables se controle (tiempo, concentración de reactivo, temperatura…) y se mida la otra.
+  
+  *  Normalmente los estudios de correlación lineal preceden a la generación de modelos de regresión lineal. Primero se analiza si ambas variables están correlacionadas y, en caso de estarlo, se procede a generar el modelo de regresión.
+
+
+En la descripción de la ANOVA, vimos como los minimos cuadrados son implementaods dentro la función lm() para ajustar un modelo con variables categoricas (factores). A diferencia de la ANOVA y la T de Student, el objetivo de la regresión no es probar una hipótesis sino estimar una relación que pueda ser usado para predicción.
+
+La construcción de un modelo nos permite entender las relaciones entre las variables y hacer predicciones usando futuras observaciones.
+
+## Modelo lineal
+
+La regresión lineal simple consiste en generar un modelo de regresión (ecuación de una recta) que permita explicar la relación lineal que existe entre dos variables. A la variable dependiente o respuesta se le identifica como $Y$ y a la variable predictora o independiente como $X$.
+
+El modelo de regresión lineal simple se describe de acuerdo a la ecuación:
+
+$Y=\beta_0 + \beta_1 X_i + \epsilon$
+
+Siendo $\beta_0$ la ordenada en el origen, $\beta_1$ la pendiente y $\epsilon$ el error aleatorio. Este último representa la diferencia entre el valor ajustado por la recta y el valor real. Recoge el efecto de todas aquellas variables que influyen en Y pero que no se incluyen en el modelo como predictores. Al error aleatorio también se le conoce como residuo.
+
+Usualmente los estudios de regresión tienen el objetivo de estimar un modelo que explique la relación entre dos variables de una población, lo cual se realiza a partir de la relación que se observa en la muestra y que, por lo tanto, esta sujeta a variaciones. Por lo tanto, para cada uno de los parámetros de la ecuación de regresión lineal simple ($\beta_0$ y $\beta_1$) se alcula su significancia (valor p) y su intervalo de confianza. El test estadístico más empleado es el t-test (existen alternativas no paramétricas).
+
+De esta manera, el test de significancia para la pendiente ($\beta_1$) del modelo lineal considera como hipótesis:
+
+  * $H_0$: No hay relación lineal entre ambas variables por lo que la pendiente del modelo lineal es cero. $\beta_1 = 0$
+
+  * $H_A$: Sí hay relación lineal entre ambas variables por lo que la pendiente del modelo lineal es distinta de cero. $\beta_1 \neq 0$
+
+De esta misma forma también se aplica a ($\beta_0$)
+
+# Ejemplo Gatos y horas de sueño
+
+Estos datos son una adaptación del ejemplo descrito en [*Navarro, Learning statistics with R: A tutorial for psychology students and other beginners.*](https://learningstatisticswithr-bookdown.netlify.app/). Supongan que queremos saber que tanto afecta los hábitos de sueño de mi gato en mi estado de animo. Para esto, se califica mi nivel de irritabilidad en una escala de 0 (nada irritado) al 100 (muy irritado). Supongan también que se ha medido mi estado de animo, las horas de sueño del gato y mis horas de sueños por 100 días. 
+
+![](https://images.unsplash.com/photo-1612812166620-a072f77ec45b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1898&q=80)
+
+```{r, message=FALSE}
+library(tidyverse)
+
+
+gatos_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/gatos_sueno.csv"
+gatos <- read_csv(gatos_url)
+```
+
+
+
+### Representación gráfica y relación entre variables 
+
+El primer paso antes de generar un modelo de regresión es representar los datos para poder intuir si existe una relación y cuantificar dicha relación mediante un coeficiente de correlación. Si en este paso no se detecta la posible relación lineal, no tiene sentido seguir adelante generando un modelo lineal (se tendrían que probar otros modelos).
+
+```{r}
+ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point()+
+  labs(x = "Horas de sueño", y = "Irritabilidad",
+       title = "Relación entre mis horas de sueño y mi irritabildiad")
+```
+
+
+```{r}
+cor.test(gatos$horas_sueno, gatos$irritabilidad, method = "pearson")
+```
+
+El gráfico y la prueba de correlación  muestran una relación lineal negativa (r = -0.90) y significativa (p < 0.0001). Tiene sentido  generar un modelo de regresión lineal que permita predecir mi irritabildiad en función de mis horas de sueño. 
+
+### modelo
+
+```{r}
+regresion.1 <- lm(irritabilidad ~ horas_sueno, data = gatos)
+```
+
+
+Como vimos en el capitulo de ANOVA, el objeto `lm()` contiene una gran cantidad de información con respecto a los coeficientes. Pero podemos obtener la información básica si simplemente ejemcutamos
+
+```{r}
+print(regresion.1)
+```
+
+Esto nos proporciona información de (1) el modelo que le especificamos a R y (2) los valores de intercepto ($\beta_0 = 125.956$) y la pendiente ($\beta_1 = -8.93$). Esto significa que el modelo lineal que mejor se ajusta a nuestro datos tiene la forma:
+
+$Y = -8.94 X_i + 125.96$
+
+es decir:
+
+$Irritabilidad = -8.94(horas sueño) + 125.96$
+
+En este modelo, $\beta_1$ (la pendiente) implica que **por cada unidad de sueño que se incremente, mi irritabilidad se disminuira por 8.94 puntos**. Por otro lado $\beta_0$ (el intercepto) corresponde al valor espeerado de $Y_i$ cuando $X_i = 0$, es decir, si tengo 0 horas de sueño, mi nivel de irritabilidad estará en niveles exorbitantes ($Y_i = 125.9)
+
+Para ver la validez del modelo podemos usar la función summary()
+
+```{r}
+summary(regresion.1)
+```
+
+La primera columna (Estimate) devuelve el valor estimado para los dos parámetros de la ecuación del modelo lineal (a y b) que equivalen a la ordenada en el origen y la pendiente.
+
+Se muestran los errores estándar, el valor del estadístico t y el p-value (dos colas) de cada uno de los dos parámetros. Esto permite determinar si los parámetros son significativamente distintos de 0.
+
+Para el modelo generado, tanto la ordenada en el origen (intercepto) como la pendiente son significativas (p-values < 0.001).
+
+Es posibl eobtener los intervalos de confianza para los parámetros del modelo
+```{r}
+confint(regresion.1)
+```
+
+
+El valor de R2 indica que el modelo calculado explica el 81% de la variabilidad presente en la variable respuesta mediante la variable independiente.
+
+El p-value obtenido en el test F determina que sí es significativamente superior la varianza explicada por el modelo en comparación a la varianza total. Es el parámetro que determina si el modelo es significativo y por lo tanto se puede aceptar.
+
+### Línea de regresión
+
+Una vez generado un modelo es posible predecir el valor de la variable dependiente $Y$ para un set nuevo de valores de nuestra variable predictroa $X$. Sin embargo es importante considerar que las predicciones deben limitarse al intervalo de valores con los que se ha generado el modelo. Esto es importante puesto que solo en esta región se tiene certeza de que se cumplen las condiciones para que el modelo sea válido. Para calcular las predicciones se emplea la ecuación generada por regresión.
+
+
+Para extraer los valores ajustados del modelo para cada valor observado podemos utilizar la función `fitted()`
+
+```{r}
+fit <- fitted(regresion.1)
+head(fit)
+
+# Graficar los valores ajsutados. Recordar que nuestro modelo lo definimos como irritabilidad ~ horas de sueño
+plot(gatos$horas_sueno, fit)
+```
+
+y de igual manera podemos extraer los residuales (diferencia entre el valor observado - el valor esperado) con la función `residuals()`
+
+```{r}
+residuales <- residuals(regresion.1)
+head(residuales)
+```
+
+Para realizar la representación gráfica de nuestro modelo, podemos utilizar diferentes alternativas
+
+  a) R base
+  
+```{r}
+plot(gatos$horas_sueno, gatos$irritabilidad, col = "firebrick", pch = 19,  ylab = "Irritabilidad", xlab = "Horas sueño")
+abline(regresion.1)
+```
+  
+
+
+Alternativamente, Para poder representar el intervalo de confianza a lo largo de todo el modelo se recurre a la función `predict()`. Con esto es posible generar una gráfica de regresión con los **intervalos de confianza** superiores e inferiores del 95%. Esto permite identificar la región en la que, según el modelo generado y para un determinado nivel de confianza, se encuentra el valor promedio de la variable dependiente.
+
+Para poder representar el intervalo de confianza a lo largo de todo el modelo se recurre a la función `predict()` para predecir valores que abarquen todo el eje $X$. 
+
+```{r}
+xseq <- seq(from = min(gatos$horas_sueno),
+              to = max(gatos$horas_sueno),
+              length.out = 100)
+
+# se genera la predicción de los valores de irritabilidad utilizando el modelo generado
+
+irritabilidad_pred <- predict(object = regresion.1,
+                              newdata = data.frame(horas_sueno = xseq),
+                              interval = "confidence", level = 0.95)
+
+head(irritabilidad_pred)
+```
+
+y añadimos al gráfico las lineas formadas por los limites inferior y superior
+
+```{r}
+plot(gatos$horas_sueno, gatos$irritabilidad, col = "firebrick", pch = 19,  ylab = "Irritabilidad", xlab = "Horas sueño")
+abline(regresion.1)
+lines(x = xseq, y = irritabilidad_pred[,2],type = "l", col = 2, lty = 3)
+lines(x = xseq, y = irritabilidad_pred[,3],type = "l", col = 3, lty = 3)
+```
+
+
+
+  b) La función geom_smooth() del paquete ggplot2 genera la regresión y su intervalo de forma directa. 
+  
+```{r}
+ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point(color = "firebrick")+
+  geom_smooth(method = "lm", se = TRUE, color = "black")+
+  labs(x = "Horas de sueño", y = "Irritabildiad")+
+  theme_classic()
+```
+
+### Validez del modelo
+
+Tal como hemos visto hasta ahora, la función `lm()` realiza un análisis de minimos cuadrados el cual asume que los residuales tienen una distribución cercana a la normal. La varianza (o desviación estandar) debe ser aproximadamente constante a lo largo de la variable de respuesta.
+
+Podemos usar la función `plot()` en nuestro modelo para evaluar visualmente si los residuales del modelo cumplen con estas condiciones.
+
+```{r}
+par(mfrow = c(2,2))
+plot(regresion.1)
+dev.off()
+```
+
+
+> Ejercicio: Calcula de forma manual asi como con la función predict (incluye los intervalos de confianza) cual sería mi valor de irritabilidad cuando duermo 3 y 12 horas
+
+```{r, eval=FALSE,  class.source = 'fold-hide'}
+#función predict
+
+E1 <- data.frame(horas_sueno = c(3, 12))
+
+predict(object = regresion.1,
+        newdata = E1,
+        interval = "confidence", level = 0.95)
+
+# Manualmente
+
+E1_3h <- coef(regresion.1)[2] * E1[1,1] + coef(regresion.1)[1]
+
+E1_12h <- coef(regresion.1)[2] * E1[2,1] + coef(regresion.1)[1]
+```
+
+### Añadir la ecuación del modelo al gráfico
+
+Para realizar esto, **ggpubr** tiene una función que nos va a facilitar mucho la vida la cual es `stat_regline_equatio` y que se incluye como un nuevo layer dentro de ggplot. Puedes econtrar mas información de esta función [aqui](https://rdrr.io/cran/ggpubr/man/stat_regline_equation.html)
+
+```{r}
+library(ggpubr)
+
+ggplot(gatos, aes(x = horas_sueno, y = irritabilidad))+
+  geom_point(color = "firebrick")+
+  geom_smooth(method = "lm", se = TRUE, color = "black")+
+  stat_cor(label.y = 105, geom = "label") +
+  stat_regline_equation(label.y = 98, 
+                        aes(label =  paste(..eq.label.., ..rr.label.., sep = "~~~~")),
+                        geom = "label")+
+  labs(x = "Horas de sueño", y = "Irritabildiad")+
+  theme_classic()
+```
+
+```{r}
+ggscatter(gatos, x = "horas_sueno", y = "irritabilidad", add = "reg.line", conf.int = TRUE)+
+  stat_regline_equation(label.y = 100)
+```
+
+
+## Sueño del gato
+
+Ahora vamos ajustar un modelo lineal para predecir mi nivel de irritabilidad en función que de que tanto duerman los gatos en la noche
+
+```{r}
+regresion.2 <- lm(irritabilidad ~ sueno_gatos, data = gatos)
+summary(regresion.2)
+```
+
+
+Evaluación del modelo
+
+```{r}
+par(mfrow = c(2,2))
+plot(regresion.2)
+
+```
+
+y gráficamos la disperción de los datos con el modelo de regresión
+
+```{r}
+ggplot(gatos, aes(x = sueno_gatos, y = irritabilidad))+
+  geom_point(color = "firebrick")+
+  geom_smooth(method = "lm", se = TRUE, color = "black")+
+  stat_cor(label.y = 105, geom = "label") +
+  stat_regline_equation(label.y = 98, 
+                        aes(label =  paste(..eq.label.., ..rr.label.., sep = "~~~~")),
+                        geom = "label")+
+  labs(x = "Horas de sueño del gato", y = "Irritabildiad")+
+  theme_classic()
+```
+
+
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+# Preguntas frecuentes
+
+Esta sección esta tomada del libro de Motuslky. [Intuitive Biostatistics](https://books.google.com.mx/books?hl=en&lr=&id=ZLDWAgAAQBAJ&oi=fnd&pg=PP1&dq=motulsky+intuitive+biostatistics+pdf&ots=J1d8onYaXZ&sig=c_dqfN7zgDoG5Tjy2-lSFll-Eew#v=onepage&q=motulsky%20intuitive%20biostatistics%20pdf&f=false)
+
+  * ¿La línea de regresión será la misma si intercambiamos $X$ y $Y$?
+  
+  La regresión lineal ajusta un modelo que predice $Y$ a partir de $X$. Si intercambiamos las definiciones de $X$ y $Y$ la línea de regresión será diferente a menos que los puntos esten alineados perfectamente. Sin embargo, intercambiar $X$ y $Y$ no cambiará el valor de $R^2$
+  
+  * ¿Puede $R^2$ tener un valor de 0 o negativo?
+  
+$R^2$ tendrá un valor de 0 si no hay ninguna tendencia en lo absoluto entre $X$ y $Y$ por lo que la línea de mejor ajuste será una línea horizontal. $R^2$ no puede tener valores negativos en una regresión lineal pero es posible observarlos en regresiones no lineales.
+  
+  * Si analizamos un mismo set de datos con regresión lineal y correlación ¿como podemos comparar ambos resultados?
+  
+  Si elevas al cuadrado el coeficiente de correlacion ($r$), el valor será igual a $R^2$ de una regresión lineal. El valor $P$ de la hipótesis nula de que el coeficiente de correlación de la población es 0 será equivalente a el valor $P$ de la hipótesis nula de que la pendiente de la poblacion es 0. 
+  
+  
+</div>
