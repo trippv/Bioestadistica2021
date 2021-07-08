@@ -75,7 +75,7 @@ htmltools::img(src = knitr::image_uri("docs/figure/Rlogo.png"),
 
 -   [Modulo 10: Correlación](Clase10_correlacion.html)
 
--   [Modulo 11: Regresión lineal simple](Clase11_regresión.html)
+-   [Modulo 11: Regresión lineal simple](Clase11_regresion.html)
 
 
 ```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
