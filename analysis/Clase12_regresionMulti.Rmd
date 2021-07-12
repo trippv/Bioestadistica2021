@@ -1,0 +1,273 @@
+---
+title: "Regresión lineal multiple"
+author: "Miguel Tripp"
+date: "2021-07-07"
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
+editor_options:
+  chunk_output_type: console
+---
+
+# Generalidades
+
+La regresión lineal simple asume que hay una sola variable predictora en la que estamos interesados. Sin embargo existen muchas situaciones en la que queremos predicir un valor a partir de multiples variables predictora, por lo que necesitamos de una extensión de la reresión lineal. 
+
+La regresión lineal múltiple permite generar un modelo lineal en el que el valor de la variable dependiente o respuesta ($Y$) se determina a partir de un conjunto de variables independientes llamadas predictores ($X_1$, $X_2$, $X_3$…).
+
+Conceptualmente, los modelos lineales multiples son muy sencillos. Todo lo que necesitamos hacer es añadir mas terminos a nuestra ecuación de regresión, de manera que pasamos de una ecuación simple como esta:
+
+$Y=\beta_0 + \beta_1 X_i + \epsilon$
+
+a esta:
+
+$Y=\beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + ... + \beta_n X_{ni} + \epsilon$
+
+Al igual que en nuestro modelo lineal sencillo, $\epsilon_i$ corresponde a los residuales asociados a la $i_{esima}$ observación ($\epsilon_i = Y_i - \hat{Y}_i$). Pero en este modelo ahora tenemos tres coeficientes que tienen que ser estimados: el intercepto ($b_0$), la pendiente para la variable i ($b_1$) y la pendiente para la vairable 2 ($b_2$). 
+
+A pesar de que ahora tenemos mas coeficientes que necesitan ser estimados, la idea básica de la estimación sigue siendo la misma: los coeficientes estimados son aquellos que minimizan la suma de cuadrado de los residuales. 
+
+# Ejemplo sencillo: Gatos y horas de sueño
+
+![](https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1042&q=80)
+Recordado el ejemplo de nuestro tema anterior, estos datos ficticios corresponden a valores diarios del nivel de irritabilidad de una persona, las horas de sueño de esa persona y las horas de sueño de su gato (el ejemplo original de [Navarro](https://learningstatisticswithr-bookdown.netlify.app/regression.html#multipleregression) usa las horas de sueño de un bebe, pero los gatos son mas lindos). 
+
+En nuestro tema anterior, construimos un modelo lineal simple para predecir los niveles de irritabildiad en función de las horas de sueño, y otro modelo diferente para predecir la irritabilidad en función de las horas de sueño del gato.
+
+Sin embargo, ambas variables van a afectar la irritabilidad por lo que tiene sentido generar un modelo de regresión múltiple que considere ambas variable.
+
+```{r, message=FALSE}
+#abrimos los datos
+library(tidyverse)
+
+
+gatos_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/gatos_sueno.csv"
+
+gatos <- read_csv(gatos_url)
+```
+
+
+En R, para generar un modelo multiple simplemente agregamos mas predictores en nuestra formula de la siguiente manera
+
+```{r}
+Regresion.multi <- lm(irritabilidad ~ horas_sueno + sueno_gatos, data = gatos)
+```
+
+
+Al igual que en el tema anterior, podemos visualizar los coeficientes estimados por R
+```{r}
+print(Regresion.multi)
+```
+
+De esta manera, nuestra formula de regresión quedaria de la siguiente forma:
+
+$Y=\beta_0 + \beta_1 horas~de~sueno + \beta_2 sueno~ gato + \epsilon$
+
+De acuerdo a los resultados, el coeficiente asociado a las horas de sueño `horas_sueno`es bastante alto, lo que indica que **cada hora de sueño que pierda que hace mas irritable** mientras que el coeficiente del gatos `sueno_gato` es muy pequeño, sugiriendo que no tiene mucho efecto en mi irritabilidad. 
+
+Utilizando `summary()` podemos acceder a las pruebas de significancia del modelo.
+
+```{r}
+summary(Regresion.multi)
+```
+
+En la tabla, cada fila corresponde a cada uno de los coeficientes estimados y se realiza una prueba T de Student para evlauar si son diferentes de 0. 
+
+Finalmente, los resultados nos muestra que el modelo se desempeña mehor que lo esperado solamente por efecto del azar ($F(2,97) = 215.2, P < 0.001$) y el coeficiente de determinación $R^2 = 0.812$ nos indica que el modelo de regresión nos explica el 81.2% de la variabilidad.
+
+Sin embargo, algo interesante es que el coeficiente `sueno_gatos` no es significativo, lo que nos sugiere que posiblemente este modelo no sea el mas eficiente para predecir nuestra irritabildiad y que podriamos eliminar este predictor. 
+
+
+# Ejemplo complicado: Predecir el peso de un pez
+
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/0418Blackchin_tilapia_Gloria_fish_textures_03.jpg/640px-0418Blackchin_tilapia_Gloria_fish_textures_03.jpg)
+Estos datos estan tomados y modificados del set de datos `Fish Market` disponible en [kaggle](https://www.kaggle.com/aungpyaeap/fish-market). Para este ejercicio, solo utilizaremos los datos de **tilapia**
+
+```{r}
+peces_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/peces_regresion.csv"
+
+peces <- read_csv(peces_url)
+
+tilapia <- peces[peces$Especie == "Tilapia", - 1]
+```
+
+El primer paso para establecer un modelo lineal múltiple es estudiar la relación que existe entre variables. Esta relación en critica a la hora de identificar los mejores predictores para el modelo (p. ej, que variables presentan relación de tipo no lineal) y para identificar colinialidad entre predictores.
+
+Podemos usar la funcion `pairs.panel()` del paquete `psych` para visualziar los diagramas de disperción entre todas las variables asi como su valor de correlación.
+
+```{r}
+psych::pairs.panels(tilapia, stars = TRUE)
+
+```
+
+
+El paquete Psych tambien contien la función `multi.hist()`la cual nos ayuda a evaluar la distribución de los datos:
+
+```{r}
+psych::multi.hist(x = tilapia[,-1], dcol = c("blue", "red"))
+```
+
+Donde la linea roja corresponde a la distribución normal ajustada y la linea azul a la densidad observada.
+
+Del análisis preliminar se pueden extraer las siguientes conclusiones:
+
+  * Las variables que tienen mayor relación lineal con el peso son: ancho (r = 0.96), longitud3 y longitud2 (r = 0.95).
+  * Las longitudes 1,2 y 3 estan altamente correlacionadas entre ellas, por lo que posiblemente no sea útil introducir ambos predictores en el modelo.
+  
+## Generar el modelo multiple
+
+Al igual que en nuestro ejemplo mas simple, el modelo múltiple se genera añadiendo cada uno de los predictores a la ecuación de regresión utilizando el simbolo `+`.
+
+De manera que podemos pasar de un modelo simple usando un solo predictor, por ejemplo `Longitud1`
+
+```{r}
+tilapia_lm1 <- lm(Peso ~ Longitud1, data = tilapia  )
+```
+
+
+A un modelo mas complejo utilizando todas las variables:
+
+```{r}
+tilapia_lm2 <- lm(Peso ~ Longitud1 + Longitud2 + Longitud3 + Longitud4 + Ancho + Alto, data = tilapia)
+```
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+Una forma fácil de escribir una ecuación multiple cuando se van a utilizar *todas* las variables de una tablas es utilizando el `.`de la siguiente forma
+
+```{r, eval=FALSE}
+tilapia_lm2 <- lm(Peso ~ ., data = tilapia)
+```
+
+</div>
+
+
+Utilizando la función  `summary()` podemos comparar ambos modelos
+
+  1) Modelo con un predictor:
+```{r}
+summary(tilapia_lm1)
+```
+
+  2) Modelo con todos los predictores:
+  
+```{r}
+summary(tilapia_lm2)
+```
+
+Una de las primeras cosas que observamos es la diferencia entre los valores de $R^2$ el cual es una medida de la variabilidad en el resultado es explicada por los predictores. Cuando solo utilizamos el valor de la `Longitud1`, el valor de $R^2$ es de 0.878 lo que indica que la Longitud 1 representa el 87.8% de la variación en el peso de las tilapias. Por otro lado, cuando el resto de los predictores son utilizados, el valor de $R^2$ se incrementa a 0.943, por lo que la inclusión de estos predictores representa un incremento adicional de la variación explicada. 
+
+Sin embargo, es importante notar que **todas las variables menos `Alto` no son significativas**, lo que es un indicativo de que estas variables podrian no estar contribuyendo al modelo. 
+
+```{r}
+tilapia_lm3 <- lm(Peso ~ Alto, data = tilapia)
+
+summary(tilapia_lm3)
+```
+
+
+## Selección de los mejores predictores 
+
+Cuando construimos un modelo de regresión múltiple, una de las preguntas mas obvias es cuales predictores utilizar. En el ejemplo anterior vimos que aparenmente no todos los predictores son en realidad informativos en el modelo. En este ejemplo en partiucular esto puede estar relacionado con la colinealidad de los datos.
+
+En un mundo ideal, los predictores deben seleccionarse a partir de información prexistente. Si un nuevo modelo se va a añadir a un modelo existente, entonces este predictir debe tener sustento teórico. Algo que definitivamente se debe de evitar es añadir cientos de predictores al azar a un modelo y esperar que ocurra lo mejor.
+
+Un método (de tantos) para seleccionar nuestro predictores es utlizando un método _stepwise_ el cual basa la elección de los predictores basados en criterios matemáticos. 
+
+La función `step()` permite evaluar el poder predictivo de un modelo al añadir (_forward_) o quitar (_backward_) predictores a un modelo inicial hasta encontrar los mejores predictores basandose en la estimación del **Criterio de Información de Akaike (AIC)**. 
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+Puedes leer mas sobre el AIC [aquí](https://es.wikipedia.org/wiki/Criterio_de_informaci%C3%B3n_de_Akaike), pero de manera general, a mayor AIC el modelo es peor y a menor AIC el modelo el mejor. 
+
+</div>
+
+```{r}
+step(tilapia_lm2, direction = "backward", trace = 1)
+```
+
+Con esta información, podemos generar un nuevo modelo con los predictores indicados con la función step
+```{r}
+tilapia_lm4 <- lm(Peso ~ Alto + Longitud2, data = tilapia)
+
+summary(tilapia_lm4)
+```
+
+
+## Comparar dos modelos
+
+Para comparar el ajuste de dos modelos, es posible utilizar la función `anova()` con los modelos de regresión generados en forma de dos o mas argumentos. Esta función tomará los modelos como dos dos argumentos y probará si un modelo mas complejo es significativamente mejor capturando la variabilidad de los datos que un modelo mas sencillo. Si el valor P resultante es significativo, entonces concluimos que el modelo mas complejo es significativamente mejor qu el modelo sencillo, y por lo tanto, favorecemos el modelo mas complejo. Si por el contrario el valor P no es significativo, entonces concluimos que el modelo mas complejo no aporta mas información que el modelo sencillo y por lo tanto favorecemos el modelo sencillo. 
+
+Entonces, vamos a utilizar la función `anova()` para comparar el modelo con todos los predictores (*tilapia_lm3*) y el modelo que solo considera la **altura** y la **longitud2** (*tilapia_lm4*) y el modelo que solo considera la **altura** (**tilapia_lm2**) 
+
+Dentro de la función, se incluyen los modelos del mas sencillo al mas complejo:
+
+
+```{r}
+anova(tilapia_lm3, tilapia_lm4, tilapia_lm2)
+```
+
+De los resultados de esta prueba podemos concluir que:
+
+  1) La comparación del modelo mas sencillo con un solo predictor con el modelo con dos predictores es significativa, lo que indica que favorecemos al modelo 2
+  2) La comparación del model con dos predictores con el modelo con todos los predictores no es significativa, por lo que favorecemos el modelo con dos predictores. 
+
+
+Cada una de las pendientes de un modelo de regresión lineal múltiple (coeficientes parciales de regresión de los predictores) se define del siguiente modo: Si el resto de variables se mantienen constantes, por cada unidad que aumenta el predictor en cuestión, la variable ($Y$) varía en promedio tantas unidades como indica la pendiente. Para este ejemplo, **por cada unidad que aumenta el predictor Alto, el peso aumenta en promedio 71.76 unidades, manteniéndose constantes el resto de predictores.**
+
+## Validación de las condiciones para la regresion lineal multiple
+
+La relación lieal entre los predictores numéricos y la variable de respuesta se puede evaluar con diagramas de dispersión entre la variable dependiente y cada uno de los predictores o con diagramas de dispersión entre cada uno de los predictores y los residuos del modelo. Si la relación es lineal, los residuos deben de distribuirse aleatoriamente en torno a 0 con una variabilidad constante a lo largo del eje X.
+
+```{r}
+library(patchwork)
+Alto_res <- ggplot(tilapia, aes(x = Alto, y = tilapia_lm4$residuals))+
+  geom_point()+
+  geom_smooth(color = "firebrick")+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+Longitud2_res <- ggplot(tilapia, aes(x = Longitud2, y = tilapia_lm4$residuals))+
+  geom_point()+
+  geom_smooth(color = "firebrick")+
+  geom_hline(yintercept = 0)+
+  theme_bw()
+
+Alto_res + Longitud2_res
+
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(tilapia_lm4)
+dev.off()
+```
+
+## Conclusión
+
+El modelo:
+
+$Peso = −1013.115+  71.76~Alto+16.34~Longitud2$
+
+es capaz de explicar el 94% de la variabilidad observada en el peso. El test $F$ muestra que es significativo ($P<2.22^{−16}$).
+
+Tambien es posible utilizar la función `report()` para generar un reporte fácil de interpretar
+```{r}
+report::report(tilapia_lm4)
+```
+

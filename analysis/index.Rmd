@@ -77,6 +77,8 @@ htmltools::img(src = knitr::image_uri("docs/figure/Rlogo.png"),
 
 -   [Modulo 11: Regresión lineal simple](Clase11_regresion.html)
 
+-   [Modulo 12: Regresión lineal multiple](Clase12_regresionMulti.html)
+
 
 ```{r, echo=FALSE, fig.cap="@AllisonHorst", out.width = '100%'}
 knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/monster_support.jpg")
