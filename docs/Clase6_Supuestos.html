@@ -378,7 +378,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Bioestadistica 2021</a>
+      <a class="navbar-brand" href="index.html">Bioestadistica en R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -386,12 +386,12 @@ div.tocify {
   <a href="index.html">Inicio</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="about.html">Información del curso</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/trippv/Bioestadistica2021">
+  <a href="https://github.com/trippv/BioestadisticaR">
     <span class="fas fa-github"></span>
      
     Source code
@@ -441,7 +441,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-12
+<strong>Last updated:</strong> 2021-07-22
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -532,16 +532,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree9e1edceb5867ba1d086e3478b340870da686da9ftargetblank9e1edcea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/Bioestadistica2021/tree/9e1edceb5867ba1d086e3478b340870da686da9f" target="_blank">9e1edce</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a3bbe1115cab44e2984e696c593cce994931bc2targetblank9a3bbe1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9a3bbe1115cab44e2984e696c593cce994931bc2" target="_blank">9a3bbe1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadistica2021tree9e1edceb5867ba1d086e3478b340870da686da9ftargetblank9e1edcea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a3bbe1115cab44e2984e696c593cce994931bc2targetblank9a3bbe1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/Bioestadistica2021/tree/9e1edceb5867ba1d086e3478b340870da686da9f" target="_blank">9e1edce</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9a3bbe1115cab44e2984e696c593cce994931bc2" target="_blank">9a3bbe1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -563,6 +563,7 @@ Untracked files:
     Untracked:  Tarea_Tstudent.docx
     Untracked:  Tarea_Tstudent.html
     Untracked:  Tarea_Tstudent.pdf
+    Untracked:  analysis/Clase13_noParam.Rmd
     Untracked:  analysis/images/
     Untracked:  code/tarea_macrograd.R
     Untracked:  data/CS_subset.csv
@@ -574,6 +575,8 @@ Untracked files:
     Untracked:  data/Data_enzimas_Experimento4.txt
     Untracked:  data/DownloadFestival(No Outlier).dat
     Untracked:  data/Festival.csv
+    Untracked:  data/Hful_metabolitos_ver2.csv
+    Untracked:  data/Longitud_noParam.csv
     Untracked:  data/LungCapData.txt
     Untracked:  data/LungCapDataEsp.csv
     Untracked:  data/RExam.dat
@@ -596,9 +599,6 @@ Untracked files:
     Untracked:  output/Plot_all_penguins.pdf
     Untracked:  output/Plot_all_penguins.tiff
     Untracked:  output/graficos/
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
 
 </code></pre>
 <p>
@@ -642,7 +642,24 @@ Message
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/82e4deb431f1f741eb31ea1b4d38bb922c1bf31a/docs/Clase6_Supuestos.html" target="_blank">82e4deb</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/0f7eb2db0a3abc3d1d590d8d25368fe160a28a0b/docs/Clase6_Supuestos.html" target="_blank">0f7eb2d</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-12
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/82e4deb431f1f741eb31ea1b4d38bb922c1bf31a/docs/Clase6_Supuestos.html" target="_blank">82e4deb</a>
 </td>
 <td>
 Miguel Tripp
@@ -659,7 +676,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/bc7c1d7ef38e90440f5a7f311f889b982987f85a/docs/Clase6_Supuestos.html" target="_blank">bc7c1d7</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/bc7c1d7ef38e90440f5a7f311f889b982987f85a/docs/Clase6_Supuestos.html" target="_blank">bc7c1d7</a>
 </td>
 <td>
 Miguel Tripp
@@ -676,7 +693,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/01ac301c972aa840ebd6a8e16aee0ff405668af1/docs/Clase6_Supuestos.html" target="_blank">01ac301</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/01ac301c972aa840ebd6a8e16aee0ff405668af1/docs/Clase6_Supuestos.html" target="_blank">01ac301</a>
 </td>
 <td>
 Miguel Tripp
@@ -693,7 +710,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/392444fdd59cb7b5f5268d6186c85498d489dff8/docs/Clase6_Supuestos.html" target="_blank">392444f</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/392444fdd59cb7b5f5268d6186c85498d489dff8/docs/Clase6_Supuestos.html" target="_blank">392444f</a>
 </td>
 <td>
 Miguel Tripp
@@ -710,7 +727,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/c188ae8629265f3ef04f893c8a4366a2258889c4/docs/Clase6_Supuestos.html" target="_blank">c188ae8</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/c188ae8629265f3ef04f893c8a4366a2258889c4/docs/Clase6_Supuestos.html" target="_blank">c188ae8</a>
 </td>
 <td>
 Miguel Tripp
@@ -727,7 +744,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/11367684c9d7340f3551fa87e184e13bdb37f814/docs/Clase6_Supuestos.html" target="_blank">1136768</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/11367684c9d7340f3551fa87e184e13bdb37f814/docs/Clase6_Supuestos.html" target="_blank">1136768</a>
 </td>
 <td>
 Miguel Tripp
@@ -744,7 +761,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/a33d4bb6f3585c9d18f0e2104a9f708af6a2bd66/docs/Clase6_Supuestos.html" target="_blank">a33d4bb</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/a33d4bb6f3585c9d18f0e2104a9f708af6a2bd66/docs/Clase6_Supuestos.html" target="_blank">a33d4bb</a>
 </td>
 <td>
 Miguel Tripp
@@ -761,7 +778,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/209299ffc4535eccd7fc7a81d2a1c89f58049aaf/docs/Clase6_Supuestos.html" target="_blank">209299f</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/209299ffc4535eccd7fc7a81d2a1c89f58049aaf/docs/Clase6_Supuestos.html" target="_blank">209299f</a>
 </td>
 <td>
 Miguel Tripp
@@ -778,7 +795,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/d025507b017188d85558d593c9b2b924e1981755/docs/Clase6_Supuestos.html" target="_blank">d025507</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/d025507b017188d85558d593c9b2b924e1981755/docs/Clase6_Supuestos.html" target="_blank">d025507</a>
 </td>
 <td>
 Miguel Tripp
@@ -795,7 +812,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/fb9e91edd041e3da86b61fe47529f3e9c7cbd035/docs/Clase6_Supuestos.html" target="_blank">fb9e91e</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/fb9e91edd041e3da86b61fe47529f3e9c7cbd035/docs/Clase6_Supuestos.html" target="_blank">fb9e91e</a>
 </td>
 <td>
 Miguel Tripp
@@ -812,7 +829,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/c5dfe6aa68a1601f875758a32c1ff9208d78f3e8/docs/Clase6_Supuestos.html" target="_blank">c5dfe6a</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/c5dfe6aa68a1601f875758a32c1ff9208d78f3e8/docs/Clase6_Supuestos.html" target="_blank">c5dfe6a</a>
 </td>
 <td>
 Miguel Tripp
@@ -829,7 +846,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/2352c47ae31b1714b80962224b8c0c6b4c212da1/docs/Clase6_Supuestos.html" target="_blank">2352c47</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/2352c47ae31b1714b80962224b8c0c6b4c212da1/docs/Clase6_Supuestos.html" target="_blank">2352c47</a>
 </td>
 <td>
 Miguel Tripp
@@ -846,7 +863,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/99c36447acbcd5a24027999ab24426a8ad2ce4e0/docs/Clase6_Supuestos.html" target="_blank">99c3644</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/99c36447acbcd5a24027999ab24426a8ad2ce4e0/docs/Clase6_Supuestos.html" target="_blank">99c3644</a>
 </td>
 <td>
 Miguel Tripp
@@ -863,7 +880,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/fbd7857f5a9cf55d6546a2247dd2de761889b4af/docs/Clase6_Supuestos.html" target="_blank">fbd7857</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/fbd7857f5a9cf55d6546a2247dd2de761889b4af/docs/Clase6_Supuestos.html" target="_blank">fbd7857</a>
 </td>
 <td>
 Miguel Tripp
@@ -880,7 +897,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/87a646f0f99382cc3dd71a37665b3b42c2977675/docs/Clase6_Supuestos.html" target="_blank">87a646f</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/87a646f0f99382cc3dd71a37665b3b42c2977675/docs/Clase6_Supuestos.html" target="_blank">87a646f</a>
 </td>
 <td>
 Miguel Tripp
@@ -897,7 +914,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/47a71474d287b7e473979ca0ec49cc4e7b28cc37/docs/Clase6_Supuestos.html" target="_blank">47a7147</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/47a71474d287b7e473979ca0ec49cc4e7b28cc37/docs/Clase6_Supuestos.html" target="_blank">47a7147</a>
 </td>
 <td>
 Miguel Tripp
@@ -914,41 +931,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/trippv/Bioestadistica2021/blob/3b990327f8342145d63c6c41ee3230763b2f941f/analysis/Clase6_Supuestos.Rmd" target="_blank">3b99032</a>
-</td>
-<td>
-Miguel Tripp
-</td>
-<td>
-2021-05-31
-</td>
-<td>
-Publish the initial files for myproject
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/95c661f0de4c8358e2c8122680fb73ea8d8612a7/docs/Clase6_Supuestos.html" target="_blank">95c661f</a>
-</td>
-<td>
-Miguel Tripp
-</td>
-<td>
-2021-05-31
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/trippv/Bioestadistica2021/blob/d2189e14b85cbcbb7e4492bce62ce1abc085b7db/analysis/Clase6_Supuestos.Rmd" target="_blank">d2189e1</a>
+<a href="https://github.com/trippv/BioestadisticaR/blob/3b990327f8342145d63c6c41ee3230763b2f941f/analysis/Clase6_Supuestos.Rmd" target="_blank">3b99032</a>
 </td>
 <td>
 Miguel Tripp
@@ -965,7 +948,41 @@ Publish the initial files for myproject
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/34660dee6ce175fda7ed3d94a4ab1a94a53de330/docs/Clase6_Supuestos.html" target="_blank">34660de</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/95c661f0de4c8358e2c8122680fb73ea8d8612a7/docs/Clase6_Supuestos.html" target="_blank">95c661f</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/d2189e14b85cbcbb7e4492bce62ce1abc085b7db/analysis/Clase6_Supuestos.Rmd" target="_blank">d2189e1</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-05-31
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/34660dee6ce175fda7ed3d94a4ab1a94a53de330/docs/Clase6_Supuestos.html" target="_blank">34660de</a>
 </td>
 <td>
 Miguel Tripp
@@ -982,7 +999,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/trippv/Bioestadistica2021/blob/458bf8fb53f19b14c11d00af8ec0492c80478cf2/analysis/Clase6_Supuestos.Rmd" target="_blank">458bf8f</a>
+<a href="https://github.com/trippv/BioestadisticaR/blob/458bf8fb53f19b14c11d00af8ec0492c80478cf2/analysis/Clase6_Supuestos.Rmd" target="_blank">458bf8f</a>
 </td>
 <td>
 Miguel Tripp
@@ -999,7 +1016,7 @@ Publish the initial files for myproject
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/da04854bc9fd56374352c0be63851caeecf23d51/docs/Clase6_Supuestos.html" target="_blank">da04854</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/da04854bc9fd56374352c0be63851caeecf23d51/docs/Clase6_Supuestos.html" target="_blank">da04854</a>
 </td>
 <td>
 Miguel Tripp
@@ -1016,7 +1033,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/trippv/Bioestadistica2021/3321935893046310778d4aa798117c5d525f8bdb/docs/Clase6_Supuestos.html" target="_blank">3321935</a>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/3321935893046310778d4aa798117c5d525f8bdb/docs/Clase6_Supuestos.html" target="_blank">3321935</a>
 </td>
 <td>
 Miguel Tripp
@@ -1033,7 +1050,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/trippv/Bioestadistica2021/blob/4233f46e078143d737d6979c48a8163a4f8315f3/analysis/Clase6_Supuestos.Rmd" target="_blank">4233f46</a>
+<a href="https://github.com/trippv/BioestadisticaR/blob/4233f46e078143d737d6979c48a8163a4f8315f3/analysis/Clase6_Supuestos.Rmd" target="_blank">4233f46</a>
 </td>
 <td>
 Miguel Tripp
@@ -1550,7 +1567,7 @@ p1 + p2 + plot_layout(ncol = 2, widths = c(4,1))</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.5 (2021-03-31)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 19041)
+Running under: Windows 10 x64 (build 19043)
 
 Matrix products: default
 
@@ -1567,7 +1584,7 @@ attached base packages:
 other attached packages:
  [1] rstatix_0.7.0   patchwork_1.1.1 forcats_0.5.1   stringr_1.4.0  
  [5] dplyr_1.0.5     purrr_0.3.4     readr_1.4.0     tidyr_1.1.3    
- [9] tibble_3.0.4    ggplot2_3.3.3   tidyverse_1.3.1 workflowr_1.6.2
+ [9] tibble_3.0.4    ggplot2_3.3.5   tidyverse_1.3.1 workflowr_1.6.2
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-152      fs_1.5.0          lubridate_1.7.10  httr_1.4.2       
