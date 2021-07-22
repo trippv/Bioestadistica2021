@@ -1,21 +1,19 @@
 name: '2021'
 output_dir: ../docs
 navbar:
-  title: Bioestadistica 2021
+  title: Bioestadistica en R
   left:
-  - text: Home
+  - text: Inicio
     href: index.html
-  - text: About
+  - text: Información del curso
     href: about.html
-  - text: License
-    href: license.html
   right:
   - icon: fa-github
     text: Source code
-    href: https://github.com/trippv/Bioestadistica2021
+    href: https://github.com/trippv/BioestadisticaR
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
+    theme: cerulean
     highlight: textmate
