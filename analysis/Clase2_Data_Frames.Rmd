@@ -1,7 +1,6 @@
 ---
-title: "Clase2: Data Frames"
+title: "Data Frames, Matrices y Arreglos"
 author: "Miguel Tripp"
-date: "2021-04-12"
 output: 
   workflowr::wflow_html:
     toc: true
@@ -16,9 +15,9 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Data Frames
+# Data.frames
 
-Los data frames son estructuras de datos de dos dimensiones que pueden contener datos de diferentes tipos, por lo tanto, son heterogeneas. En terminos generales, los renglones de una data.frame representan casos, individuos u observaciones, mientras que las columnas contiene datos de un solo tipo.
+Los data frames son estructuras de datos de dos dimensiones que pueden contener datos de diferentes tipos, por lo tanto, son heterogeneas. En términos generales, los renglones de una data.frame representan casos, individuos u observaciones, mientras que las columnas contiene datos de un solo tipo.
 
 ## Creación de data frames
 
@@ -214,7 +213,19 @@ Regresando a nuestra tabla df_bind, despliega la columna de "Sexo:
 df_bind$Sexo
 ```
 
-Los factores, son vectores que contienen información categorica la cual es de utilidad para agrupar los valores de la data frame. 
+Observa que nos muestra un vector en los valores de cada individuo pero también nos muestra los niveles (categorías), es decir, puede ser H o M. Esto se debe a que estos datos son de tipo **factor**
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+Los factores, son vectores que contienen información categórica la cual es de utilidad para agrupar los valores de la data frame. 
+
+</div>
+
+
+Para convertir una variable de tipo caracter a factor podemos ejecutar la función `as.factor()`
 
 ***
 **Nota** 
@@ -246,13 +257,18 @@ setwd("../")
 ```
 
 
-# Uso de projecto en Rstudio
+# Uso de proyecto en Rstudio
 
-Usar proeyectos dentro de Rstudio soluciona el problema de rutas "fragiles". Cuando estas trabajando dentro de un projecto (.Rproj), el directorio de trabajo corresponde al directorio raiz.  
+Usar proyectos dentro de Rstudio soluciona el problema de rutas "frágiles". Cuando estas trabajando dentro de un proeycto (.Rproj), el directorio de trabajo corresponde al directorio raíz.  
 
+Además, el uso de proyectos dentro de Rstudio ofrece otras ventajas como la de hacer mas simple compartir el código con colaboradores o revisores, ya que puedes guardar todo lo contenido en un proyecto como un archivo .zip y compartirlo, de manera que la otra persona tendra acceso a todos los scripts y datos sin necesidad de modificar rutas absolutas.
 
+Una guía mas detallada de como generar un proyecto dentro de Rstudio esta disponible [aquí](https://swcarpentry.github.io/r-novice-gapminder-es/02-project-intro/).
+
+Un aspecto importante de trabajar en proyectos es la forma de organizar nuestra información. Se recomienda ampliamente crear una carpeta (en este caso llamada "Data") donde se guarden todas las bases de datos crudas y en una carpeta diferente toas las modificaciones realizadas a dichas bases de datos, de manera que los datos crudos se mantengan siempre intactos.
 
 <img src="https://i0.wp.com/raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png?w=456&ssl=1">
+
 
 
 
@@ -364,7 +380,7 @@ Ahora queremos recrear la tabla _tabla_verano_. Primero verificamos cuales indiv
 tabla$Estacion == "Verano"
 ```
 
-Esto nos genera un vector con las filas que contienen la etiqueta (TRUE), con lo que podemos usar `[]` para fitrar las filas TRUE con todas las columnas
+Esto nos genera un vector con las filas que contienen la etiqueta (TRUE), con lo que podemos usar `[]` para filtrar las filas TRUE con todas las columnas
 
 ```{r}
 tabla_verano2 <- tabla[tabla$Estacion=="Verano", ]

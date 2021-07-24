@@ -1,0 +1,17 @@
+---
+title: "Bases de datos"
+author: "Miguel Tripp"
+output: 
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+
+---
+
+En esta página se encuentran las tablas y demás bases de datos que se utilizan a lo largo del curso. Para utilizarlas, puedes descargarlas directamente en tu proyecto local dentro de una carpeta especial para ello, siguiendo las [recomendaciones](https://trippv.github.io/BioestadisticaR/Clase2_Data_Frames.html#5_Uso_de_proyecto_en_Rstudio) de la estructura de un proyecto en Rstudio o inlcuir la ruta del archivo directamente en la función para importar un archivo. 
+
+
+# Parte I: Básicos
+
+  - [Tabla1_Muestreo.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Tabla1_Muestreo.txt)

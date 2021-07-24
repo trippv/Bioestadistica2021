@@ -1,7 +1,6 @@
 ---
-title: "Clase 1: Comandos Basicos"
+title: "Comandos Basicos"
 author: "Miguel Tripp"
-date: "2021-04-12"
 output: 
   workflowr::wflow_html:
     toc: true
@@ -15,9 +14,34 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Uso como calculadora en la linea de comandos
+# Introducción 
 
-operaciones basicas:
+![](https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/1-dont-panic-sunera-thapki.jpg)
+
+
+Este curso es mi pequeña aportación para un mundo mejor donde no hay que pagar grandes sumas de dinero para hacer una ANOVA y donde los investigadores muestran sus resultados en otra cosa que no sea un gráfico de barras. Así que toma tu toalla favorita y empecemos.
+
+
+# Generalidades
+
+En este primer capítulo vamos a revisar algunas funcionalidades básicas de R tales como crear objetos y vectores asi como revisar los diferentes tipos de estructuras de datos.
+
+Antes de empezar, es importante mencionar algunas aspectos:
+
+  * R es sensible a las mayúsculas y minúsculas, de manera que `A` es diferente que `a` de la misma forma que la función `anova()` es diferente a la función `Anova()`
+  
+  * El símbolo `#` sirve para insertar un comentario en la línea de comando, de manera que todo lo que siga después de `#` no se ejecutara. Es importante incluir comentarios como parte de las buenas practicas en el uso de R ya que le facilitará el trabajo a tus colaboradores y revisores saber que estas haciendo en casa paso y te salvará la vida cuando intentes correr tu script cinco años después de haberlo escrito
+  
+  * En la consola usualmente veremos el símbolo `>` lo que la indica que la consola esta lista para recibir nuevas instrucciones. Si por el contrario vemos el símbolo `+` entonces nos esta indicando que no hemos terminado de completar correctamente una línea de código.
+  
+  * Si despúes de ejecutar un comando la consola nos arroja un mensaje de advertencia `WARNING` significa que el comando se ejecutó pero hay algo inesperad que debe revisarse. Por el contrario si nos arroja un mensaje de error `ERROR` entonces hay algo mal en la línea de codigo y por lo tanto no se pudo ejecutar.   
+  
+
+
+# Uso de la línea de comando como calculadora
+
+
+Podemos utilizar R para realizar operaciones básicas:
 
 ```{r basicas, echo=TRUE, include=TRUE}
 1 + 2 #suma
@@ -76,7 +100,7 @@ x + y
 z <- x + y#asiganr el resultado de x + y  a la variable z
 z
 
-#uso de c para incluir mas de un elemento
+#uso de c() para incluir mas de un elemento
 
 numeros <- c(1,2,3,4,5)
 numeros
@@ -126,17 +150,19 @@ mix
 R tiene los siguientes tipos de datos basicos:
 
  * `logical:` valores lógicos, pueden ser *TRUE* o *FALSE*
- * `numeric:` numeros reales
- * `character:`caracteres (letras y/o númoeros). Delimitados por ""
- * `interger:`valores enteros
+ * `numeric:` números reales *(1.0,2,3.1416, 3E-10)*
+ * `character:`caracteres (letras y/o números). Delimitados por "" *("uno", "Miguel", "FALSO")*
+ * `interger:`valores enteros *(1,2,3)*
  * `NA:` dato no disponible
  * `NaN:`no es un número (not a number)
 
-Las estructuras de datos son:
+Por otro lado, las estructuras de datos pueden ser de tipo vector, data.frame, matriz, arreglo o lista:
 
 <img src="http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png">
 
 fuente: <http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png>
+
+Es importante resaltar que solamente los data.frame pueden contener distintos tipos de datos (números, caracteres, etc) mientras que el resto solo puede contener un tipo de dato (solo carácteres, solo números, etc).
 
 ***
 
@@ -276,7 +302,7 @@ ls()
 ```
 
 Y si queremos borrar objectos, se usa la funcion `rm()`
-Si quieremos borrrar todos los objectos del ambiente, se ejecuta `rm(list=ls())`.
+Si queremos borrrar todos los objectos del ambiente, se ejecuta `rm(list=ls())`.
 
 
 # Trabajando con tablas
@@ -286,16 +312,16 @@ Ahora supongamos que tienes que revisar tus estanques por otra semana. Sin embar
 
 - lunes: 16
 - martes: 12
-- miercoles: 8
+- miércoles: 8
 - jueves: no hay dato
 - viernes: 14
-- sabado: 4
+- sábado: 4
 - domingo: 10
 
 
 **Ejercicio:** Construye un vector para la semana 2 con el nombre `semana2`. 
 
-De que forma podriamos nombrar cada dia de la semana en `semana2`?
+De que forma podríamos nombrar cada día de la semana en `semana2`?
 
 ```{r tabla ejercicio, echo=FALSE}
 #para nombrar los dias de la semana:
@@ -315,10 +341,14 @@ names(semana2) <- names(mortalidad)
 
 dia_sem <- c("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo")
 
-tabla <- data.frame(dia = dia_sem, semana1 = mortalidad, semana2 = semana2)
-tabla # los dias de la semana aparecen doble
+
+# Indicamos row.names= NULL para que no se incluyan los nombres del vector como row.names
+
+tabla <- data.frame(dia = dia_sem, semana1 = mortalidad, semana2 = semana2, row.names = NULL)
+tabla 
 
 
+# Alternativamente, ejecutamos row.names = dia_sem para indicar los días de la semana como row.names
 tabla <- data.frame(row.names = dia_sem, semana1 = mortalidad, semana2 = semana2)
 
 tabla
@@ -328,18 +358,18 @@ tabla
 
 **¿Que tipo de dato es el objecto `tabla`?**
 
-**Ejercicio:** Para cada semana, busca el valor minimo, maximo y promedio. Con estos valores crea un vector para cada semana y nombralos `Semana1_sum` y `Semana2_sum`.
+>**Ejercicio:** Para cada semana, busca el valor mínimo, máximo y promedio. Con estos valores crea un vector para cada semana y nombralos `Semana1_sum` y `Semana2_sum`.
 
 Para esto es posible seguir dos aproximaciones: 
 
 + usando indices: `tabla[filas , columnas]`
 + con el operado `$`: `tabla$columna`
 
-
+por ejemplo:
 ```{r operaciones con tablas, echo=TRUE}
 max(tabla$semana1)
 
-min(tabla[,2])
+min(tabla[,1])
 
 mean(tabla$semana2, na.rm = TRUE)
 
@@ -380,3 +410,7 @@ otras operaciones utiles para data.frames:
 **Ejercicio:** Te diste cuenta que esta nueva columna no te sirve. ¿como la eliminas?
 
 _pista_: Puedes usar indices o `NULL`
+
+
+
+![](https://i.pinimg.com/564x/c8/9a/21/c89a214708211c988c0cca2bb46798b3.jpg)
