@@ -11,9 +11,8 @@
 
 <meta name="author" content="Miguel Tripp" />
 
-<meta name="date" content="2021-04-12" />
 
-<title>Clase2: Data Frames</title>
+<title>Data Frames, Matrices y Arreglos</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -396,9 +395,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Clase2: Data Frames</h1>
+<h1 class="title toc-ignore">Data Frames, Matrices y Arreglos</h1>
 <h4 class="author">Miguel Tripp</h4>
-<h4 class="date">2021-04-12</h4>
 
 </div>
 
@@ -423,7 +421,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-22
+<strong>Last updated:</strong> 2021-07-24
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -514,16 +512,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a3bbe1115cab44e2984e696c593cce994931bc2targetblank9a3bbe1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9a3bbe1115cab44e2984e696c593cce994931bc2" target="_blank">9a3bbe1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08targetblank4f1cff5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08" target="_blank">4f1cff5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a3bbe1115cab44e2984e696c593cce994931bc2targetblank9a3bbe1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08targetblank4f1cff5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9a3bbe1115cab44e2984e696c593cce994931bc2" target="_blank">9a3bbe1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08" target="_blank">4f1cff5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -619,6 +617,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08/analysis/Clase2_Data_Frames.Rmd" target="_blank">4f1cff5</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-24
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/9d094205eea0b6e1dce21121975c2a3463bd21d4/docs/Clase2_Data_Frames.html" target="_blank">9d09420</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1340,9 +1372,9 @@ Publish the initial files for myproject
 </div>
 </div>
 </div>
-<div id="data-frames" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Data Frames</h1>
-<p>Los data frames son estructuras de datos de dos dimensiones que pueden contener datos de diferentes tipos, por lo tanto, son heterogeneas. En terminos generales, los renglones de una data.frame representan casos, individuos u observaciones, mientras que las columnas contiene datos de un solo tipo.</p>
+<div id="data.frames" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Data.frames</h1>
+<p>Los data frames son estructuras de datos de dos dimensiones que pueden contener datos de diferentes tipos, por lo tanto, son heterogeneas. En términos generales, los renglones de una data.frame representan casos, individuos u observaciones, mientras que las columnas contiene datos de un solo tipo.</p>
 <div id="creación-de-data-frames" class="section level2" number="1.1">
 <h2 number="1.1"><span class="header-section-number">1.1</span> Creación de data frames</h2>
 <p>Genera un data.frame con los siguientes elementos:</p>
@@ -1569,7 +1601,14 @@ arreglo</code></pre>
 <pre class="r"><code>df_bind$Sexo</code></pre>
 <pre><code>[1] M M H H M H M
 Levels: H M</code></pre>
-<p>Los factores, son vectores que contienen información categorica la cual es de utilidad para agrupar los valores de la data frame.</p>
+<p>Observa que nos muestra un vector en los valores de cada individuo pero también nos muestra los niveles (categorías), es decir, puede ser H o M. Esto se debe a que estos datos son de tipo <strong>factor</strong></p>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class="blue">
+<p>Los factores, son vectores que contienen información categórica la cual es de utilidad para agrupar los valores de la data frame.</p>
+</div>
+<p>Para convertir una variable de tipo caracter a factor podemos ejecutar la función <code>as.factor()</code></p>
 <hr />
 <p><strong>Nota</strong> Para hacer cambios puntuales a una tabla se puede usar la función <code>fix()</code>.</p>
 <hr />
@@ -1584,9 +1623,12 @@ Levels: H M</code></pre>
 <p>Ahora, nuuestro directorio de trabajo es <code>~/data</code>, por lo que cualquier cosa que guardemos, se hara en este directorio.</p>
 <p>Ahora regresemos a nuestro directorio principal y lo definimos nuevamente como nuestro directorio de trabajo; esto tambien se puede realizar directamente desde la ventana de Rstudio en <code>more: Set as working directory</code>.</p>
 </div>
-<div id="uso-de-projecto-en-rstudio" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Uso de projecto en Rstudio</h1>
-<p>Usar proeyectos dentro de Rstudio soluciona el problema de rutas “fragiles”. Cuando estas trabajando dentro de un projecto (.Rproj), el directorio de trabajo corresponde al directorio raiz.</p>
+<div id="uso-de-proyecto-en-rstudio" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Uso de proyecto en Rstudio</h1>
+<p>Usar proyectos dentro de Rstudio soluciona el problema de rutas “frágiles”. Cuando estas trabajando dentro de un proeycto (.Rproj), el directorio de trabajo corresponde al directorio raíz.</p>
+<p>Además, el uso de proyectos dentro de Rstudio ofrece otras ventajas como la de hacer mas simple compartir el código con colaboradores o revisores, ya que puedes guardar todo lo contenido en un proyecto como un archivo .zip y compartirlo, de manera que la otra persona tendra acceso a todos los scripts y datos sin necesidad de modificar rutas absolutas.</p>
+<p>Una guía mas detallada de como generar un proyecto dentro de Rstudio esta disponible <a href="https://swcarpentry.github.io/r-novice-gapminder-es/02-project-intro/">aquí</a>.</p>
+<p>Un aspecto importante de trabajar en proyectos es la forma de organizar nuestra información. Se recomienda ampliamente crear una carpeta (en este caso llamada “Data”) donde se guarden todas las bases de datos crudas y en una carpeta diferente toas las modificaciones realizadas a dichas bases de datos, de manera que los datos crudos se mantengan siempre intactos.</p>
 <p><img src="https://i0.wp.com/raw.githubusercontent.com/martinctc/blog/master/images/RPROJECT_2000dpi.png?w=456&ssl=1"></p>
 </div>
 <div id="importar-un-archivo-de-texto" class="section level1" number="6">
@@ -1714,7 +1756,7 @@ head(tabla_sup_ver)</code></pre>
 [109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 [121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<p>Esto nos genera un vector con las filas que contienen la etiqueta (TRUE), con lo que podemos usar <code>[]</code> para fitrar las filas TRUE con todas las columnas</p>
+<p>Esto nos genera un vector con las filas que contienen la etiqueta (TRUE), con lo que podemos usar <code>[]</code> para filtrar las filas TRUE con todas las columnas</p>
 <pre class="r"><code>tabla_verano2 &lt;- tabla[tabla$Estacion==&quot;Verano&quot;, ]
 head(tabla_verano2)</code></pre>
 <pre><code>  Individuo        Sitio Estacion Sexo Profundidad Longitud_mm
