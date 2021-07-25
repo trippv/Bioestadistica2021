@@ -292,7 +292,7 @@ library(tidyverse)
 library(car)
 library(rstatix)
 
-penguins <- read_csv("data/penguins_size.csv")
+penguins <- read_csv("data/PalmerPenguins.csv")
 
 
 # Filtrar especies
@@ -520,13 +520,13 @@ La prueba nos dice que las medias de ambas poblaciones son diferentes.
 
 ## Ejemplo 3: ¿Hay diferencia en el peso de los pokemon de roca y los de planta?
 
-Para resolver este ejercicio, vamos a hacer uso de la tabla `datasets_pokemon.xls`y `pokemon_extended.csv` para relacionar el tipo y el peso de cada pokemon.
+Para resolver este ejercicio, vamos a hacer uso de la tabla `Pokemon_tabla.xls`y `pokemon_extended.csv` para relacionar el tipo y el peso de cada pokemon.
 
 ```{r}
 poke_ext <- read_csv("data/pokemon_extended.csv")
 
 
-pokemon <- readxl::read_xls("data/datasets_pokemon.xls")
+pokemon <- readxl::read_xls("data/Pokemon_tabla.xls")
 
 
 poke_test <- pokemon %>% 

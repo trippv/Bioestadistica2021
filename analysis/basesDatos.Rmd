@@ -15,3 +15,14 @@ En esta página se encuentran las tablas y demás bases de datos que se utilizan
 # Parte I: Básicos
 
   - [Tabla1_Muestreo.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Tabla1_Muestreo.txt)
+  -   [Data_enzimas_Experimento1.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Data_enzimas_Experimento1.txt)
+  -   [Data_enzimas_Experimento2.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Data_enzimas_Experimento2.txt)
+  -   [Data_enzimas_Experimento3.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Data_enzimas_Experimento3.txt)
+  -   [Data_enzimas_Experimento4.txt](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Data_enzimas_Experimento4.txt)
+  -   [PalmerPenguins.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/PalmerPenguins.csv)
+  -   [Pokemon_tabla.xls](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/Pokemon_tabla.xls)
+  -   [Pokemon_tabla.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Pokemon_tabla.csv)
+  -   [pokemon_extended.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/pokemon_extended.csv)
+  -   [Transcriptome_Anotacion.csv](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/Transcriptome_Anotacion.csv)
+  -   [Transcriptome_DGE.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Transcriptome_DGE.csv)
+  -   [Consumo_oxigeno_wide.csv](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/Consumo_oxigeno_wide.csv)

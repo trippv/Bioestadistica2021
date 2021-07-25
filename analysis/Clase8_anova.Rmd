@@ -470,10 +470,10 @@ Con lo que podemos concluir que la dosis de viagra tiene un efecto significativo
 
 # Ejercicio. ¿Hay diferencias en el peso corporal de los pingüinos *Adelie* entre islas?
 
-Para este ejercicio, vamos a utilziar los datos de `penguins_size.csv` y filtramos solamente los machos de la especie Adelie
+Para este ejercicio, vamos a utilziar los datos de `PalmerPenguins.csv` y filtramos solamente los machos de la especie Adelie
 
 ```{r, message=FALSE}
-penguins <- read_csv("Data/penguins_size.csv") 
+penguins <- read_csv("Data/PalmerPenguins.csv") 
 
 penguins_Ade <- penguins %>%
   filter(species == "Adelie")

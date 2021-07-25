@@ -402,12 +402,12 @@ write.table(tabla_verano2, "Tabla_subset-verano.txt", sep = "\t", row.names = FA
 
 # Ejercicio
 
-Dentro de tu projecto, en la carpeta `data`hay cuatro archivos los cuales contienen los resultados de la actividad enzimatica de la lactado deshidrogenasa (_LDH_), citrato sintqasa (_CS_) y tauropina deshidrogenasa (_TDH_). Estas enzimas se analizaron en cuatro experimentos diferentes (Experimento1, Experimento2, Experimento3 y Experimento4).
+Descarga las bases de datos de Data_enzimas_experimento(n).txt y guardalos dentro de tu carpeta local. Estos cuatro archivos contienen los resultados de la actividad enzimática de la lactado deshidrogenasa (_LDH_), citrato sintasa (_CS_) y tauropina deshidrogenasa (_TDH_) analizadas en cuatro experimentos diferentes (Experimento1, Experimento2, Experimento3 y Experimento4).
 
 Usando lo que hemos visto hasta ahora, realiza lo siguiente
 
 1. Importa cada archivo como data.frame
 2. Une todas los data frames en uno solo,
-3. Filtra todas las mediciones con _Meas_Temp_ igual a 18°C
+3. Filtra todas las mediciones con _Meas_Temp_ (Measured Temperature) igual a 18°C
 4. Para cada enzima, genera un subconjunto preservando solamente las columnas `ExpNum` `TreatTemp`, y la actividad correspondiente a cada enzima `Activityxxx`
 5. Dentro de la carpeta de`output`Crea un nuevo directorio de trabajo llamado `datos_enzimas` y guarda cada subconjunto como archivo separado por comas `csv`.

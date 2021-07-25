@@ -1,24 +1,33 @@
 ---
-title: "Clase3 Graficos Base"
+title: "Graficos Base"
 author: "Miguel Tripp"
-date: "2021-04-25"
-output: workflowr::wflow_html
+output: 
+  workflowr::wflow_html:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
 editor_options:
   chunk_output_type: console
 ---
 
-Uno de los aspectos mas poderosos de R es su capacidad de producir una gran variedad de gráficos los cuales pueden ser reproducibles, modificables y publicables con solo unos poco comandos.
+#Generalidades 
+
+Uno de los aspectos mas poderosos de R es su capacidad de producir una gran variedad de gráficos los cuales pueden ser reproducíbles, modificables y publicables con solo unos pocos comandos.
 
 R puede producir gráficos utilizando tres paquetes principales: ggplot, lattice y gráficos base. En esta sección nos enfocaremos a los gráficos base.
 
-Para estos ejercicios, utilizaremos la base de datos de pingünos del Archipielago de Palmer la cual se encuentra disponible en la carpeta `data`
+Para estos ejercicios, utilizaremos la base de datos de pingünos del Archipielago de Palmer *(PalmerPenguins.csv)*. Esta base es un extracto de la base original descrita [aquí](https://allisonhorst.github.io/palmerpenguins/articles/intro.html#references-1).
 
 ```{r}
-penguins <- read.table("data/penguins_size.csv", sep = ",", na.strings = "NA", header = TRUE, as.is = FALSE)
+penguins <- read.table("data/PalmerPenguins.csv", sep = ",", na.strings = "NA", header = TRUE, as.is = FALSE)
 penguins <- penguins[complete.cases(penguins), ]
 ```
 
-El archivo `penguins_size.csv` contiene las variables:
+El archivo `PalmerPenguins.csv` contiene las variables:
 
 -   `species`: Especies de pingüino (Chnstrap, Adelie o Gentoo)
 -   `culmen_length_mm`: longitud del culmen (mm)
@@ -41,7 +50,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/palmerpe
 
 
 
-## 1: Histograma `hist()`
+# 1: Histograma `hist()`
 
 Para crear un histograma usamos la función `hist()`, que siempre nos pide como argumento _x_ un vector numérico. El resto de los argumentos de esta función son opcionales. Si damos un vector no numérico, se nos devolverá un error.
 
@@ -121,7 +130,7 @@ hist(female_peng, breaks = 25, col = "salmon", add = TRUE)
 
 
 
-## 2:Función `plot()`
+# 2:Función `plot()`
 Esta función tiene un comportamiento especial, pues dependiendo del tipo de dato que le demos como argumento, generará diferentes tipos de gráfica. Además, para cada tipo de gráfico, podremos ajustar diferentes parámetros que controlan su aspecto, dentro de esta misma función.
 
 Dependiendo del tipo de dato que demos a x y y será el gráfico que obtendremos, de acuerdo a las siguientes reglas:
@@ -199,7 +208,7 @@ Al igual que con `hist()` es posible cambiar el color de una grafica, asi como l
 plot(year, value, type="l", col ="red", main = "gráfico anual", xlab = "Año", ylab = "anomalia")
 ```
 
-## 3:Boxplots  `boxplot()`
+# 3:Boxplots  `boxplot()`
 
 Los diagrams de caja, o boxplots, son gráficos que muestra la distribución de una variable usando cuartiles, de modo que de manera visual podemos inferir algunas cosas sobre su dispersión, ubicación y simetría.
 
@@ -232,7 +241,7 @@ boxplot(culmen_length_mm ~ sex * island, data = penguins, col = c("tomato", "lig
 ```
 
 
-## 4:Edición
+# 4:Edición
 
 Asignar un color de acuerdo a una variable con el parametro `col`
 ```{r}
@@ -352,13 +361,50 @@ Los margenes de una figura se ajustan con los parametros `mar()`, para los marge
 
 Para ambos parametros, se asignan cuatro valores para indicar el espacio abajo, izquierda, arriba, derecha. 
 
----
-## Ejercicio:
+
+# Exportar una figura
+
+Hasta este momento, todos lo gráficos que hemos generado se han desplegado en el panel gráfico de Rstudio, pero estos no quedan guardados en nuestra computadora, de manera que si cerramos la sesión de R estos gráficos se perderán.
+
+Para poder exportar y guardar un gráfico es necesario mandar nuestros gráficos a un dispositivo JPG, PNG, PDF, TIFF utilizando alguna de las siguientes funciones:
+
+  * `pdf()`
+  
+  * `jepg()`
+  
+  * `tiff()`
+  
+  * `png()`
+
+
+Cualquiera de estas funciones se llaman antes de utilizar la función que genere una gráfica y posteriormente se llama a la función `dev.off()` para cerrar el dispositivo gráfico, creando el archivo. Por ejemplo, para exportar un gráfico en formato PNG se utilitaria la siguiente sintaxis:
+
+```{r}
+png(filename = "output/graficos/grafica.png", width = 800, height = 600)
+plot(1:10, col = "blue", main = "Ejemplo grafico png")
+dev.off()
+
+```
+
+o para guardar el gráfico en pdf:
+
+```{r}
+pdf(file = "output/graficos/grafico.pdf")
+plot(1:10, col = "blue", main = "Ejemplo grafico png")
+dev.off()
+
+
+```
+
+
+
+# Ejercicio:
+
 >**Ejercicio:** Usando todos tus conocimientos adquiridos hasta este punto, recrea esta gráfica:
 
 
 
-```{r, echo= FALSE}
+```{r, class.source = 'fold-hide'}
 
 Biscoe = penguins[penguins$island == "Biscoe", ]
 

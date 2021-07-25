@@ -79,6 +79,12 @@ htmltools::img(src = knitr::image_uri("docs/figure/Rlogo.png"),
 
 -   [Modulo 12: Regresión lineal multiple](Clase12_regresionMulti.html)
 
+-   [Modulo 13: No paramétricos](Clase13_noParam.html)
+
+## Parte III: Estadistica multivariada
+
+-   [Modulo 14: PCA](Clase14_PCA.html)
+
 
 ## Material adicional:
 

@@ -156,7 +156,7 @@ dev.off()
 Ahora vamos a análizar la correlación entre las distintas variables de la bases de datos de pokemon
 
 ```{r}
-pokemon<- readxl::read_excel("data/datasets_Pokemon.xls")
+pokemon<- readxl::read_excel("data/Pokemon_tabla.xls")
 
 plot(pokemon)
 ```

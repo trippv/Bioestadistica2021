@@ -1,7 +1,6 @@
 ---
-title: "Clase 4: Dplyr y Tidyverse"
+title: "Dplyr y Tidyverse"
 author: "Miguel Tripp"
-date: "2021-04-26"
 output: 
   workflowr::wflow_html:
     toc: true
@@ -15,16 +14,69 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Introducción a Dplyr
+# Generalidades
+
+Como hemos visto hasta este punto, las funciones base de R contienen herramientas poderosas para el análisis y visualización de datos. Sin embargo, existen herramientas especializadas para la manipulación y presentación de datos ("*data wrangling*") los cuales tienen el objetivo de facilitar estas tareas, haciendo los análisis mas eficientes y reproducibles.
 
 
-**DPLYR** Es una libreria orientada a la manipulación de datos
+# Tidyverse
 
-Cada función de esta libreria realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.
 
-dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerias que forman parte de este. 
 
-En esta intrducción nos vamos a enfocar a las funciones:
+
+```{r, echo=FALSE, out.width = '45%'}
+knitr::include_graphics("https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/tidyverse2.png")
+```
+
+
+
+El **Tidyverse** es una colección de paquetes de R que comparten una filosofía común para el manejo de datos de tipo tabular, a lo que se le conoce como [*tidy data*](https://r4ds.had.co.nz/tidy-data.html). La filosofía básica de las funciones de los paquetes del Tidyverse es recibir los datos _Tidy_ y devolver como resultados datos del mismo tipo [1](https://www.analyticslane.com/2021/02/10/introduccion-al-tidyverse/) de esta manera es posible "encadenar" una serie de procesos para la manipulación compleja de los datos así como la presentación y visualización
+
+
+## Instalación de Tidyverse
+
+Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales paquetes del Tidyverse instalando la librería **Tidyverse**.
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
+y posteriormente se carga la librería lo que producira una salida como la siguiente:
+
+```{r}
+library(tidyverse)
+```
+
+indicando todos los paquetes disponibles.
+
+Los paquetes núcleo de tidyverse son los siguientes:
+
+  *   **ggplot2**: poderosa herramienta para la visualización de datos con la posibilidad de personalización extrema
+
+  *   **tibble**: implementación de una estructura de datos mejorada de los data.frames.
+
+  *   **tidyr**: permite realizar transformaciones de los datos tal como la transformación de formatos largo y ancho de tablas
+
+  *   **readr**: facilita la lectura de archivos de texto plano, como es el caso de los archivos CSV.
+
+  *   **purrr**: facilita el trabajo con funciones.
+
+  *   **dplyr**: facilita la manipulación de datos utilizando haciendo uso de un lenguaje intuitivo de acciones sobre estos
+
+  *   **stringr**: facilita el trabajo con cadenas de texto y vectores.
+  
+  *   **forcats**: facilita el trabajo con datos categóricos.
+  
+  
+Si bien el **Tidyverse** incluye estos ocho paquetes núcleo, hay un número cada vez mas creciente de paquetes que comparten esta filosofía y lenguaje, haciendo compatible estas herramientas.
+
+# DPLYR
+
+**DPLYR** Es una librería orientada a la manipulación de datos. Cada función de esta librería realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.
+
+Dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerías que forman parte de este. 
+
+En esta introducción nos vamos a enfocar a las funciones:
 
   + `filter()`
   + `select()`
@@ -40,26 +92,20 @@ knitr::include_graphics("https://www.databentobox.com/2019/11/01/dplyr-with-stri
 ```
 
 
-En esta clase, usaremos dplyr asi como readxl para importar y modificar una tabla
-
-Ambos paquetes pueden instalarse de manera individual utilizando la función `install.package()`. Sin embargo, como Dplyr es parte de Tidyverse, se puede instalar solamente este ultimo. 
+En esta clase, usaremos `dplyr` así como `readxl` para importar y modificar una tabla. Dplyr ya se encuentra disponible al momento de cargar el Tidyverse mientras que readxl necesita ser instalado y cargado de manera independiente, aunque es compatible con el resto de los paquetes del Tidyverse.
 
 ```{r, eval=FALSE, warning=FALSE}
-install.packages("tidyverse")
 install.packages("readxl")
 ```
 
 
-Una vez instalados, es necesario cargar las ambas librerias a nuestro ambiente de trabajo
+Una vez instalados, es necesario cargar la librera a nuestro ambiente de trabajo
 
 ```{r, results=FALSE, include=TRUE, warning=FALSE, message=FALSE}
-library(tidyverse)
 library(readxl)
 ```
 
 # Los Datos
-
-
 
 ```{r, echo=FALSE, out.width = '75%'}
 knitr::include_graphics("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/87044f58-c765-43c5-bc51-8613e3ac7ab1/ddew4m7-c69a2c41-518f-48ca-ba35-8ab1895464e0.png")
@@ -69,36 +115,66 @@ knitr::include_graphics("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com
 Para esta sección utilizaremos la base de datos de POKEMON de [KAGGLE](https://www.kaggle.com/rounakbanik/pokemon). Este set de datos incluye 721 pokemons con su *nombre*, *tipo* en primer y segunto nivel, *HP*, *Ataque*, *Defensa*, *Ataque especial*, *Defensa especial*, *velocidad* y si es *legendario* o no.
 
 
-  * ID: ID for each pokemon
-  * Name: Name of each pokemon
-  * Type 1: Each pokemon has a type, this determines weakness/resistance to attacks
-  * Type 2: Some pokemon are dual type and have 2
-  * Total: sum of all stats that come after this, a general guide to how strong a pokemon is
-  * HP: hit points, or health, defines how much damage a pokemon can withstand before fainting
-  * Attack: the base modifier for normal attacks (eg. Scratch, Punch)
-  * Defense: the base damage resistance against normal attacks
-  * SP Atk: special attack, the base modifier for special attacks (e.g. fire blast, bubble beam)
-  * SP Def: the base damage resistance against special attacks
-  * Speed: determines which pokemon attacks first each round
+  * ID: Número de identificador de cada pokémon
+  * Name: Nombre de cada Pokémon
+  * Type 1: Tipo de Pokémon, esto determina su resistencia o debilidad a los ataques
+  * Type 2: Algunos Pokémon tienen tipo dual
+  * Total: Es la suma de todos las estadísticas que siguen. Sirve como referencía de que tan fuerte es un pokémon
+  * HP: *Hit Points*, define que tanto daño puede tolerar un Pokémon antes de desvanecerse 
+  * Attack: Ataque
+  * Defense: Defensa
+  * SP Atk: Ataque especial
+  * SP Def: Defensa especial
+  * Speed: Velocidad. Determina cual Pokémon ataca primero en cada ronda
 
 
 ```{r}
-pokemon <- read_excel("data/datasets_Pokemon.xls", sheet = "pokemon")
+pokemon <- read_excel("data/Pokemon_tabla.xls", sheet = "pokemon")
 pokemon
 ```
 
 usa **?read_excel** para ver todas las opciones para importar datos
 
 
-Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Los **tibbles** son data frames, pero modifican algunas características antiguas para hacernos la vida más fácil.
+Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Esto se debe a que los datos tienen una estructura de **tibble**.
 
-Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+**¿Tibble?**
+
+Los **tibbles** son data frames pero modifican algunas características antiguas para hacernos la vida más fácil. Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().
 
 Si ya te has familiarizado con data.frame(), es importante que tomes en cuenta que tibble() hace menos cosas: nunca cambia el tipo de los inputs (p. ej., ¡nunca convierte caracteres en factores!), nunca cambia el nombre de las variables y nunca asigna nombres a las filas.
 
-Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un caracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```
+Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un cáracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```
 
-# Dplyr
+</div>
+
+
+
+
+
+
+---
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "yellow">
+
+**¿Entonces es read.csv o read_csv?**
+
+Otro aspecto que vas a notar al trabajar con el tidyverse es que funciones que estan separadas con un punto (.) ahora se van a ver separadas con un guion bajo (_). Esto es una caracteristica de muchos de los paquetes del Tidyverse o compatibles con la filosofía Tidyverse y que nos permite distinguirlo de los paquetes del núcleo base de R. De manera que la función `read.csv()` de R base, se vuelve `read_csv()` en **readr**, y la función `t.test()` de R base, se vuelve `t_test()` en el paquete **rstatxs** (modulo 7)
+
+
+</div>
+
+
+# Uso de Dplyr
 
 
 El paquete incluye un conjunto de comandos que coinciden con las acciones más comunes que se realizan sobre un conjunto de datos (filtrar filas `filter()`, seleccionar columnas `select()`, ordenar `arrange()`, transformar o añadir nuevas variables `mutate()`, resumir mediante alguna medida numérica `summarise()`). Lo que hace que la sintaxis sea especialmente clara es la correspondencia tan nítida entre el comando y la acción. Para llevar a cabo estas acciones debemos tener en cuenta algunas características comunes:
@@ -352,7 +428,7 @@ head(
   )
 ```
 
-Lo podemos reescribir de la siguiente manera:
+usando pipes, lo podemos reescribir de la siguiente manera:
 
 ```{r}
 pokemon %>%
@@ -361,7 +437,7 @@ pokemon %>%
   head
 ```
 
-De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar los ordenes
+De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar las variables podemos ejecutar el código de la siguiente forma:
 
 ```{r}
 pokemon %>%
@@ -380,6 +456,8 @@ poke_pipe <- pokemon %>%
 
 poke_pipe
 ```
+
+
 
 
 
@@ -429,7 +507,19 @@ pokemon %>%
             minimo = min(Attack),
             maximo = max(Attack),
             N = n())
+
 ```
+
+
+<div class = "yellow">
+
+**¿summarise o summarize?**
+
+En versiones viejas es posible que te topes con una función `summarize()`. Esta es exactamente la misma que `summarise()` pero en su versión inglesa y desaparecera en futuras versiones.
+
+
+</div>
+
 
 ## Operaciones de grupo usando `group_by()`
 

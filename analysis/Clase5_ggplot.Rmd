@@ -1,7 +1,6 @@
 ---
-title: "Clase5 Visualizacion con ggplot2"
+title: "Visualizacion con ggplot2"
 author: "Miguel Tripp"
-date: "2021-05-06"
 output: 
   workflowr::wflow_html:
     toc: true
@@ -23,7 +22,7 @@ knitr::include_graphics("https://ggplot2.tidyverse.org/logo.png")
 ```
 
 
-## ¿Que es ggplot2?
+# Generalidades
 
 ggplot es un motor gráfico basado en la gramática grafica de Wilkinson [Wilkinson, 2005](https://www.youtube.com/watch?v=AbHU5tLCmuo&t=0s).  Bajo este contexto, un gráfico es una serie de capas (_layers_) similares a una transparecia, con algo impreso en ellas, que puede ser texto, puntos, lineas, barras, imagenes de pollitos o cualquier otro tipo de representación. La imagen final, cada una de estas capas se colocan una sobre otra.
 
@@ -49,18 +48,18 @@ knitr::include_graphics("https://nbisweden.github.io/RaukR-2019/ggplot/presentat
 
 # Los datos
 
-Para esta practica, utilizaremos la base de datos de `penguis_size.csv` la cual utilizamos previamente en la practica de gráficos base. Puedes descargar los datos [aquí](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/penguins_size.csv).
+Para esta practica, utilizaremos la base de datos de `PalmerPenguins.csv` la cual utilizamos previamente en la practica de gráficos base. Puedes descargar los datos [aquí](basesDatos.html).
 
 
 
 # Funcionamiento básico
 
-Para poder utilizar ggplot2, podemos cargar solamente la libreria ggplot2 o cargar todo el conjunto de paquetes tidyverse el cual incluye herramientas que hemos usado hasta ahora como dplyr, tidyr, readr, tibble y ggplot2.
+Para poder utilizar ggplot2, podemos cargar solamente la librería ggplot2 o cargar todo el conjunto de paquetes tidyverse el cual incluye herramientas que hemos usado hasta ahora como dplyr, tidyr, readr, tibble y ggplot2.
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 
-penguins <- read_csv("data/penguins_size.csv")
+penguins <- read_csv("data/PalmerPenguins.csv")
 penguins <- penguins[complete.cases(penguins), ]
 ```
 
@@ -252,7 +251,9 @@ ggplot(data = penguins, aes(x = body_mass_g, y = culmen_length_mm, col = sex))+
 
 ## grafica de lineas
 
-Para usar esta geometria, es necesario usar el aestetics de group:
+Esta geometría es ideal cuando queremos graficar un elemento a lo largo del tiempo o de alguna condición. Como ejemplo de esta geometría vamos a utilizar los datos `consuom_oxigeno_wide.csv`el cual contiene el consumo de oxígeno de juveniles de abulón azul a lo largo de seis días. Estos datos se pueden descargar [aquí](basesDatos.html) 
+
+Para usar esta geometria, es necesario usar el _aestetics_ de group:
 
 ```{r}
 MO <- read_csv("data/Consumo_oxigeno_wide.csv")
@@ -417,7 +418,7 @@ Actualmente existen diversos paquetes con los que es posible unir diverss gráfi
 
 Uno de los paquetes mas sencillos es `patchwork` el cual permite unir diversos gráficos usando una sintaxis simple. Por ejemplo:
 
-```{r}
+```{r, out.width = '120%'}
 # Grafico 1
 
 library(patchwork)
