@@ -11,9 +11,8 @@
 
 <meta name="author" content="Miguel Tripp" />
 
-<meta name="date" content="2021-04-26" />
 
-<title>Clase 4: Dplyr y Tidyverse</title>
+<title>Dplyr y Tidyverse</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -414,9 +413,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Clase 4: Dplyr y Tidyverse</h1>
+<h1 class="title toc-ignore">Dplyr y Tidyverse</h1>
 <h4 class="author">Miguel Tripp</h4>
-<h4 class="date">2021-04-26</h4>
 
 </div>
 
@@ -441,7 +439,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-24
+<strong>Last updated:</strong> 2021-07-25
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -532,16 +530,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08targetblank4f1cff5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08" target="_blank">4f1cff5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a992a0caae5964c08e31739c2bf517ca10df08btargetblank9a992a0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9a992a0caae5964c08e31739c2bf517ca10df08b" target="_blank">9a992a0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08targetblank4f1cff5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9a992a0caae5964c08e31739c2bf517ca10df08btargetblank9a992a0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/4f1cff51ccf96f85d6ce2cc4bf66d30a16e7ad08" target="_blank">4f1cff5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9a992a0caae5964c08e31739c2bf517ca10df08b" target="_blank">9a992a0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -579,6 +577,9 @@ Untracked files:
     Untracked:  data/Longitud_noParam.csv
     Untracked:  data/LungCapData.txt
     Untracked:  data/LungCapDataEsp.csv
+    Untracked:  data/PalmerPenguins.csv
+    Untracked:  data/Pokemon_tabla.csv
+    Untracked:  data/Pokemon_tabla.xls
     Untracked:  data/RExam.dat
     Untracked:  data/Rexamendat.csv
     Untracked:  data/Tabla1_Muestreo.txt
@@ -587,14 +588,11 @@ Untracked files:
     Untracked:  data/Vinogradov_2004_Titanic.tab
     Untracked:  data/Vinogradov_2004_Titanic.tab.csv
     Untracked:  data/data_tukey.txt
-    Untracked:  data/datasets_Pokemon.csv
-    Untracked:  data/datasets_Pokemon.xls
     Untracked:  data/exp_macrogard_growth.tab
     Untracked:  data/exp_macrogard_rna-dna.tab
     Untracked:  data/fertilizantes_luz.csv
     Untracked:  data/gatos_sueno.csv
     Untracked:  data/macrogard_crecimiento.csv
-    Untracked:  data/penguins_size.csv
     Untracked:  data/pokemon_extended.csv
     Untracked:  output/Plot_all_penguins.pdf
     Untracked:  output/Plot_all_penguins.tiff
@@ -637,6 +635,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/9a992a0caae5964c08e31739c2bf517ca10df08b/analysis/CLase4_Dplyr.Rmd" target="_blank">9a992a0</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-25
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/2adc7a9da7a482c216c0aaec3f3eca49c734bbf5/docs/CLase4_Dplyr.html" target="_blank">2adc7a9</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1171,12 +1203,48 @@ Publish the initial files for myproject
 </div>
 </div>
 </div>
-<div id="introducción-a-dplyr" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Introducción a Dplyr</h1>
-<p><strong>DPLYR</strong> Es una libreria orientada a la manipulación de datos</p>
-<p>Cada función de esta libreria realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.</p>
-<p>dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerias que forman parte de este.</p>
-<p>En esta intrducción nos vamos a enfocar a las funciones:</p>
+<div id="generalidades" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
+<p>Como hemos visto hasta este punto, las funciones base de R contienen herramientas poderosas para el análisis y visualización de datos. Sin embargo, existen herramientas especializadas para la manipulación y presentación de datos (“<em>data wrangling</em>”) los cuales tienen el objetivo de facilitar estas tareas, haciendo los análisis mas eficientes y reproducibles.</p>
+</div>
+<div id="tidyverse" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Tidyverse</h1>
+<p><img src="https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/tidyverse2.png" width="45%" style="display: block; margin: auto;" /></p>
+<p>El <strong>Tidyverse</strong> es una colección de paquetes de R que comparten una filosofía común para el manejo de datos de tipo tabular, a lo que se le conoce como <a href="https://r4ds.had.co.nz/tidy-data.html"><em>tidy data</em></a>. La filosofía básica de las funciones de los paquetes del Tidyverse es recibir los datos <em>Tidy</em> y devolver como resultados datos del mismo tipo <a href="https://www.analyticslane.com/2021/02/10/introduccion-al-tidyverse/">1</a> de esta manera es posible “encadenar” una serie de procesos para la manipulación compleja de los datos así como la presentación y visualización</p>
+<div id="instalación-de-tidyverse" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Instalación de Tidyverse</h2>
+<p>Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales paquetes del Tidyverse instalando la librería <strong>Tidyverse</strong>.</p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+<p>y posteriormente se carga la librería lo que producira una salida como la siguiente:</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>v ggplot2 3.3.5     v purrr   0.3.4
+v tibble  3.0.4     v dplyr   1.0.5
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<p>indicando todos los paquetes disponibles.</p>
+<p>Los paquetes núcleo de tidyverse son los siguientes:</p>
+<ul>
+<li><p><strong>ggplot2</strong>: poderosa herramienta para la visualización de datos con la posibilidad de personalización extrema</p></li>
+<li><p><strong>tibble</strong>: implementación de una estructura de datos mejorada de los data.frames.</p></li>
+<li><p><strong>tidyr</strong>: permite realizar transformaciones de los datos tal como la transformación de formatos largo y ancho de tablas</p></li>
+<li><p><strong>readr</strong>: facilita la lectura de archivos de texto plano, como es el caso de los archivos CSV.</p></li>
+<li><p><strong>purrr</strong>: facilita el trabajo con funciones.</p></li>
+<li><p><strong>dplyr</strong>: facilita la manipulación de datos utilizando haciendo uso de un lenguaje intuitivo de acciones sobre estos</p></li>
+<li><p><strong>stringr</strong>: facilita el trabajo con cadenas de texto y vectores.</p></li>
+<li><p><strong>forcats</strong>: facilita el trabajo con datos categóricos.</p></li>
+</ul>
+<p>Si bien el <strong>Tidyverse</strong> incluye estos ocho paquetes núcleo, hay un número cada vez mas creciente de paquetes que comparten esta filosofía y lenguaje, haciendo compatible estas herramientas.</p>
+</div>
+</div>
+<div id="dplyr" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> DPLYR</h1>
+<p><strong>DPLYR</strong> Es una librería orientada a la manipulación de datos. Cada función de esta librería realiza una sola tarea y sus nombres son verbos, lo cual hace mas sencillo recordar y comprender su función.</p>
+<p>Dplyr es parte del tidyverse y se integra perfectamente con el resto de las librerías que forman parte de este.</p>
+<p>En esta introducción nos vamos a enfocar a las funciones:</p>
 <ul>
 <li><code>filter()</code></li>
 <li><code>select()</code></li>
@@ -1186,32 +1254,29 @@ Publish the initial files for myproject
 <li><code>%&gt;%</code></li>
 </ul>
 <p><img src="https://www.databentobox.com/2019/11/01/dplyr-with-string/featured_hub3fe62e60f0ee255ad23a6fe895bd4cc_207241_720x0_resize_lanczos_2.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>En esta clase, usaremos dplyr asi como readxl para importar y modificar una tabla</p>
-<p>Ambos paquetes pueden instalarse de manera individual utilizando la función <code>install.package()</code>. Sin embargo, como Dplyr es parte de Tidyverse, se puede instalar solamente este ultimo.</p>
-<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
-install.packages(&quot;readxl&quot;)</code></pre>
-<p>Una vez instalados, es necesario cargar las ambas librerias a nuestro ambiente de trabajo</p>
-<pre class="r"><code>library(tidyverse)
-library(readxl)</code></pre>
+<p>En esta clase, usaremos <code>dplyr</code> así como <code>readxl</code> para importar y modificar una tabla. Dplyr ya se encuentra disponible al momento de cargar el Tidyverse mientras que readxl necesita ser instalado y cargado de manera independiente, aunque es compatible con el resto de los paquetes del Tidyverse.</p>
+<pre class="r"><code>install.packages(&quot;readxl&quot;)</code></pre>
+<p>Una vez instalados, es necesario cargar la librera a nuestro ambiente de trabajo</p>
+<pre class="r"><code>library(readxl)</code></pre>
 </div>
-<div id="los-datos" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Los Datos</h1>
+<div id="los-datos" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Los Datos</h1>
 <p><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/87044f58-c765-43c5-bc51-8613e3ac7ab1/ddew4m7-c69a2c41-518f-48ca-ba35-8ab1895464e0.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>Para esta sección utilizaremos la base de datos de POKEMON de <a href="https://www.kaggle.com/rounakbanik/pokemon">KAGGLE</a>. Este set de datos incluye 721 pokemons con su <em>nombre</em>, <em>tipo</em> en primer y segunto nivel, <em>HP</em>, <em>Ataque</em>, <em>Defensa</em>, <em>Ataque especial</em>, <em>Defensa especial</em>, <em>velocidad</em> y si es <em>legendario</em> o no.</p>
 <ul>
-<li>ID: ID for each pokemon</li>
-<li>Name: Name of each pokemon</li>
-<li>Type 1: Each pokemon has a type, this determines weakness/resistance to attacks</li>
-<li>Type 2: Some pokemon are dual type and have 2</li>
-<li>Total: sum of all stats that come after this, a general guide to how strong a pokemon is</li>
-<li>HP: hit points, or health, defines how much damage a pokemon can withstand before fainting</li>
-<li>Attack: the base modifier for normal attacks (eg. Scratch, Punch)</li>
-<li>Defense: the base damage resistance against normal attacks</li>
-<li>SP Atk: special attack, the base modifier for special attacks (e.g. fire blast, bubble beam)</li>
-<li>SP Def: the base damage resistance against special attacks</li>
-<li>Speed: determines which pokemon attacks first each round</li>
+<li>ID: Número de identificador de cada pokémon</li>
+<li>Name: Nombre de cada Pokémon</li>
+<li>Type 1: Tipo de Pokémon, esto determina su resistencia o debilidad a los ataques</li>
+<li>Type 2: Algunos Pokémon tienen tipo dual</li>
+<li>Total: Es la suma de todos las estadísticas que siguen. Sirve como referencía de que tan fuerte es un pokémon</li>
+<li>HP: <em>Hit Points</em>, define que tanto daño puede tolerar un Pokémon antes de desvanecerse</li>
+<li>Attack: Ataque</li>
+<li>Defense: Defensa</li>
+<li>SP Atk: Ataque especial</li>
+<li>SP Def: Defensa especial</li>
+<li>Speed: Velocidad. Determina cual Pokémon ataca primero en cada ronda</li>
 </ul>
-<pre class="r"><code>pokemon &lt;- read_excel(&quot;data/datasets_Pokemon.xls&quot;, sheet = &quot;pokemon&quot;)
+<pre class="r"><code>pokemon &lt;- read_excel(&quot;data/Pokemon_tabla.xls&quot;, sheet = &quot;pokemon&quot;)
 pokemon</code></pre>
 <pre><code># A tibble: 800 x 13
       ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
@@ -1229,21 +1294,35 @@ pokemon</code></pre>
 # ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;</code></pre>
 <p>usa <strong>?read_excel</strong> para ver todas las opciones para importar datos</p>
-<p>Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Los <strong>tibbles</strong> son data frames, pero modifican algunas características antiguas para hacernos la vida más fácil.</p>
-<p>Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().</p>
+<p>Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Esto se debe a que los datos tienen una estructura de <strong>tibble</strong>.</p>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class="blue">
+<p><strong>¿Tibble?</strong></p>
+<p>Los <strong>tibbles</strong> son data frames pero modifican algunas características antiguas para hacernos la vida más fácil. Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().</p>
 <p>Si ya te has familiarizado con data.frame(), es importante que tomes en cuenta que tibble() hace menos cosas: nunca cambia el tipo de los inputs (p. ej., ¡nunca convierte caracteres en factores!), nunca cambia el nombre de las variables y nunca asigna nombres a las filas.</p>
-<p>Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un caracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```</p>
+<p>Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un cáracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```</p>
 </div>
-<div id="dplyr" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Dplyr</h1>
+<hr />
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
+<div class="yellow">
+<p><strong>¿Entonces es read.csv o read_csv?</strong></p>
+<p>Otro aspecto que vas a notar al trabajar con el tidyverse es que funciones que estan separadas con un punto (.) ahora se van a ver separadas con un guion bajo (_). Esto es una caracteristica de muchos de los paquetes del Tidyverse o compatibles con la filosofía Tidyverse y que nos permite distinguirlo de los paquetes del núcleo base de R. De manera que la función <code>read.csv()</code> de R base, se vuelve <code>read_csv()</code> en <strong>readr</strong>, y la función <code>t.test()</code> de R base, se vuelve <code>t_test()</code> en el paquete <strong>rstatxs</strong> (modulo 7)</p>
+</div>
+</div>
+<div id="uso-de-dplyr" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Uso de Dplyr</h1>
 <p>El paquete incluye un conjunto de comandos que coinciden con las acciones más comunes que se realizan sobre un conjunto de datos (filtrar filas <code>filter()</code>, seleccionar columnas <code>select()</code>, ordenar <code>arrange()</code>, transformar o añadir nuevas variables <code>mutate()</code>, resumir mediante alguna medida numérica <code>summarise()</code>). Lo que hace que la sintaxis sea especialmente clara es la correspondencia tan nítida entre el comando y la acción. Para llevar a cabo estas acciones debemos tener en cuenta algunas características comunes:</p>
 <ul>
 <li>El primer argumento siempre es un tibble o data.frame</li>
 <li>El resto de los argumentos indican los parametros de lo que queremos hacer</li>
 <li>El resultado siempre tiene tambien estructura de tibble o data frame</li>
 </ul>
-<div id="select" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> <code>select()</code></h2>
+<div id="select" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> <code>select()</code></h2>
 <p>Permite seleccionar una o un set de varias columnas</p>
 <p>Por ejemplo: seleccionar las columnas <em>Name</em> y <em>Attack</em></p>
 <pre class="r"><code>select(pokemon, Name, Attack)</code></pre>
@@ -1363,8 +1442,8 @@ pokemon</code></pre>
 # ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;</code></pre>
 </div>
-<div id="filter" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> <code>filter()</code></h2>
+<div id="filter" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> <code>filter()</code></h2>
 <p>Esta función nos permite seleccionar las <strong>filas</strong> que cumplan con las condiciones que especifiquemos</p>
 <p>Por ejemplo, filtrar los pokemon con un nivel de ataque <em>Attack</em> superior a 100</p>
 <pre class="r"><code>filter(pokemon, Attack &gt; 100)</code></pre>
@@ -1524,8 +1603,8 @@ pokemon</code></pre>
        Generation == 1,
        )</code></pre>
 </div>
-<div id="mutate" class="section level2" number="3.3">
-<h2 number="3.3"><span class="header-section-number">3.3</span> <code>mutate()</code></h2>
+<div id="mutate" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> <code>mutate()</code></h2>
 <p><img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png" width="75%" style="display: block; margin: auto auto auto 0;" /></p>
 <p>La función mutate nos permite crear nuevas variables que contengan cálculos a partir de las que ya tenemos, añadir una nueva variable o transformar una variable ya existente</p>
 <p>Por ejemplo, podemos generar una nueva columna llamada “At_Df_ratio” con la propoción de los valors de Ataque sobre Defensa</p>
@@ -1587,8 +1666,8 @@ pokemon</code></pre>
  $ Generation: num [1:800] 1 1 1 1 1 1 1 1 1 1 ...
  $ Legendary : logi [1:800] FALSE FALSE FALSE FALSE FALSE FALSE ...</code></pre>
 </div>
-<div id="rename" class="section level2" number="3.4">
-<h2 number="3.4"><span class="header-section-number">3.4</span> <code>rename()</code></h2>
+<div id="rename" class="section level2" number="5.4">
+<h2 number="5.4"><span class="header-section-number">5.4</span> <code>rename()</code></h2>
 <p>Te permite cambiar el nombre de una variable</p>
 <pre class="r"><code>rename(pokemon,
        Nombre = Name, Tipo1 = Type1)</code></pre>
@@ -1608,8 +1687,8 @@ pokemon</code></pre>
 # ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;</code></pre>
 </div>
-<div id="arrange" class="section level2" number="3.5">
-<h2 number="3.5"><span class="header-section-number">3.5</span> <code>arrange()</code></h2>
+<div id="arrange" class="section level2" number="5.5">
+<h2 number="5.5"><span class="header-section-number">5.5</span> <code>arrange()</code></h2>
 <p>La función arrange nos permite order los datos en función a los valores de otra variable</p>
 <p>Si queremos mostrar ordenados de menor a mayor los valores de nuestro conjunto de datos en función al valor de ataque:</p>
 <pre class="r"><code>arrange(pokemon, Attack)</code></pre>
@@ -1679,8 +1758,8 @@ pokemon</code></pre>
 # ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;</code></pre>
 </div>
-<div id="pipes" class="section level2" number="3.6">
-<h2 number="3.6"><span class="header-section-number">3.6</span> pipes <code>%&gt;%</code></h2>
+<div id="pipes" class="section level2" number="5.6">
+<h2 number="5.6"><span class="header-section-number">5.6</span> pipes <code>%&gt;%</code></h2>
 <p><img src="https://magrittr.tidyverse.org/logo.png" width="50%" style="display: block; margin: auto auto auto 0;" /></p>
 <p>El operador <code>%&gt;%</code> nos permite encadenar funciones sin tener que ir creando variables para uso temporal o sin tener que anidar funciones.</p>
 <p>Dplyr importa este operador de otro paquete (<em>magrittr</em>). De manera general, el operador permite unir el resultado de una función a la entrada de otra función.</p>
@@ -1699,7 +1778,7 @@ pokemon</code></pre>
 4 Charmander     52
 5 Charmeleon     64
 6 Charizard      84</code></pre>
-<p>Lo podemos reescribir de la siguiente manera:</p>
+<p>usando pipes, lo podemos reescribir de la siguiente manera:</p>
 <pre class="r"><code>pokemon %&gt;%
   filter(Attack &lt; 100) %&gt;% 
   select(Name, Attack) %&gt;%
@@ -1713,7 +1792,7 @@ pokemon</code></pre>
 4 Charmander     52
 5 Charmeleon     64
 6 Charizard      84</code></pre>
-<p>De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar los ordenes</p>
+<p>De esta manera podemos unir varias funciones en una sola cadena. Por ejemplo, para seleccionar columnas y dentro de estas, ordenar las variables podemos ejecutar el código de la siguiente forma:</p>
 <pre class="r"><code>pokemon %&gt;%
   select(Name, Type1, Attack) %&gt;%
   arrange(desc(Type1), -Attack) %&gt;%
@@ -1781,8 +1860,8 @@ poke_pipe</code></pre>
   arrange(desc(Sp_Atk)) %&gt;% 
   head(10)</code></pre>
 </div>
-<div id="summarise" class="section level2" number="3.7">
-<h2 number="3.7"><span class="header-section-number">3.7</span> <code>summarise()</code></h2>
+<div id="summarise" class="section level2" number="5.7">
+<h2 number="5.7"><span class="header-section-number">5.7</span> <code>summarise()</code></h2>
 <p>La función summarise() nos permite crear resúmenes estadísticos para nuestrs datos a partir de una determinada columna. Para esto, podemos usar las funciones ya conocidas, tales como <code>mean()</code>, <code>min()</code>, <code>max()</code>, <code>sd()</code>,<code>n()</code>. Por ejemplo</p>
 <pre class="r"><code>pokemon %&gt;%
   summarise(promedio = mean(Attack),
@@ -1793,9 +1872,13 @@ poke_pipe</code></pre>
   promedio minimo maximo     N
      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
 1     79.0      5    190   800</code></pre>
+<div class="yellow">
+<p><strong>¿summarise o summarize?</strong></p>
+<p>En versiones viejas es posible que te topes con una función <code>summarize()</code>. Esta es exactamente la misma que <code>summarise()</code> pero en su versión inglesa y desaparecera en futuras versiones.</p>
 </div>
-<div id="operaciones-de-grupo-usando-group_by" class="section level2" number="3.8">
-<h2 number="3.8"><span class="header-section-number">3.8</span> Operaciones de grupo usando <code>group_by()</code></h2>
+</div>
+<div id="operaciones-de-grupo-usando-group_by" class="section level2" number="5.8">
+<h2 number="5.8"><span class="header-section-number">5.8</span> Operaciones de grupo usando <code>group_by()</code></h2>
 <p>El verbo <code>group_by()</code> permite “separar” agrupar la tabla en función a una o mas variables y aplicar la funcion summarise().</p>
 <pre class="r"><code>pokemon %&gt;%
   group_by(Type1) %&gt;%
@@ -1865,8 +1948,8 @@ poke_pipe</code></pre>
 # ... with 790 more rows, and 3 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;, promedio_grupo &lt;dbl&gt;</code></pre>
 </div>
-<div id="summarise_all" class="section level2" number="3.9">
-<h2 number="3.9"><span class="header-section-number">3.9</span> <code>summarise_all()</code></h2>
+<div id="summarise_all" class="section level2" number="5.9">
+<h2 number="5.9"><span class="header-section-number">5.9</span> <code>summarise_all()</code></h2>
 <p>La función <code>summarise_all()</code> requiere una función como argumento, la cual aplica a todas las columnas de la tabla. En este ejemplo se agrego el argumento <code>na.rm = TRUE</code> el cual ignora los NAs</p>
 <pre class="r"><code>pokemon %&gt;%
   group_by(Type1) %&gt;%
@@ -2004,8 +2087,8 @@ tbl %&gt;%
             DesvLDH = sd(ActivityLDH, na.rm = TRUE),
             N = n())</code></pre>
 </div>
-<div id="count" class="section level2" number="3.10">
-<h2 number="3.10"><span class="header-section-number">3.10</span> <code>count()</code></h2>
+<div id="count" class="section level2" number="5.10">
+<h2 number="5.10"><span class="header-section-number">5.10</span> <code>count()</code></h2>
 <p>La función <code>count()</code> nos permite saber cuantas observaciones hay en una variable especifica. Al agregar el argumento <code>sort = TRUE</code>devuelve una tabla descendiente con el número de observaciones.</p>
 <p>Por ejemplo, para saber cuantos miembros de cada tipo hay en nuestra lista de pokemon:</p>
 <pre class="r"><code>pokemon %&gt;%
@@ -2032,8 +2115,8 @@ tbl %&gt;%
 17 Fairy        17
 18 Flying        4</code></pre>
 </div>
-<div id="ifelse" class="section level2" number="3.11">
-<h2 number="3.11"><span class="header-section-number">3.11</span> <code>ifelse()</code></h2>
+<div id="ifelse" class="section level2" number="5.11">
+<h2 number="5.11"><span class="header-section-number">5.11</span> <code>ifelse()</code></h2>
 <p>La función <code>ifelse()</code> es utilizada en muchos contextos en los lenguajes de programación en donde se tiene la sintaxis:</p>
 <p>ifelse(condicion, resultado positivo, regulado negativo)</p>
 <p>por ejemplo</p>
@@ -2061,10 +2144,10 @@ ifelse(x == 20, &quot;Si es&quot;, &quot;no es&quot;)</code></pre>
 # ... with 790 more rows, and 4 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;, Tipo &lt;chr&gt;, Rapidez &lt;chr&gt;</code></pre>
 </div>
-<div id="unir-dos-o-mas-tablas" class="section level2" number="3.12">
-<h2 number="3.12"><span class="header-section-number">3.12</span> Unir dos o mas tablas</h2>
-<div id="unir-dos-tablas-con-el-mismo-número-de-dimensiones" class="section level3" number="3.12.1">
-<h3 number="3.12.1"><span class="header-section-number">3.12.1</span> Unir dos tablas con el mismo número de dimensiones</h3>
+<div id="unir-dos-o-mas-tablas" class="section level2" number="5.12">
+<h2 number="5.12"><span class="header-section-number">5.12</span> Unir dos o mas tablas</h2>
+<div id="unir-dos-tablas-con-el-mismo-número-de-dimensiones" class="section level3" number="5.12.1">
+<h3 number="5.12.1"><span class="header-section-number">5.12.1</span> Unir dos tablas con el mismo número de dimensiones</h3>
 <p>Para este ejercicio, vamos a generar dos tibbles sencillos:</p>
 <pre class="r"><code>x &lt;- tibble(x1 = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;),
             x2 = c(1, 2, 3))
@@ -2126,8 +2209,8 @@ y</code></pre>
 1 B         2
 2 C         3</code></pre>
 </div>
-<div id="unir-dos-tablas-con-diferentes-dimensiones" class="section level3" number="3.12.2">
-<h3 number="3.12.2"><span class="header-section-number">3.12.2</span> Unir dos tablas con diferentes dimensiones</h3>
+<div id="unir-dos-tablas-con-diferentes-dimensiones" class="section level3" number="5.12.2">
+<h3 number="5.12.2"><span class="header-section-number">5.12.2</span> Unir dos tablas con diferentes dimensiones</h3>
 <p>La sintaxis para estas funciones es la misma <code>xxxx_join(x1 = tabla1, x2 = tabla2, by = "columna en común")</code></p>
 <p><img src="https://statisticsglobe.com/wp-content/uploads/2019/04/dplyr-data-join-functions-overview_inner_join-left_join-right_join-full_join-semi_join-anti_join.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Para esto, vamos a construir otro par de tibbles</p>
@@ -2247,8 +2330,8 @@ expresion %&gt;%
   count(genus, sort = TRUE)</code></pre>
 </div>
 </div>
-<div id="cambio-de-formato-long-y-wide-con-pivot_longer-y-pivot_wider" class="section level2" number="3.13">
-<h2 number="3.13"><span class="header-section-number">3.13</span> Cambio de formato long y wide con <code>pivot_longer()</code> y <code>pivot_wider()</code></h2>
+<div id="cambio-de-formato-long-y-wide-con-pivot_longer-y-pivot_wider" class="section level2" number="5.13">
+<h2 number="5.13"><span class="header-section-number">5.13</span> Cambio de formato long y wide con <code>pivot_longer()</code> y <code>pivot_wider()</code></h2>
 <p>Para entender la diferencia entre el formato ancho y largo, usemos la siguiente tabla con los datos de consumo de oxígeno de 10 individuos a lo largo de seis días:</p>
 <pre class="r"><code>MO2 &lt;- read_csv(&quot;data/Consumo_oxigeno_wide.csv&quot;)</code></pre>
 <pre><code>
