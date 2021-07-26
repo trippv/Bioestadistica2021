@@ -1,7 +1,6 @@
 ---
 title: "Correlación"
 author: "Miguel Tripp"
-date: "2021-07-04"
 output: 
   workflowr::wflow_html:
     toc: true
