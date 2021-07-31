@@ -15,13 +15,22 @@
 
 <title>Modelo factorial: ANOVA de dos vias</title>
 
-<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -52,11 +61,6 @@ div.section {
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -69,34 +73,9 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -105,10 +84,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -125,40 +100,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -186,7 +134,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -198,7 +146,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -209,10 +157,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -224,7 +185,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -359,7 +319,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -395,6 +355,7 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Básicos</li>
     <li>
       <a href="Clase1_Basicos.html">1. Introducción y comandos básicos</a>
     </li>
@@ -410,6 +371,7 @@ div.tocify {
     <li>
       <a href="Clase5_ggplot.html">5. Gráficos con ggplot</a>
     </li>
+    <li class="dropdown-header">inferencia estadística</li>
     <li>
       <a href="Clase6_Supuestos.html">6. Supuestos normalidad y varianza</a>
     </li>
@@ -443,7 +405,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trippv/BioestadisticaR">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
     Source code
   </a>
@@ -453,11 +415,11 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -492,7 +454,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-25
+<strong>Last updated:</strong> 2021-07-31
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -583,16 +545,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreefbb2514257b6b1d598d41912a4849a3435f8f036targetblankfbb2514a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/fbb2514257b6b1d598d41912a4849a3435f8f036" target="_blank">fbb2514</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreefbb2514257b6b1d598d41912a4849a3435f8f036targetblankfbb2514a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/fbb2514257b6b1d598d41912a4849a3435f8f036" target="_blank">fbb2514</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +563,8 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/hero-image.html
+    Ignored:    analysis/poke_logo.png
 
 Untracked files:
     Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
@@ -615,7 +579,10 @@ Untracked files:
     Untracked:  Tarea_Tstudent.html
     Untracked:  Tarea_Tstudent.pdf
     Untracked:  analysis/Clase13_noParam.Rmd
+    Untracked:  analysis/hero_backgroud.jpg
     Untracked:  analysis/images/
+    Untracked:  analysis/style.css
+    Untracked:  analysis/test.Rmd
     Untracked:  code/tarea_macrograd.R
     Untracked:  data/CS_subset.csv
     Untracked:  data/Consumo_oxigeno_wide.csv
@@ -691,6 +658,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/b4e67dc1256ad5367ecc659603bbd5df3c597ea7/analysis/Clase9_anova2vias.Rmd" target="_blank">b4e67dc</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-31
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/03db7ffb0734a19d5fa2e2a28ffc934c8bc1f20a/docs/Clase9_anova2vias.html" target="_blank">03db7ff</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -995,7 +996,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
 library(rstatix)
 library(ggpubr)
 
-goggle_url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/goggles_esp.csv&quot;
+goggle_url &lt;- &quot;https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/goggles_esp.csv&quot;
 goggle &lt;- read_csv(goggle_url)</code></pre>
 <p>Convertimos las variables independientes a factor y cambiamos el orden de los niveles con <code>level</code></p>
 <pre class="r"><code>goggle &lt;- goggle %&gt;% 
@@ -1172,6 +1173,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <pre class="r"><code>#install.packages(&quot;HH&quot;)
 
 HH::interaction2wt(atractivo ~ genero * alcohol, data = goggle)</code></pre>
+<pre><code>This version of bslib is designed to work with shiny version 1.6.0 or higher. </code></pre>
 <p><img src="figure/Clase9_anova2vias.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="validación-del-modelo-a-partir-del-análisis-de-residuales" class="section level2" number="2.4">
@@ -1396,31 +1398,40 @@ other attached packages:
 [19] ggplot2_3.3.5       tidyverse_1.3.1     workflowr_1.6.2    
 
 loaded via a namespace (and not attached):
- [1] colorspace_2.0-0   ggsignif_0.6.0     ellipsis_0.3.1     rio_0.5.16        
- [5] rprojroot_2.0.2    htmlTable_2.1.0    base64enc_0.1-3    fs_1.5.0          
- [9] rstudioapi_0.13    farver_2.0.3       fansi_0.4.2        lubridate_1.7.10  
-[13] xml2_1.3.2         codetools_0.2-18   splines_4.0.5      leaps_3.1         
-[17] knitr_1.30         Formula_1.2-4      jsonlite_1.7.2     broom_0.7.6       
-[21] Rmpfr_0.8-2        cluster_2.1.0      dbplyr_2.1.1       png_0.1-7         
-[25] shiny_1.5.0        compiler_4.0.5     httr_1.4.2         backports_1.2.1   
-[29] assertthat_0.2.1   Matrix_1.3-2       fastmap_1.0.1      cli_2.5.0         
-[33] later_1.1.0.1      htmltools_0.5.1.1  tools_4.0.5        gmp_0.6-2         
-[37] gtable_0.3.0       glue_1.4.2         reshape2_1.4.4     Rcpp_1.0.5        
-[41] carData_3.0-4      cellranger_1.1.0   vctrs_0.3.8        lmtest_0.9-38     
-[45] xfun_0.23          ps_1.5.0           openxlsx_4.2.3     rvest_1.0.0       
-[49] mime_0.9           lifecycle_1.0.0    zoo_1.8-8          scales_1.1.1      
-[53] hms_1.0.0          promises_1.1.1     sandwich_3.0-0     RColorBrewer_1.1-2
-[57] yaml_2.2.1         curl_4.3           rpart_4.1-15       stringi_1.5.3     
-[61] highr_0.8          checkmate_2.0.0    zip_2.1.1          rlang_0.4.11      
-[65] pkgconfig_2.0.3    evaluate_0.14      htmlwidgets_1.5.3  labeling_0.4.2    
-[69] tidyselect_1.1.1   plyr_1.8.6         magrittr_2.0.1     R6_2.5.0          
-[73] Hmisc_4.4-2        generics_0.1.0     DBI_1.1.0          pillar_1.6.0      
-[77] haven_2.3.1        whisker_0.4        foreign_0.8-81     withr_2.4.2       
-[81] nnet_7.3-14        abind_1.4-5        modelr_0.1.8       crayon_1.4.1      
-[85] car_3.0-10         utf8_1.2.1         rmarkdown_2.6      jpeg_0.1-8.1      
-[89] readxl_1.3.1       data.table_1.13.6  git2r_0.27.1       vcd_1.4-8         
-[93] reprex_2.0.0       digest_0.6.27      xtable_1.8-4       httpuv_1.5.4      
-[97] munsell_0.5.0     </code></pre>
+  [1] colorspace_2.0-0   ggsignif_0.6.0     ellipsis_0.3.1    
+  [4] rio_0.5.16         rprojroot_2.0.2    htmlTable_2.1.0   
+  [7] base64enc_0.1-3    fs_1.5.0           rstudioapi_0.13   
+ [10] farver_2.0.3       fansi_0.4.2        lubridate_1.7.10  
+ [13] xml2_1.3.2         codetools_0.2-18   splines_4.0.5     
+ [16] leaps_3.1          knitr_1.30         Formula_1.2-4     
+ [19] jsonlite_1.7.2     broom_0.7.6        Rmpfr_0.8-2       
+ [22] cluster_2.1.0      dbplyr_2.1.1       png_0.1-7         
+ [25] shiny_1.5.0        compiler_4.0.5     httr_1.4.2        
+ [28] backports_1.2.1    fastmap_1.0.1      assertthat_0.2.1  
+ [31] Matrix_1.3-2       cli_2.5.0          later_1.1.0.1     
+ [34] htmltools_0.5.1.1  tools_4.0.5        gmp_0.6-2         
+ [37] gtable_0.3.0       glue_1.4.2         reshape2_1.4.4    
+ [40] Rcpp_1.0.5         carData_3.0-4      cellranger_1.1.0  
+ [43] jquerylib_0.1.4    vctrs_0.3.8        lmtest_0.9-38     
+ [46] xfun_0.23          ps_1.5.0           openxlsx_4.2.3    
+ [49] rvest_1.0.0        mime_0.9           lifecycle_1.0.0   
+ [52] zoo_1.8-8          scales_1.1.1       hms_1.0.0         
+ [55] promises_1.1.1     sandwich_3.0-0     RColorBrewer_1.1-2
+ [58] yaml_2.2.1         curl_4.3           sass_0.4.0        
+ [61] rpart_4.1-15       stringi_1.5.3      highr_0.8         
+ [64] checkmate_2.0.0    zip_2.1.1          rlang_0.4.11      
+ [67] pkgconfig_2.0.3    evaluate_0.14      htmlwidgets_1.5.3 
+ [70] labeling_0.4.2     tidyselect_1.1.1   plyr_1.8.6        
+ [73] magrittr_2.0.1     R6_2.5.0           Hmisc_4.4-2       
+ [76] generics_0.1.0     DBI_1.1.0          pillar_1.6.0      
+ [79] haven_2.3.1        whisker_0.4        foreign_0.8-81    
+ [82] withr_2.4.2        nnet_7.3-14        abind_1.4-5       
+ [85] modelr_0.1.8       crayon_1.4.1       car_3.0-10        
+ [88] utf8_1.2.1         rmarkdown_2.9      jpeg_0.1-8.1      
+ [91] readxl_1.3.1       data.table_1.13.6  git2r_0.27.1      
+ [94] vcd_1.4-8          reprex_2.0.0       digest_0.6.27     
+ [97] xtable_1.8-4       httpuv_1.5.4       munsell_0.5.0     
+[100] bslib_0.2.5.1     </code></pre>
 </div>
 </div>
 
@@ -1467,7 +1478,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -1481,6 +1492,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')

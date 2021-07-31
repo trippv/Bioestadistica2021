@@ -11,21 +11,30 @@
 
 <meta name="author" content="Miguel Tripp" />
 
-<meta name="date" content="2021-07-22" />
 
-<title>Clase14_PCA</title>
+<title>Análisis de Componentes Principales (PCA)</title>
 
-<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -51,11 +60,6 @@ div.section {
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -68,34 +72,9 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -104,10 +83,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -124,40 +99,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -185,7 +133,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -197,7 +145,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -208,10 +156,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -223,7 +184,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -273,6 +233,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -335,6 +298,12 @@ div.tocify {
   border-radius: 0px;
 }
 
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
 
 </style>
 
@@ -349,7 +318,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -385,6 +354,7 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Básicos</li>
     <li>
       <a href="Clase1_Basicos.html">1. Introducción y comandos básicos</a>
     </li>
@@ -400,6 +370,7 @@ div.tocify {
     <li>
       <a href="Clase5_ggplot.html">5. Gráficos con ggplot</a>
     </li>
+    <li class="dropdown-header">inferencia estadística</li>
     <li>
       <a href="Clase6_Supuestos.html">6. Supuestos normalidad y varianza</a>
     </li>
@@ -433,7 +404,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trippv/BioestadisticaR">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
     Source code
   </a>
@@ -443,13 +414,20 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
-<h1 class="title toc-ignore">Clase14_PCA</h1>
+<h1 class="title toc-ignore">Análisis de Componentes Principales (PCA)</h1>
 <h4 class="author">Miguel Tripp</h4>
-<h4 class="date">2021-07-22</h4>
 
 </div>
 
@@ -474,7 +452,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-25
+<strong>Last updated:</strong> 2021-07-31
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -565,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreefbb2514257b6b1d598d41912a4849a3435f8f036targetblankfbb2514a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/fbb2514257b6b1d598d41912a4849a3435f8f036" target="_blank">fbb2514</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreefbb2514257b6b1d598d41912a4849a3435f8f036targetblankfbb2514a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/fbb2514257b6b1d598d41912a4849a3435f8f036" target="_blank">fbb2514</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -583,6 +561,8 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/hero-image.html
+    Ignored:    analysis/poke_logo.png
 
 Untracked files:
     Untracked:  Curso_Bioestadistica_MTripp_cuatriII.docx
@@ -597,7 +577,10 @@ Untracked files:
     Untracked:  Tarea_Tstudent.html
     Untracked:  Tarea_Tstudent.pdf
     Untracked:  analysis/Clase13_noParam.Rmd
+    Untracked:  analysis/hero_backgroud.jpg
     Untracked:  analysis/images/
+    Untracked:  analysis/style.css
+    Untracked:  analysis/test.Rmd
     Untracked:  code/tarea_macrograd.R
     Untracked:  data/CS_subset.csv
     Untracked:  data/Consumo_oxigeno_wide.csv
@@ -675,6 +658,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/b4e67dc1256ad5367ecc659603bbd5df3c597ea7/analysis/Clase14_PCA.Rmd" target="_blank">b4e67dc</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-31
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/03db7ffb0734a19d5fa2e2a28ffc934c8bc1f20a/docs/Clase14_PCA.html" target="_blank">03db7ff</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -748,18 +765,27 @@ workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
 </div>
 </div>
 </div>
-<div id="generalidades" class="section level1">
-<h1>1: Generalidades</h1>
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
+<div id="generalidades" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
 <p><strong>¿Que es un PCA?</strong></p>
 <p>El análisis de componentes principales (<em>Principal Component Analysis</em>) o <strong>PCA</strong> es una herramienta para el análisis exploratorio de los datos que permite visualizar la variación presente de un set de datos con muchas variables.</p>
-<p>De manera general, el PCA es un tipo de transformación lineal de un set de datos con un cierto número de variables. Dicha transformación ajusta el est de datos a un nuevo sistema de coordenadas de manera que la mayor propoción de la varianza se explica en la primera coordenada y cada coordenada subsiguiente es ortogonal a la anterior y explica una menor variabilidad.</p>
+<p>El PCA pertenece a la familia de técnicas conocidas como no supervisadas (<em>unsupervised</em>) ya que a diferencia de métodos anteriores de regresión, donde se utilizan una serie de predictores para predecir una variables de respuesta <span class="math inline">\(Y\)</span>, en estos métodos no supervisados la variable de respuesta <span class="math inline">\(Y\)</span> no se toma en cuenta ya que el objetivo no es predecir <span class="math inline">\(Y\)</span> sino extraer información empleando los predictores para identificar subgrupos <a href="https://www.cienciadedatos.net/documentos/35_principal_component_analysis">1</a>.</p>
+<p>De manera general, el PCA es un tipo de transformación lineal de un set de datos con un cierto número de variables. Dicha transformación ajusta el set de datos a un nuevo sistema de coordenadas de manera que la mayor proporción de la varianza se explica en la primera coordenada y cada coordenada subsiguiente es ortogonal a la anterior y explica una menor variabilidad.</p>
 <p><strong>¿Cuando se usa un PCA?</strong></p>
 <p>Una de las principales aplicaciones de PCA es la <strong>reducción de dimensionalidad</strong> (es decir, variables): cuando contamos con un gran número de variables cuantitativs posiblemente correlacionadas (indicativo de exstencia de información redundante), un PCA permite “reducirlas” a un número menor de variables transformadas (componentes principales) que expliquen gran parte de la variabilidad de los datos.</p>
-<p>Cada dimensión o componente princpal generado por PCA será una combinación lineal de las variables originales. El PCA puede considerarse como una rotación de los ejes del sistema de coordenadas de las variables originales a nuevos ejes ortogonales, de manera que estos ejes coincidan con la dirección de máxima varianza de los datos.</p>
-<p>Otro aspecto importante de un PCA es que no se especifica una variable de respuesta, es decir, no se especifica el origen de los datos. Pero tras describir la varianza de los datos usando las combinaciones lineales del PCA es posible distinuir grupos separados entre los individuos. Es por este motivo que se le conoce como método no supervisado.</p>
+<p>Cada dimensión o componente principal generado por PCA será una combinación lineal de las variables originales. El PCA puede considerarse como una rotación de los ejes del sistema de coordenadas de las variables originales a nuevos ejes ortogonales, de manera que estos ejes coincidan con la dirección de máxima varianza de los datos.</p>
+<p><br />
+</p>
+<div class="yellow">
 <p>Es importante recordar que el PCA reduce la dimensionalidad pero <strong>no reduce el número de variables en los datos</strong>. Esto significa que puedes explicar el 99% de la variabilidad de un set de datos con 1,000 variables usando solamente los tres componentes principales, pero aún necesitas esos 1,000 variables para construir los componentes principales.</p>
-<div id="metabolitos-de-abulon" class="section level2">
-<h2>2: Metabolitos de abulon</h2>
+</div>
+<div id="metabolitos-de-abulon" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Metabolitos de abulon</h2>
+<p><img src="https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/featured_ab.JPG" /></p>
+<p>Para este ejercicio utilizaremos la base de datos <code>Hful_meabolitos_ver2.csv</code> la cual se puede descargar <a href="https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Hful_metabolitos_ver2.csv">aquí</a> contiene información de la concentración (Unidades arbitrarias) de diversos metabolitos endógenos de muestras de tejido de abulón (<em>Haliotis fulgens</em>) expuestos a un incremento en la temperatura. Para esto, se tomaron muestras de branquia de abulón a 18°C, 24°C, 30°C y 32°C. El PCA nos permitirá evaluar si hay diferencias en el perfíl de metabolítos entre cada temperatura.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre class="r"><code>metabolitos &lt;- read_csv(&quot;data/Hful_metabolitos_ver2.csv&quot;)</code></pre>
 <pre><code>
@@ -782,55 +808,60 @@ cols(
 )</code></pre>
 </div>
 </div>
-<div id="normalización-de-los-datos" class="section level1">
-<h1>2.1: Normalización de los datos</h1>
-<p>Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para asi eliminar posibles sesgos en las mediciones.</p>
+<div id="normalización-de-los-datos" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Normalización de los datos</h1>
+<p>Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para así eliminar posibles sesgos en las mediciones.</p>
 <p>Los datos también se escalan a una varianza unitaria para eliminar el efecto de las distintas unidades en las que puedan estar medidas los datos.</p>
-<p>Este proceso de normalización y escalar se aplican directamente dentro de la función para hacer el PCA, pero para visualizar este efecto, se hara el siguiente ejercicio:</p>
-<p>Primero es necesario generar un nuevo objeto transformalo a formato largo con <code>gather()</code>.</p>
-<pre class="r"><code>metabolitos_long &lt;- metabolitos[,-1] %&gt;%
-  gather(key = &quot;metabolito&quot;, value, -Group)
-
-
-ggplot(metabolitos_long, aes(y = metabolito, x = value))+
-  geom_boxplot()</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ggplot(metabolitos_long, aes(x = value))+
-  geom_density()</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Posteriomente generamos un objeto con las variables normalizadas</p>
-<pre class="r"><code>metabolitos_long_scale &lt;- scale(log10(metabolitos[,-c(1:2)]), center = TRUE, scale = TRUE)
-
-metabolitos_long_scale &lt;- data.frame(metabolitos_long_scale) %&gt;%                 
-                  gather(key = &quot;metabolito&quot;, value) 
-
-ggplot(metabolitos_long_scale, aes(y = metabolito, x = value))+
-  geom_boxplot()</code></pre>
+<p>Para entender este concepto, vamos a visualizar nuestros datos. Primero será necesario transformar la tabla a formato largo (<em>long</em>).</p>
+<pre class="r"><code>metabolitos_long &lt;- metabolitos %&gt;% 
+  pivot_longer(-c(1,2), names_to = &quot;metabolito&quot;, values_to = &quot;concentracion&quot;)</code></pre>
+<p>Y posteriomente visualizamos la concentración de cada metabolito</p>
+<pre class="r"><code>ggplot(metabolitos_long, aes(y = metabolito, x = concentracion))+
+  geom_boxplot()+
+  labs(title = &quot;concentración relativa de cada metabolito&quot;, y = &quot;Concentración de metabolitos (U.A.)&quot;)</code></pre>
 <p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ggplot(metabolitos_long_scale, aes(x = value))+
+<pre class="r"><code>ggplot(metabolitos_long, aes(x = concentracion))+
   geom_density()</code></pre>
 <p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="pca-con-prcomp" class="section level2">
-<h2>2.2: PCA con <code>prcomp()</code></h2>
-<pre class="r"><code>metabolitos_pca &lt;- prcomp(log10(metabolitos[,-c(1:2)]), center = TRUE, scale. = TRUE)
+<p>Como puedes observar, la concentración de la homarina es mucho mayor que la del resto de los metabolítos. Esto es una situación de la que tenemos que tener cuidado ya que la homarina cargaría todo el peso del PCA</p>
+<p>Este proceso de normalización y escalar se aplican directamente dentro de la función para hacer el PCA, pero para visualizar este efecto, vamos a hacer el siguiente ejercicio:</p>
+<pre class="r"><code>metabolitos_scale &lt;- data.frame(metabolitos$Group, scale(metabolitos[,-c(1:2)], center = TRUE, scale = TRUE))
+
+
+metabolitos_long_scale &lt;- metabolitos_scale %&gt;% 
+  pivot_longer(- metabolitos.Group, names_to = &quot;metabolito&quot;, values_to = &quot;concentracion&quot;)
+
+ggplot(metabolitos_long_scale, aes(y = metabolito, x = concentracion))+
+  geom_boxplot()</code></pre>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(metabolitos_long_scale, aes(x = concentracion))+
+  geom_density()</code></pre>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Como puedes ver, al escalar los datos a pesar de las diferencias iniciales en la concentración, ahora todos tienen una media de <span class="math inline">\(0\)</span> lo que nos permite que todas las variables tengan contribución similar al PCA</p>
+<div id="pca-con-prcomp" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> PCA con <code>prcomp()</code></h2>
+<p>Existe una gran número de alternativas para realizar un análisis de componentes principales en R, pero para fines practicos, iniciaremos usando la función de R base <code>prcomp()</code>.</p>
+<p>Dado que esta función trabaja sobre una matriz, le indicaremos que no tome en cuenta las primeras dos columnas de la tabla original:</p>
+<pre class="r"><code>metabolitos_pca &lt;- prcomp(metabolitos[,-c(1:2)], center = TRUE, scale. = TRUE)
 
 
 summary(metabolitos_pca)</code></pre>
 <pre><code>Importance of components:
-                          PC1    PC2     PC3     PC4     PC5     PC6     PC7
-Standard deviation     2.3516 1.4566 1.07368 0.93858 0.88200 0.69261 0.65338
-Proportion of Variance 0.4608 0.1768 0.09607 0.07341 0.06483 0.03998 0.03558
-Cumulative Proportion  0.4608 0.6376 0.73370 0.80711 0.87194 0.91191 0.94749
-                           PC8     PC9   PC10    PC11    PC12
-Standard deviation     0.46552 0.39959 0.3888 0.26872 0.17432
-Proportion of Variance 0.01806 0.01331 0.0126 0.00602 0.00253
-Cumulative Proportion  0.96555 0.97885 0.9915 0.99747 1.00000</code></pre>
-<p>En este caso obtuvimos 15 componentes principales. Cada uno de ellos explica cierto porcentaje de la variación total del set de datos. Es decir, el PC1 explica 52% de la varianza total, lo cual implica que mas de la mitad de la información e los datos puede encapsularse en ese componente principal. PC2 explica 15% de la varianza, por lo que ambos componentes explicar un 68% de la varianza total.</p>
+                          PC1    PC2    PC3     PC4     PC5     PC6     PC7
+Standard deviation     2.1470 1.5718 1.2163 0.92162 0.88165 0.77621 0.65618
+Proportion of Variance 0.3841 0.2059 0.1233 0.07078 0.06478 0.05021 0.03588
+Cumulative Proportion  0.3841 0.5900 0.7133 0.78406 0.84883 0.89904 0.93492
+                          PC8    PC9    PC10    PC11   PC12
+Standard deviation     0.4850 0.4608 0.39208 0.31696 0.2813
+Proportion of Variance 0.0196 0.0177 0.01281 0.00837 0.0066
+Cumulative Proportion  0.9545 0.9722 0.98503 0.99340 1.0000</code></pre>
+<p>En este caso obtuvimos 12 componentes principales. Cada uno de ellos explica cierto porcentaje de la variación total del set de datos. Es decir, el PC1 explica 38% de la varianza total, mientras que el PC2 explica un 20% de la varianza, por lo que ambos componentes explicar mas de un 50% de la varianza total.</p>
+<p>Esto se puede visualizar en forma de un <strong>scree plot</strong></p>
 <pre class="r"><code>screeplot(metabolitos_pca, type = &quot;l&quot;, main = &quot;scree plot con los componentes principales&quot;)
 abline(h = 1, col=&quot;red&quot;, lty=5)
 legend(&quot;topright&quot;, legend=c(&quot;Eigenvalor = 1&quot;),
        col=c(&quot;red&quot;), lty=5, cex=0.6)</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>O podemos calcular manualmente la proporción de la varianza explicada por cada componente</p>
 <p>La varianza explicada por cada componente principal (correspondiente a los eigenvalores) la obtenemos elevando al cuadrado la desviación estándar.</p>
 <pre class="r"><code>prop_varianza &lt;- metabolitos_pca$sdev^2 / sum(metabolitos_pca$sdev^2)
@@ -840,7 +871,7 @@ prop_varianza &lt;- data.frame(prop_varianza, pc = 1:12)</code></pre>
   geom_bar(stat = &quot;identity&quot;)+
   theme_bw()+
   labs(x = &quot;Componente principal&quot;, y = &quot;Prop. de varianza explicada&quot;)</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>y la proporción acumulada de la varianza</p>
 <pre class="r"><code>prop_varianza$accum &lt;- cumsum(prop_varianza$prop_varianza)</code></pre>
 <pre class="r"><code>ggplot(prop_varianza, aes(x = pc, y = accum))+
@@ -850,82 +881,69 @@ prop_varianza &lt;- data.frame(prop_varianza, pc = 1:12)</code></pre>
   theme_bw()+
   labs(x = &quot;Componente principal&quot;,
        y = &quot;Prop. varianza explicada acumulada&quot;)</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Como es de esperar, la varianza explicada es mayor en la primera componente que en las subsiguientes.</p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Como es de esperar, la varianza explicada es mayor en el primer componente que en las subsiguientes.</p>
 <p>No existe un método objetivo para escoger el número de componentes principales que son suficientes para un análisis, por lo que depende del juicio del analista y del problema en cuestión. Si explican suficiente variabilidad y el objetivo es la visualización de los datos, no se suelen escoger más de tres componentes principales, para así facilitar la representación gráfica y la interpretación.</p>
-<pre class="r"><code>str(metabolitos_pca)</code></pre>
-<pre><code>List of 5
- $ sdev    : num [1:12] 2.352 1.457 1.074 0.939 0.882 ...
- $ rotation: num [1:12, 1:12] -0.107 -0.285 0.279 -0.293 -0.358 ...
-  ..- attr(*, &quot;dimnames&quot;)=List of 2
-  .. ..$ : chr [1:12] &quot;ATP&quot; &quot;Acetate&quot; &quot;Alanine&quot; &quot;Homarine&quot; ...
-  .. ..$ : chr [1:12] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
- $ center  : Named num [1:12] 0.424 0.21 0.825 3.655 -0.11 ...
-  ..- attr(*, &quot;names&quot;)= chr [1:12] &quot;ATP&quot; &quot;Acetate&quot; &quot;Alanine&quot; &quot;Homarine&quot; ...
- $ scale   : Named num [1:12] 0.203 0.249 0.263 0.198 0.315 ...
-  ..- attr(*, &quot;names&quot;)= chr [1:12] &quot;ATP&quot; &quot;Acetate&quot; &quot;Alanine&quot; &quot;Homarine&quot; ...
- $ x       : num [1:28, 1:12] 2.37 2.35 4.59 3.91 1.15 ...
-  ..- attr(*, &quot;dimnames&quot;)=List of 2
-  .. ..$ : NULL
-  .. ..$ : chr [1:12] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
- - attr(*, &quot;class&quot;)= chr &quot;prcomp&quot;</code></pre>
+<p>Ahora, analicemos a mayor detalle el objeto pca que acabamos de generas</p>
+<pre class="r"><code>names(metabolitos_pca)</code></pre>
+<pre><code>[1] &quot;sdev&quot;     &quot;rotation&quot; &quot;center&quot;   &quot;scale&quot;    &quot;x&quot;       </code></pre>
 <p>El objeto prcomp contiene la información necesario:</p>
 <ul>
 <li><p>Centro (<code>$center</code>), la escala (<code>scale</code>), desviación estandar (<code>$dev</code>) de cada componente principal.</p></li>
-<li><p>La relación (correlación o anticorrelación) etre las variables iniciales y el componente principal (<code>$rotation</code>)</p></li>
-<li><p>El valor de cada muestra en función del componente principal</p></li>
+<li><p>La relación (correlación o anticorrelación) entre las variables iniciales y el componente principal (<code>$rotation</code>)</p></li>
+<li><p>El valor de cada muestra en función del componente principal (<code>$x</code>)</p></li>
 </ul>
 <p>Los elementos <strong>center</strong> y <strong>scale</strong> se corresponden con las medias y las desviaciones estándar originales de las variables previo escalado e implementación del PCA.</p>
 <p>La matriz <strong>rotation</strong> proporciona los <em>loadings</em> de los componentes principales (cada columna contiene el vector de loadings de cada componente principal). La función los denomina matriz de rotación ya que si multiplicáramos la matriz de datos por <code>$rotation</code>, obtendríamos las coordenadas de los datos en el nuevo sistema rotado de coordenadas. Estas coordenadas se corresponden con los <strong>scores</strong> de los componentes principales.</p>
 <p>De manera que:</p>
 <pre class="r"><code>metabolitos_pca$rotation</code></pre>
-<pre><code>                   PC1         PC2          PC3         PC4          PC5
-ATP        -0.10705166  0.51148961 -0.275528962  0.28780908 -0.131347324
-Acetate    -0.28492449  0.16770279  0.290246221  0.20837017 -0.084924704
-Alanine     0.27947907  0.41705722 -0.096128133  0.34829285  0.015857007
-Homarine   -0.29300259  0.32613076 -0.292837548 -0.24404411  0.019790214
-Isoleucine -0.35840410  0.01841998 -0.004483426  0.39328460  0.005469931
-Lactate    -0.34882587  0.25590899  0.152070385  0.05721021  0.243404159
-Leucine    -0.33426191 -0.35096010  0.058252557  0.07427028  0.017822249
-Succinate  -0.23288519 -0.04668672 -0.345445165 -0.27003926 -0.767672804
-Taurine    -0.01796791 -0.24139781 -0.762052020  0.19557789  0.373418588
-Threonine  -0.39215385  0.05526142  0.125348538  0.06629203 -0.030554328
-Tyrosine   -0.27555042  0.18615676 -0.042338153 -0.58072226  0.429687913
-Valine     -0.31187157 -0.37788057 -0.027334835  0.27679527  0.031164016
-                   PC6         PC7         PC8         PC9         PC10
-ATP         0.02673709 -0.68469599 -0.07217026  0.15112502 -0.009260996
-Acetate    -0.84504453  0.08166231 -0.11823470 -0.08274067 -0.045696230
-Alanine     0.08157291  0.25780338  0.36321952 -0.19057264 -0.143283167
-Homarine    0.15667528  0.24890102 -0.56460397 -0.50332579 -0.024377310
-Isoleucine  0.28033027  0.29890694 -0.16482483  0.45507609 -0.437935269
-Lactate     0.16806484  0.02226023  0.47944518 -0.27577366  0.365829446
-Leucine     0.13463082 -0.42693864 -0.11532814 -0.09501169  0.182552121
-Succinate  -0.06444532  0.10119836  0.35459577  0.03908977 -0.023253112
-Taurine    -0.30604861  0.12962260  0.05815394  0.10494796  0.229890208
-Threonine   0.12097989  0.27662886  0.01488813  0.32763632  0.483935834
-Tyrosine   -0.11776175 -0.11931547  0.26902182  0.24930577 -0.391062066
-Valine      0.05200358 -0.07866421  0.24094818 -0.45436423 -0.421003993
-                  PC11         PC12
-ATP        -0.13593055  0.186500003
-Acetate     0.07020523 -0.084907270
-Alanine    -0.18753408 -0.565767248
-Homarine   -0.02809993 -0.045694591
-Isoleucine  0.34991599 -0.008001207
-Lactate     0.45687851  0.223512521
-Leucine     0.13177188 -0.694586173
-Succinate   0.12583679 -0.063036983
-Taurine     0.07215678  0.008305567
-Threonine  -0.62381512 -0.007416812
-Tyrosine   -0.14124828 -0.173908993
-Valine     -0.40243583  0.262705388</code></pre>
+<pre><code>                    PC1          PC2         PC3          PC4         PC5
+ATP        -0.070685562  0.479974506 -0.04687200  0.327201217 -0.29836992
+Acetate    -0.324755039  0.165290878  0.28385534  0.041713707 -0.07123331
+Alanine     0.328378334  0.266153017  0.07642588  0.421653115  0.33359945
+Homarine   -0.286651681  0.361836185 -0.28681415  0.035405924 -0.03021160
+Isoleucine -0.347649618 -0.066523746  0.21734203  0.378239502  0.37908584
+Lactate    -0.319708823  0.278323765  0.26098969  0.001400924 -0.26282914
+Leucine    -0.315770470 -0.376408246 -0.01456305 -0.111985294 -0.32958349
+Succinate  -0.216637920 -0.014155443 -0.55389486 -0.162844001  0.50435964
+Taurine    -0.008570964 -0.228759485 -0.50677579  0.633289470 -0.30223829
+Threonine  -0.410405185  0.006835562  0.15271445  0.105312352  0.34526274
+Tyrosine   -0.284978138  0.266071154 -0.34545093 -0.272150544 -0.08317614
+Valine     -0.283020877 -0.439995442  0.08533091  0.209323386 -0.02093078
+                   PC6         PC7           PC8         PC9        PC10
+ATP         0.50870283 -0.33441840  0.3354882279 -0.22186801  0.04857953
+Acetate     0.42177543  0.65871377 -0.0003270073  0.30887554 -0.07656480
+Alanine    -0.11680975  0.09305641 -0.0765090655 -0.26812909 -0.49867075
+Homarine   -0.04007653 -0.31091568 -0.6104955686  0.43289941 -0.09962305
+Isoleucine -0.18682142 -0.33839267  0.2727932823  0.23071977  0.25588950
+Lactate    -0.39669272  0.10024969 -0.2845229360 -0.47305870 -0.04784806
+Leucine     0.13181149 -0.20900202 -0.0612149434 -0.35304246 -0.03306915
+Succinate   0.33699277  0.09821686 -0.0848058779 -0.33871951 -0.02314957
+Taurine    -0.18790566  0.34211252 -0.0349247181  0.01535670  0.20907203
+Threonine  -0.08452254  0.15302004 -0.0290742509 -0.24173140  0.25420418
+Tyrosine   -0.41260553  0.11215091  0.5831321850  0.10596301 -0.29694198
+Valine      0.11033857 -0.13420324  0.0217276395  0.09895093 -0.68357650
+                   PC11        PC12
+ATP        -0.164854790 -0.06645838
+Acetate     0.246085745  0.07875348
+Alanine     0.206282921  0.36760490
+Homarine   -0.037398968  0.18102997
+Isoleucine  0.431816658 -0.10817063
+Lactate     0.142711183 -0.43395454
+Leucine     0.363228032  0.56103230
+Succinate   0.203006497 -0.27980375
+Taurine    -0.006810428 -0.02842208
+Threonine  -0.634046747  0.34846591
+Tyrosine   -0.002904511  0.15936636
+Valine     -0.293708927 -0.28421331</code></pre>
 <p>el primer componente es el resultado de la siguiente combinación lineal de las variables originales:</p>
-<p><span class="math inline">\(PC1 = -0.117406 ATP - 0.244613 Acetate + 0.219658 Alanine... etc\)</span></p>
+<p><span class="math inline">\(PC1 = -0.070 ATP - 0.324 Acetate + 0.328 Alanine... etc\)</span></p>
 </div>
-<div id="visualización-del-pca" class="section level2">
-<h2>2.3: Visualización del PCA</h2>
+<div id="visualización-del-pca" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Visualización del PCA</h2>
 <p>Una de las formas de visualizar los resultados de un PCA es mediante el llamado <code>biplot</code>. Este permite visualizar la posición de cada muestra en relación al PC1 y PC2 y como contribuye cada variable a cada componente principal.</p>
 <pre class="r"><code>biplot(metabolitos_pca, scale = 0)</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>La comparación de la distancia entre puntuaciones y vectores no es relevante en la interpretación de los biplots, teniendo en cuenta que hay varias versiones de biplots que se pueden obtener según como se escalen sus elementos (ya que esto afecta a la compactación o dispersión de la representación). Las interpretaciones se centran en las direcciones y agrupamientos tanto de unos como de otros.</p>
 <p>Para los <strong>vectores</strong> (variables), nos fijamos en su longitud y en el ángulo con respecto a los ejes de las componentes principales y entre ellos mismos:</p>
 <ul>
@@ -933,8 +951,7 @@ Valine     -0.40243583  0.262705388</code></pre>
 <li><p><em>Longitud</em>: cuanto mayor la longitud de un vector relacionado con x variable (en un rango normalizado de 0 a 1), mayor variabilidad de dicha variable está contenida en la representación de las dos componentes del biplot, es decir, mejor está representada su información en el gráfico.</p></li>
 </ul>
 <p>Para los <strong>scores</strong> (observaciones), nos fijamos en los posibles agrupamientos. Puntuaciones próximas representan observaciones de similares características. Puntuaciones con valores de las variables próximas a la media se sitúan más cerca del centro del biplot (0, 0). El resto representan variabilidades normales o extremas (outliers). Por otro lado, la relación de las observaciones con las variables se puede estudiar proyectando las observaciones sobre la dirección de los vectores[<a href="https://rpubs.com/Cristina_Gil/PCA">1</a>].</p>
-<p>Cada punto es una observación de nuestra tabla. Cada observación esta gráficada con su valor de PC1 y PC2. Los ejes se muestran como flechas originarias del centro. En est caso se observa que, por ejemplo, metabolitos como la <code>taurina</code>, <code>isoleucina</code>o <code>carnitina</code>contribuyen al PC1 con menores valores en las variables que meuven a las muestras hacia la izquierda del gráfica. Por otro lado, metabolitos como la <code>alanina</code> se incrementan con el PC2.</p>
-<p>EL paso siguiente es extraer los PCs 1 y 2, los cuales son los que explican la mayor variabilidad de los datos y graficarlo usarlo ggplot. Para esto, necesitamos extraer los PC 1 y 2 de nuestro objecto pca y unirlos a nuestra tabla original de metabolitos</p>
+<p>El paso siguiente es extraer los PCs 1 y 2, los cuales son los que explican la mayor variabilidad de los datos y graficarlo usarlo ggplot. Para esto, necesitamos extraer los PC 1 y 2 de nuestro objecto pca y unirlos a nuestra tabla original de metabolitos</p>
 <pre class="r"><code>metabolitos_PCs &lt;- cbind(metabolitos, metabolitos_pca$x[, 1:2])
 
 head(metabolitos_PCs)</code></pre>
@@ -945,40 +962,40 @@ head(metabolitos_PCs)</code></pre>
 4     Hf5BG   18C 2.466667 0.8076923 11.3650 3063.985  0.3076923 0.5948718
 5     Hf6BG   18C 4.776190 0.9142857 14.6588 4023.495  0.7666667 2.5428571
 6     Hf7BG   18C 3.823810 0.7857143 14.3658 7304.200  0.5476190 2.4523810
-    Leucine Succinate  Taurine Threonine Tyrosine    Valine       PC1
-1 1.0826087 0.2173913 758.2365 0.6869565 2.086957 0.7565217 2.3702851
-2 0.5894737 0.4000000 689.1245 0.5736842 9.657895 0.3526316 2.3548128
-3 0.3617647 0.1176471 865.3210 0.4529412 4.502941 0.2441176 4.5893492
-4 0.7333333 0.1102564 751.2350 0.3333333 4.564103 0.6897436 3.9138850
-5 0.8952381 0.5952381 569.1234 0.7857143 4.485714 1.4047619 1.1543152
-6 1.1190476 0.6523810 713.2286 1.1000000 3.642857 1.1666667 0.9058902
-         PC2
-1  0.2219795
-2  1.3650893
-3  0.2141791
-4 -0.2219210
-5  1.2091214
-6  1.1034214</code></pre>
+    Leucine Succinate  Taurine Threonine Tyrosine    Valine      PC1
+1 1.0826087 0.2173913 758.2365 0.6869565 2.086957 0.7565217 2.245430
+2 0.5894737 0.4000000 689.1245 0.5736842 9.657895 0.3526316 2.284984
+3 0.3617647 0.1176471 865.3210 0.4529412 4.502941 0.2441176 3.200969
+4 0.7333333 0.1102564 751.2350 0.3333333 4.564103 0.6897436 2.827378
+5 0.8952381 0.5952381 569.1234 0.7857143 4.485714 1.4047619 1.764634
+6 1.1190476 0.6523810 713.2286 1.1000000 3.642857 1.1666667 1.441144
+          PC2
+1  0.25398388
+2  0.94070763
+3 -0.08366326
+4 -0.12111761
+5  1.18767384
+6  1.11936471</code></pre>
 <p>Ahora graficamos con ggplot</p>
 <pre class="r"><code>ggplot(metabolitos_PCs, aes(x = PC1, y = PC2, col = Group, fill = Group))+
 stat_ellipse(geom = &quot;polygon&quot;, col = &quot;black&quot;, alpha = 0.3)+
   geom_point(shape = 21, col = &quot;black&quot;)</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Alternativamente, podemos usar el paquete ggbiplot para graficar el biplot</p>
-<pre class="r"><code>library(devtools)
-install_github(&quot;vqv/ggbiplot&quot;)</code></pre>
+<pre class="r"><code>#library(devtools)
+#install_github(&quot;vqv/ggbiplot&quot;)</code></pre>
 <pre class="r"><code>library(ggbiplot)
 
 ggbiplot(metabolitos_pca, labels = metabolitos$ind.names, ellipse = TRUE, groups = metabolitos$Group, scale = 0)+
   theme_bw()</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Con esta función tambien es posible graficar el segundo y tercer componente principal (PC2 y PC3), los cuales explican el 15% y 8.7% de la variabildiad de los datos, respectivamente.</p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Con esta función también es posible graficar el segundo y tercer componente principal (PC2 y PC3), los cuales explican un menor porcentaje la variabildiad de los datos.</p>
 <pre class="r"><code>ggbiplot(metabolitos_pca, choices = c(2,3), labels = metabolitos$ind.names, ellipse = TRUE, groups = metabolitos$Group, scale = 0)+
   theme_bw()</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggbiplot(metabolitos_pca, choices = c(1,2), labels = metabolitos$ind.names, ellipse = TRUE, groups = metabolitos$Group, scale = 0, var.axes = FALSE)+
   theme_bw()</code></pre>
-<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1015,17 +1032,18 @@ loaded via a namespace (and not attached):
  [5] rprojroot_2.0.2   digest_0.6.27     utf8_1.2.1        R6_2.5.0         
  [9] cellranger_1.1.0  backports_1.2.1   reprex_2.0.0      evaluate_0.14    
 [13] httr_1.4.2        pillar_1.6.0      rlang_0.4.11      readxl_1.3.1     
-[17] rstudioapi_0.13   whisker_0.4       rmarkdown_2.6     labeling_0.4.2   
-[21] munsell_0.5.0     broom_0.7.6       compiler_4.0.5    httpuv_1.5.4     
-[25] modelr_0.1.8      xfun_0.23         pkgconfig_2.0.3   htmltools_0.5.1.1
-[29] tidyselect_1.1.1  fansi_0.4.2       crayon_1.4.1      dbplyr_2.1.1     
-[33] withr_2.4.2       later_1.1.0.1     MASS_7.3-53       jsonlite_1.7.2   
-[37] gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.0         git2r_0.27.1     
-[41] magrittr_2.0.1    cli_2.5.0         stringi_1.5.3     farver_2.0.3     
-[45] fs_1.5.0          promises_1.1.1    xml2_1.3.2        ellipsis_0.3.1   
-[49] generics_0.1.0    vctrs_0.3.8       tools_4.0.5       glue_1.4.2       
-[53] hms_1.0.0         yaml_2.2.1        colorspace_2.0-0  rvest_1.0.0      
-[57] knitr_1.30        haven_2.3.1      </code></pre>
+[17] rstudioapi_0.13   whisker_0.4       jquerylib_0.1.4   rmarkdown_2.9    
+[21] labeling_0.4.2    munsell_0.5.0     broom_0.7.6       compiler_4.0.5   
+[25] httpuv_1.5.4      modelr_0.1.8      xfun_0.23         pkgconfig_2.0.3  
+[29] htmltools_0.5.1.1 tidyselect_1.1.1  fansi_0.4.2       crayon_1.4.1     
+[33] dbplyr_2.1.1      withr_2.4.2       later_1.1.0.1     MASS_7.3-53      
+[37] jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.0        
+[41] git2r_0.27.1      magrittr_2.0.1    cli_2.5.0         stringi_1.5.3    
+[45] farver_2.0.3      fs_1.5.0          promises_1.1.1    xml2_1.3.2       
+[49] bslib_0.2.5.1     ellipsis_0.3.1    generics_0.1.0    vctrs_0.3.8      
+[53] tools_4.0.5       glue_1.4.2        hms_1.0.0         yaml_2.2.1       
+[57] colorspace_2.0-0  rvest_1.0.0       knitr_1.30        haven_2.3.1      
+[61] sass_0.4.0       </code></pre>
 </div>
 </div>
 </div>
@@ -1073,15 +1091,23 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
@@ -1099,8 +1125,8 @@ $(document).ready(function ()  {
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
     };
-    options.showAndHide = true;
-    options.smoothScroll = true;
+    options.showAndHide = false;
+    options.smoothScroll = false;
 
     // tocify
     var toc = $("#TOC").tocify(options).data("toc-tocify");
