@@ -16,7 +16,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción 
 
-![](https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/1-dont-panic-sunera-thapki.jpg)
+
+```{r, echo=FALSE, out.width = '45%'}
+knitr::include_graphics("https://www.askideas.com/media/31/Dont-Panic-And-Carry-A-Towel-Picture.jpg")
+```
+
 
 
 Este curso es mi pequeña aportación para un mundo mejor donde no hay que pagar grandes sumas de dinero para hacer una ANOVA y donde los investigadores muestran sus resultados en otra cosa que no sea un gráfico de barras. Así que toma tu toalla favorita y empecemos.

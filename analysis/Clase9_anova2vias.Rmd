@@ -52,7 +52,7 @@ library(tidyverse)
 library(rstatix)
 library(ggpubr)
 
-goggle_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/goggles_esp.csv"
+goggle_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/goggles_esp.csv"
 goggle <- read_csv(goggle_url)
 
 ```

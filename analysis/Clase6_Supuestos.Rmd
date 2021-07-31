@@ -15,6 +15,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+
 ```{r, include=FALSE, message=FALSE}
 library(tidyverse)
 library(patchwork)
@@ -297,10 +301,10 @@ La distribución normal o Gaussiana juega un papel central en la estadística de
 
 # Evaluando la normalidad
 
-Para evaluar el supuesto de normalidad, vamos a usar un set de datos obtenidos de un festival de música en el Reino Unido, en el cual se evaluó la higiene de los participantes durante los tres dias del festival utilizando una técnica estandarizada con un valor entre 4 (huele a rosas durante el rocio de la mañana) y 0 (huele a cuerpo putrefacto escondido en el traseso de un zorillo)(Andy Field)
+Para evaluar el supuesto de normalidad, vamos a usar un set de datos obtenidos de un festival de música en el Reino Unido, en el cual se evaluó la higiene de los participantes durante los tres dias del festival utilizando una técnica estandarizada con un valor entre 4 (huele a rosas durante el rocio de la mañana) y 0 (huele a cuerpo putrefacto escondido en el trasero de un zorillo)(Andy Field)
 
 ```{r, message=FALSE}
-festival_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Festival.csv"
+festival_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Festival.csv"
 
 festival <- read_csv(festival_url)
 
@@ -458,6 +462,13 @@ nortest::lillie.test(festival$dia1)
 ```
 
 
+<div class = "blue">
+
+**Entonces ¿cual prueba debo utilizar?**
+
+La principal diferencia entre la prueba de Shapiro-Wilk con la prueba de Kolmogorov-Smirnov (con corrección de Lillefors) radica en el número de muestras. Mientras que el test de Shapiro Wilk se puede utilizar con hasta 50 datos, el test de Kolmogorov Smirnov es recomendable utilizarlo con más de 50 observaciones. 
+</div>
+
 
 # Homogeneidad de varianzas (Homocedasticidad)
 
@@ -510,7 +521,7 @@ Para este ejercicio, trabajaremos los datos `Rexamendat` los cuales contienen lo
 Aplicamos la prueba de Levene sobre los valores del examen y aritmetica (numeracy)
 
 ```{r}
-Rexam_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Rexamendat.csv"
+Rexam_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Rexamendat.csv"
 Rexam <- read_csv(Rexam_url)
 
 #convertir la uni a factor
@@ -602,8 +613,14 @@ fligner.test(Rexam$aritmetica ~ Rexam$uni)
 ```
 
 
-> En conclusión: Si se tiene seguridad de que las muestras a comparar proceden de poblaciones que siguen una distribución normal, son recomendables el F-test y el test de Bartlet, pareciendo ser el segundo más recomendable ya que el primero es muy potente pero extremadamente sensible a desviaciones de la normal. Si no se tiene la seguridad de que las poblaciones de origen son normales, se recomiendan el test de Leven utilizando la mediana o el test no paramétrico Fligner-Killeen que también se basa en la mediana.
 
+<div class = "blue">
+
+**Entonces ¿cual prueba debo utilizar?**
+
+Si se tiene seguridad de que las muestras a comparar proceden de poblaciones que siguen una distribución normal, son recomendables el F-test y el test de Bartlet, pareciendo ser el segundo más recomendable ya que el primero es muy potente pero extremadamente sensible a desviaciones de la normal. Si no se tiene la seguridad de que las poblaciones de origen son normales, se recomiendan el test de Leven utilizando la mediana o el test no paramétrico Fligner-Killeen que también se basa en la mediana.
+
+</div>
 
 # Pruebas de supuestos con `rstatixs()`
 

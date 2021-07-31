@@ -39,7 +39,7 @@ Para esta sección, utilizaremos los datos que estan disponibles por el paquete 
 
 Dichos datos consisten en observaciones realizadas por Darwin en 1876 de un experimento con plantas de maíz. Las semillas provenian de los mismos padres, pero algunas semillas fueron producidas por *autopolinización* de los padres mientras que otras fueron producidas por *fertilización cruzada*. Pares de semillas fueron plantadas en macetas. Darwin tenia la hipótesis que la fertilización cruzada produce plantas mas fuertes y vigorosas.
 
-Empecemos por cargar los paquetes necesarios y abrir la tabla `Darwin_esp.csv`. Estos datos los puedes descargar de [aqui](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/Darwin_esp.csv)
+Empecemos por cargar los paquetes necesarios y abrir la tabla `Darwin_esp.csv`. Estos datos los puedes descargar de [aqui](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Darwin_esp.csv)
 
 ```{r message=FALSE}
 library(tidyverse)

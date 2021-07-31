@@ -3,6 +3,7 @@ title: "Visualizacion con ggplot2"
 author: "Miguel Tripp"
 output: 
   workflowr::wflow_html:
+    css: style.css
     toc: true
     toc_float:
       collapsed: false
@@ -315,7 +316,7 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species
 
 con los otros temas, la gráfica se verian así
 
-```{r, include=TRUE, echo=FALSE}
+```{r, include=TRUE, echo=FALSE, message=FALSE}
 plot_test <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, col = species, shape = sex))+
   geom_point()+
   labs(x = "Longitud del culmen (mm)",
@@ -324,33 +325,78 @@ plot_test <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, 
        caption = "Datos: Palmer Penguins",
        col = "Especie",
        shape = "Sexo")+
-  theme(legend.position = "none")
+      theme(legend.position = "none")
+
+ggsave("docs/figure/ggPlot_test.png", plot_test)
 
 test_minimal <- plot_test+
   theme_classic()+
   theme(legend.position = "none")+
   labs(title = "Theme classic")
 
+ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
+
 test_dark <- plot_test+
   theme_dark()+
   theme(legend.position = "none")+
   labs(title = "Theme dark")
+ggsave("docs/figure/ggPlot_dark.png", test_dark)
+
 
 test_light <- plot_test+
   theme_light()+
   theme(legend.position = "none")+
   labs(title = "Theme light")
+ggsave("docs/figure/ggPlot_light.png", test_light)
 
 test_void <- plot_test+
   theme_void()+
   theme(legend.position = "none")+
   labs(title = "Theme void")
+ggsave("docs/figure/ggPlot_void.png", test_void)
 
 
-library(patchwork)
+test_bw <- plot_test+
+  theme_bw()+
+  theme(legend.position = "none")+
+  labs(title = "Theme void")
+ggsave("docs/figure/ggPlot_bw.png", test_bw)
 
-test_minimal + test_dark + test_light + test_void
+
+#library(patchwork)
+
+#test_minimal + test_dark + test_light + test_void
 ```
+
+<!--- agregar codigo HTML para incluir un panel de selección de grafico--->
+
+<select id="imgList">
+  <option value="./figure/ggplot_test.png">Simple</option>
+  <option value="./figure/ggPlot_minimal.png">theme_minimal()</option>
+  <option value="./figure/ggPlot_dark.png">theme_dark()</option>
+  <option value="./figure/ggPlot_light.png">theme_ligh()</option>
+  <option value="./figure/ggPlot_void.png">theme_void()</option>
+  <option value="./figure/ggPlot_bw.png">theme_bw()</option>
+</select>
+<img id="image" width="700" src="./figure/ggPlot_test.png" />
+
+
+
+
+<script type="text/javascript">             
+var img = document.getElementById("image");
+
+function setClass(e) {
+  var select = e.target;
+  img.src = select.options[select.selectedIndex].value;
+  return false;
+}
+
+document.getElementById("imgList").onchange = setClass;
+</script>
+
+
+<!--- termina el panel de seleccion de grafico --->
 
 
 ## Ajusta el color de los elementos geometricos

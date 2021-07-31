@@ -26,3 +26,14 @@ En esta página se encuentran las tablas y demás bases de datos que se utilizan
   -   [Transcriptome_Anotacion.csv](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/Transcriptome_Anotacion.csv)
   -   [Transcriptome_DGE.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Transcriptome_DGE.csv)
   -   [Consumo_oxigeno_wide.csv](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/Consumo_oxigeno_wide.csv)
+  
+
+# Parte II: Inferencias estadisticas
+  -   [Festival.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Festival.csv)
+  -   [Rexamendat.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Rexamendat.csv)
+  -   [goggles_esp.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/goggles_esp.csv)
+  -   [Darwin_esp.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Darwin_esp.csv)
+
+
+# Parte III: PCA
+  -   [Hful_metabolitos_ver2.csv](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Hful_metabolitos_ver2.csv)

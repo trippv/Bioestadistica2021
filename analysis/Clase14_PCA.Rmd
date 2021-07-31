@@ -1,35 +1,59 @@
 ---
-title: "Clase14_PCA"
+title: "Análisis de Componentes Principales (PCA)"
 author: "Miguel Tripp"
-date: "2021-07-22"
-output: workflowr::wflow_html
+
+output: 
+  workflowr::wflow_html:
+    css: style.css
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    number_section: true
+    theme: cerulean
+    code_folding: show 
 editor_options:
   chunk_output_type: console
 ---
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
 
-
-# 1: Generalidades
+# Generalidades
 
  
 **¿Que es un PCA?**
 
 El análisis de componentes principales (_Principal Component Analysis_) o **PCA** es una herramienta para el análisis exploratorio de los datos que permite visualizar la variación presente de un set de datos con muchas variables.
 
+El PCA pertenece a la familia de técnicas conocidas como no supervisadas (*unsupervised*) ya que a diferencia de métodos anteriores de regresión, donde se utilizan una serie de predictores para predecir una variables de respuesta $Y$, en estos métodos no supervisados la variable de respuesta $Y$ no se toma en cuenta ya que el objetivo no es predecir $Y$ sino extraer información empleando los predictores para identificar subgrupos [1](https://www.cienciadedatos.net/documentos/35_principal_component_analysis). 
 
-De manera general, el PCA es un tipo de transformación lineal de un set de datos con un cierto número de variables. Dicha transformación ajusta el est de datos a un nuevo sistema de coordenadas de manera que la mayor propoción de la varianza se explica en la primera coordenada y cada coordenada subsiguiente es ortogonal a la anterior y explica una menor variabilidad. 
+
+De manera general, el PCA es un tipo de transformación lineal de un set de datos con un cierto número de variables. Dicha transformación ajusta el set de datos a un nuevo sistema de coordenadas de manera que la mayor proporción de la varianza se explica en la primera coordenada y cada coordenada subsiguiente es ortogonal a la anterior y explica una menor variabilidad. 
 
 
 **¿Cuando se usa un PCA?**
 
 Una de las principales aplicaciones de PCA es la **reducción de dimensionalidad** (es decir, variables): cuando contamos con un gran número de variables cuantitativs posiblemente correlacionadas (indicativo de exstencia de información redundante), un PCA permite "reducirlas" a un número menor de variables transformadas (componentes principales) que expliquen gran parte de la variabilidad de los datos. 
 
-Cada dimensión o componente princpal generado por PCA será una combinación lineal de las variables originales. El PCA puede considerarse como una rotación de los ejes del sistema de coordenadas de las variables originales a nuevos ejes ortogonales, de manera que estos ejes coincidan con la dirección de máxima varianza de los datos.
+Cada dimensión o componente principal generado por PCA será una combinación lineal de las variables originales. El PCA puede considerarse como una rotación de los ejes del sistema de coordenadas de las variables originales a nuevos ejes ortogonales, de manera que estos ejes coincidan con la dirección de máxima varianza de los datos.
 
-Otro aspecto importante de un PCA es que no se especifica una variable de respuesta, es decir, no se especifica el origen de los datos. Pero tras describir la varianza de los datos usando las combinaciones lineales del PCA es posible distinuir grupos separados entre los individuos. Es por este motivo que se le conoce como método no supervisado. 
+\
 
+<div class = "yellow">
 Es importante recordar que el PCA reduce la dimensionalidad pero **no reduce el número de variables en los datos**. Esto significa que puedes explicar el 99% de la variabilidad de un set de datos con 1,000 variables usando solamente los tres componentes principales, pero aún necesitas esos 1,000 variables para construir los componentes principales. 
+</div>
 
-## 2: Metabolitos de abulon
+
+## Metabolitos de abulon
+
+
+![](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/featured_ab.JPG)
+
+
+Para este ejercicio utilizaremos la base de datos `Hful_meabolitos_ver2.csv` la cual se puede descargar [aquí](https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Hful_metabolitos_ver2.csv) contiene información de la concentración (Unidades arbitrarias) de diversos metabolitos endógenos de muestras de tejido de abulón (*Haliotis fulgens*) expuestos a un incremento en la temperatura. Para esto, se tomaron muestras de branquia de abulón a 18°C, 24°C, 30°C y 32°C. El PCA nos permitirá evaluar si hay diferencias en el perfíl de metabolítos entre cada temperatura.
+
+
 
 ```{r message= FALSE}
 library(tidyverse)
@@ -39,56 +63,70 @@ library(tidyverse)
 metabolitos <- read_csv("data/Hful_metabolitos_ver2.csv")
 ```
 
-# 2.1: Normalización de los datos
+# Normalización de los datos
 
-Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para asi eliminar posibles sesgos en las mediciones. 
+Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para así eliminar posibles sesgos en las mediciones. 
 
 Los datos también se escalan a una varianza unitaria para eliminar el efecto de las distintas unidades en las que puedan estar medidas los datos. 
 
-Este proceso de normalización y escalar se aplican directamente dentro de la función para hacer el PCA, pero para visualizar este efecto, se hara el siguiente ejercicio:
-
-Primero es necesario generar un nuevo objeto transformalo a formato largo con `gather()`.
-
+Para entender este concepto, vamos a visualizar nuestros datos. Primero será necesario transformar la tabla a formato largo (*long*).
 
 ```{r}
-metabolitos_long <- metabolitos[,-1] %>%
-  gather(key = "metabolito", value, -Group)
+metabolitos_long <- metabolitos %>% 
+  pivot_longer(-c(1,2), names_to = "metabolito", values_to = "concentracion")
+```
 
+Y posteriomente visualizamos la concentración de cada metabolito
 
-ggplot(metabolitos_long, aes(y = metabolito, x = value))+
-  geom_boxplot()
+```{r}
 
-ggplot(metabolitos_long, aes(x = value))+
+ggplot(metabolitos_long, aes(y = metabolito, x = concentracion))+
+  geom_boxplot()+
+  labs(title = "concentración relativa de cada metabolito", y = "Concentración de metabolitos (U.A.)")
+
+ggplot(metabolitos_long, aes(x = concentracion))+
   geom_density()
 ```
 
-Posteriomente generamos un objeto con las variables normalizadas
+Como puedes observar, la concentración de la homarina es mucho mayor que la del resto de los metabolítos. Esto es una situación de la que tenemos que tener cuidado ya que la homarina cargaría todo el peso del PCA
+
+
+Este proceso de normalización y escalar se aplican directamente dentro de la función para hacer el PCA, pero para visualizar este efecto, vamos a hacer el siguiente ejercicio:
+
+
 ```{r}
-metabolitos_long_scale <- scale(log10(metabolitos[,-c(1:2)]), center = TRUE, scale = TRUE)
+metabolitos_scale <- data.frame(metabolitos$Group, scale(metabolitos[,-c(1:2)], center = TRUE, scale = TRUE))
 
-metabolitos_long_scale <- data.frame(metabolitos_long_scale) %>%                 
-                  gather(key = "metabolito", value) 
 
-ggplot(metabolitos_long_scale, aes(y = metabolito, x = value))+
+metabolitos_long_scale <- metabolitos_scale %>% 
+  pivot_longer(- metabolitos.Group, names_to = "metabolito", values_to = "concentracion")
+
+ggplot(metabolitos_long_scale, aes(y = metabolito, x = concentracion))+
   geom_boxplot()
 
-ggplot(metabolitos_long_scale, aes(x = value))+
+ggplot(metabolitos_long_scale, aes(x = concentracion))+
   geom_density()
 ```
 
-## 2.2: PCA con `prcomp()`
+Como puedes ver, al escalar los datos a pesar de las diferencias iniciales en la concentración, ahora todos tienen una media de $0$ lo que nos permite que todas las variables tengan contribución similar al PCA
+
+## PCA con `prcomp()`
+
+Existe una gran número de alternativas para realizar un análisis de componentes principales en R, pero para fines practicos, iniciaremos usando la función de R base `prcomp()`.
+
+Dado que esta función trabaja sobre una matriz, le indicaremos que no tome en cuenta las primeras dos columnas de la tabla original:
 
 ```{r}
-metabolitos_pca <- prcomp(log10(metabolitos[,-c(1:2)]), center = TRUE, scale. = TRUE)
+metabolitos_pca <- prcomp(metabolitos[,-c(1:2)], center = TRUE, scale. = TRUE)
 
 
 summary(metabolitos_pca)
 ```
 
 
+En este caso obtuvimos 12 componentes principales. Cada uno de ellos explica cierto porcentaje de la variación total del set de datos. Es decir, el PC1 explica 38% de la varianza total, mientras que el PC2 explica un 20% de la varianza, por lo que ambos componentes explicar mas de un 50% de la varianza total.
 
-En este caso obtuvimos 15 componentes principales. Cada uno de ellos explica cierto porcentaje de la variación total del set de datos. Es decir, el PC1 explica 52% de la varianza total, lo cual implica que mas de la mitad de la información e los datos puede encapsularse en ese componente principal. PC2 explica 15% de la varianza, por lo que ambos componentes explicar un 68% de la varianza total.
-
+Esto se puede visualizar en forma de un **scree plot**
 
 ```{r}
 screeplot(metabolitos_pca, type = "l", main = "scree plot con los componentes principales")
@@ -135,23 +173,25 @@ ggplot(prop_varianza, aes(x = pc, y = accum))+
 
 
  
- Como es de esperar, la varianza explicada es mayor en la primera componente que en las subsiguientes.
+ Como es de esperar, la varianza explicada es mayor en el primer componente que en las subsiguientes.
 
 
 No existe un método objetivo para escoger el número de componentes principales que son suficientes para un análisis, por lo que depende del juicio del analista y del problema en cuestión. Si explican suficiente variabilidad y el objetivo es la visualización de los datos, no se suelen escoger más de tres componentes principales, para así facilitar la representación gráfica y la interpretación. 
 
 
+
+Ahora, analicemos a mayor detalle el objeto pca que acabamos de generas
 ```{r}
-str(metabolitos_pca)
+names(metabolitos_pca)
 ```
 
 El objeto prcomp contiene la información necesario: 
 
   * Centro (`$center`), la escala (`scale`), desviación estandar (`$dev`) de cada componente principal.
 
-  * La relación (correlación o anticorrelación) etre las variables iniciales y el componente principal (`$rotation`)
+  * La relación (correlación o anticorrelación) entre las variables iniciales y el componente principal (`$rotation`)
 
-  * El valor de cada muestra en función del componente principal
+  * El valor de cada muestra en función del componente principal (`$x`)
 
 Los elementos **center** y **scale** se corresponden con las medias y las desviaciones estándar originales de las variables previo escalado e implementación del PCA. 
 
@@ -164,10 +204,10 @@ metabolitos_pca$rotation
 
 el primer componente es el resultado de la siguiente combinación lineal de las variables originales:
 
-$PC1 = -0.117406 ATP - 0.244613 Acetate + 0.219658 Alanine... etc$
+$PC1 = -0.070 ATP - 0.324 Acetate + 0.328 Alanine... etc$
 
 
-## 2.3: Visualización del PCA
+## Visualización del PCA
 
 Una de las formas de visualizar los resultados de un PCA es mediante el llamado `biplot`. Este permite visualizar la posición de cada muestra en relación al PC1 y PC2 y como contribuye cada variable a cada componente principal. 
 
@@ -186,13 +226,7 @@ Para los **vectores** (variables), nos fijamos en su longitud y en el ángulo co
 Para los **scores** (observaciones), nos fijamos en los posibles agrupamientos. Puntuaciones próximas representan observaciones de similares características. Puntuaciones con valores de las variables próximas a la media se sitúan más cerca del centro del biplot (0, 0). El resto representan variabilidades normales o extremas (outliers). Por otro lado, la relación de las observaciones con las variables se puede estudiar proyectando las observaciones sobre la dirección de los vectores[[1](https://rpubs.com/Cristina_Gil/PCA)].
 
 
-
-
-
-Cada punto es una observación de nuestra tabla. Cada observación esta gráficada con su valor de PC1 y PC2. Los ejes se muestran como flechas originarias del centro. En est caso se observa que, por ejemplo, metabolitos como la `taurina`, `isoleucina`o `carnitina`contribuyen al PC1 con menores valores en las variables que meuven a las muestras hacia la izquierda del gráfica. Por otro lado, metabolitos como la `alanina` se incrementan con el PC2. 
-
-
-EL paso siguiente es extraer los PCs 1 y 2, los cuales son los que explican la mayor variabilidad de los datos y graficarlo usarlo ggplot. Para esto, necesitamos extraer los PC 1 y 2 de nuestro objecto pca y unirlos a nuestra tabla original de metabolitos
+El paso siguiente es extraer los PCs 1 y 2, los cuales son los que explican la mayor variabilidad de los datos y graficarlo usarlo ggplot. Para esto, necesitamos extraer los PC 1 y 2 de nuestro objecto pca y unirlos a nuestra tabla original de metabolitos
 
 
 
@@ -214,8 +248,8 @@ stat_ellipse(geom = "polygon", col = "black", alpha = 0.3)+
 
 Alternativamente, podemos usar el paquete ggbiplot para graficar el biplot
 ```{r eval = FALSE}
-library(devtools)
-install_github("vqv/ggbiplot")
+#library(devtools)
+#install_github("vqv/ggbiplot")
 ```
 
 ```{r message= FALSE}
@@ -226,7 +260,7 @@ ggbiplot(metabolitos_pca, labels = metabolitos$ind.names, ellipse = TRUE, groups
 ```
 
 
-Con esta función tambien es posible graficar el segundo y tercer componente principal (PC2 y PC3), los cuales explican el 15% y 8.7% de la variabildiad de los datos, respectivamente.
+Con esta función también es posible graficar el segundo y tercer componente principal (PC2 y PC3), los cuales explican un menor porcentaje la variabildiad de los datos.
 
 ```{r}
 ggbiplot(metabolitos_pca, choices = c(2,3), labels = metabolitos$ind.names, ellipse = TRUE, groups = metabolitos$Group, scale = 0)+

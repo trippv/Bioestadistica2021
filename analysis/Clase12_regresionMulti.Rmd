@@ -4,6 +4,7 @@ author: "Miguel Tripp"
 date: "2021-07-07"
 output: 
   workflowr::wflow_html:
+    css: style.css
     toc: true
     toc_float:
       collapsed: false
@@ -89,6 +90,8 @@ Sin embargo, algo interesante es que el coeficiente `sueno_gatos` no es signific
 
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/0418Blackchin_tilapia_Gloria_fish_textures_03.jpg/640px-0418Blackchin_tilapia_Gloria_fish_textures_03.jpg)
+
+
 Estos datos estan tomados y modificados del set de datos `Fish Market` disponible en [kaggle](https://www.kaggle.com/aungpyaeap/fish-market). Para este ejercicio, solo utilizaremos los datos de **tilapia**
 
 ```{r}
@@ -96,8 +99,33 @@ peces_url <- "https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/peces
 
 peces <- read_csv(peces_url)
 
+```
+
+```{r, echo=FALSE}
+
+DT::datatable(peces,rownames = FALSE, 
+  extensions = 'Buttons', options = list(
+    dom = 'Bfrtip',
+    buttons = 
+      list(list(
+        extend = "collection",
+        buttons = "copy",
+        text = "Copiar"
+      ),list(
+        extend = 'collection',
+        buttons = c('csv'),
+        text = 'Descargar'
+      ))
+  )
+)
+```
+
+
+```{r}
+
 tilapia <- peces[peces$Especie == "Tilapia", - 1]
 ```
+
 
 El primer paso para establecer un modelo lineal múltiple es estudiar la relación que existe entre variables. Esta relación en critica a la hora de identificar los mejores predictores para el modelo (p. ej, que variables presentan relación de tipo no lineal) y para identificar colinialidad entre predictores.
 
