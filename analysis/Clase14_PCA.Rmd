@@ -45,7 +45,7 @@ Es importante recordar que el PCA reduce la dimensionalidad pero **no reduce el 
 </div>
 
 
-## Metabolitos de abulon
+# Metabolitos de abulon
 
 
 ![](https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/featured_ab.JPG)
@@ -63,7 +63,7 @@ library(tidyverse)
 metabolitos <- read_csv("data/Hful_metabolitos_ver2.csv")
 ```
 
-# Normalización de los datos
+## Normalización de los datos
 
 Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para así eliminar posibles sesgos en las mediciones. 
 
