@@ -325,41 +325,41 @@ plot_test <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, 
        shape = "Sexo")+
       theme(legend.position = "none")
 
-ggsave("docs/figure/ggPlot_test.png", plot_test)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_test.png", plot_test)
 
 test_classic <- plot_test+
   theme_classic()+
   theme(legend.position = "none")+
   labs(title = "Theme classic")
 
-ggsave("docs/figure/ggPlot_classic.png", test_classic)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_classic.png", test_classic)
 
 test_dark <- plot_test+
   theme_dark()+
   theme(legend.position = "none")+
   labs(title = "Theme dark")
-ggsave("docs/figure/ggPlot_dark.png", test_dark)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_dark.png", test_dark)
 
 
 test_light <- plot_test+
   theme_light()+
   theme(legend.position = "none")+
   labs(title = "Theme light")
-ggsave("docs/figure/ggPlot_light.png", test_light)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_light.png", test_light)
 
 
 test_void <- plot_test+
   theme_void()+
   theme(legend.position = "none")+
   labs(title = "Theme void")
-ggsave("docs/figure/ggPlot_void.png", test_void)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_void.png", test_void)
 
 
 test_bw <- plot_test+
   theme_bw()+
   theme(legend.position = "none")+
   labs(title = "Theme bw")
-ggsave("docs/figure/ggPlot_bw.png", test_bw)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_bw.png", test_bw)
 
 
 test_minimal <- plot_test+
@@ -367,7 +367,7 @@ test_minimal <- plot_test+
   theme(legend.position = "none")+
   labs(title = "Theme minimal")
 
-ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
+ggsave("docs/figure/Clase5_ggplot.Rmd/ggPlot_minimal.png", test_minimal)
 
 
 #library(patchwork)
@@ -378,15 +378,15 @@ ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
 <!--- agregar codigo HTML para incluir un panel de selección de grafico--->
 
 <select id="imgList">
-  <option value="ggplot_test.png">Simple</option>
-  <option value="ggPlot_classic.png">theme_classic()</option>
-  <option value="ggPlot_minimal.png">theme_minimal()</option>
-  <option value="ggPlot_dark.png">theme_dark()</option>
-  <option value="ggPlot_light.png">theme_light()</option>
-  <option value="ggPlot_void.png">theme_void()</option>
-  <option value="ggPlot_bw.png">theme_bw()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggplot_test.png">Simple</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_classic.png">theme_classic()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_minimal.png">theme_minimal()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_dark.png">theme_dark()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_light.png">theme_light()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_void.png">theme_void()</option>
+  <option value="figure/Clase5_ggplot.Rmd/ggPlot_bw.png">theme_bw()</option>
 </select>
-<img id="image" width="700" src="ggPlot_test.png" />
+<img id="image" width="700" src="figure/Clase5_ggplot.Rmd/ggPlot_test.png" />
 
 
 
