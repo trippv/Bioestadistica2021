@@ -434,7 +434,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -443,7 +443,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -455,7 +455,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-08-02
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>2021/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -471,12 +471,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -543,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreec8dbd17cf0f0ae3215fb367032a27c3a8bb4116ctargetblankc8dbd17a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/c8dbd17cf0f0ae3215fb367032a27c3a8bb4116c" target="_blank">c8dbd17</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree2bbf68d6799bbb26ade5284143dd32960fbf623etargetblank2bbf68da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/2bbf68d6799bbb26ade5284143dd32960fbf623e" target="_blank">2bbf68d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreec8dbd17cf0f0ae3215fb367032a27c3a8bb4116ctargetblankc8dbd17a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree2bbf68d6799bbb26ade5284143dd32960fbf623etargetblank2bbf68da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/c8dbd17cf0f0ae3215fb367032a27c3a8bb4116c" target="_blank">c8dbd17</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/2bbf68d6799bbb26ade5284143dd32960fbf623e" target="_blank">2bbf68d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -561,7 +561,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    analysis/hero-image.html
     Ignored:    analysis/poke_logo.png
 
@@ -618,7 +617,6 @@ Untracked files:
     Untracked:  output/graficos/
 
 Unstaged changes:
-    Modified:   analysis/Clase5_ggplot.Rmd
     Modified:   analysis/_site.yml
 
 </code></pre>
@@ -658,6 +656,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/2bbf68d6799bbb26ade5284143dd32960fbf623e/analysis/Clase5_ggplot.Rmd" target="_blank">2bbf68d</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/501034d13e41580f1cf5a018ed886fc30ba505af/analysis/Clase5_ggplot.Rmd" target="_blank">501034d</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+Cambios despliegue graficos en theme
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/501034d13e41580f1cf5a018ed886fc30ba505af/docs/Clase5_ggplot.html" target="_blank">501034d</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-02
+</td>
+<td>
+Cambios despliegue graficos en theme
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1598,7 +1647,7 @@ ggplot(data = MO_long, aes(x = Dia, y = MO, group = individuo, col = individuo))
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>con los otros temas, la gráfica se verian así</p>
 <!--- agregar codigo HTML para incluir un panel de selección de grafico--->
-<p><select id="imgList"> <option value="figure/Clase5_ggplot.Rmd/ggplot_test.png">Simple</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_classic.png">theme_classic()</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_minimal.png">theme_minimal()</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_dark.png">theme_dark()</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_light.png">theme_light()</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_void.png">theme_void()</option> <option value="figure/Clase5_ggplot.Rmd/ggPlot_bw.png">theme_bw()</option> </select> <img id="image" width="700" src="figure/Clase5_ggplot.Rmd/ggPlot_test.png" /></p>
+<p><select id="imgLihttps://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_test.png">Simple</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_classic.png">theme_classic()</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_minimal.png">theme_minimal()</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_dark.png">theme_dark()</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_light.png">theme_light()</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_void.png">theme_void()</option> <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure//ggPlot_bw.png">theme_bw()</option> </select> <img id="image" width="700" src="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/Clase5_ggplot.Rmd/ggPlot_test.png" /></p>
 <script type="text/javascript">             
 var img = document.getElementById("image");
 
@@ -1815,18 +1864,18 @@ attached base packages:
 other attached packages:
  [1] patchwork_1.1.1 forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5    
  [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.0.4   
- [9] ggplot2_3.3.5   tidyverse_1.3.1
+ [9] ggplot2_3.3.5   tidyverse_1.3.1 workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5        lattice_0.20-41   lubridate_1.7.10  assertthat_0.2.1 
- [5] rprojroot_2.0.2   digest_0.6.27     utf8_1.2.1        R6_2.5.0         
- [9] cellranger_1.1.0  backports_1.2.1   reprex_2.0.0      evaluate_0.14    
-[13] httr_1.4.2        highr_0.8         pillar_1.6.0      rlang_0.4.11     
-[17] readxl_1.3.1      rstudioapi_0.13   whisker_0.4       jquerylib_0.1.4  
-[21] Matrix_1.3-2      rmarkdown_2.9     splines_4.0.5     labeling_0.4.2   
-[25] munsell_0.5.0     broom_0.7.6       compiler_4.0.5    httpuv_1.5.4     
-[29] modelr_0.1.8      xfun_0.23         pkgconfig_2.0.3   mgcv_1.8-33      
-[33] htmltools_0.5.1.1 tidyselect_1.1.1  workflowr_1.6.2   fansi_0.4.2      
+ [1] Rcpp_1.0.5        lattice_0.20-41   lubridate_1.7.10  ps_1.5.0         
+ [5] assertthat_0.2.1  rprojroot_2.0.2   digest_0.6.27     utf8_1.2.1       
+ [9] R6_2.5.0          cellranger_1.1.0  backports_1.2.1   reprex_2.0.0     
+[13] evaluate_0.14     httr_1.4.2        highr_0.8         pillar_1.6.0     
+[17] rlang_0.4.11      readxl_1.3.1      rstudioapi_0.13   whisker_0.4      
+[21] jquerylib_0.1.4   Matrix_1.3-2      rmarkdown_2.9     splines_4.0.5    
+[25] labeling_0.4.2    munsell_0.5.0     broom_0.7.6       compiler_4.0.5   
+[29] httpuv_1.5.4      modelr_0.1.8      xfun_0.23         pkgconfig_2.0.3  
+[33] mgcv_1.8-33       htmltools_0.5.1.1 tidyselect_1.1.1  fansi_0.4.2      
 [37] crayon_1.4.1      dbplyr_2.1.1      withr_2.4.2       later_1.1.0.1    
 [41] grid_4.0.5        nlme_3.1-152      jsonlite_1.7.2    gtable_0.3.0     
 [45] lifecycle_1.0.0   DBI_1.1.0         git2r_0.27.1      magrittr_2.0.1   
