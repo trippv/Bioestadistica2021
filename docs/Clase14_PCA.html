@@ -543,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree76287204bfc7f4af77792d7636f12d797930d2abtargetblank7628720a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/76287204bfc7f4af77792d7636f12d797930d2ab" target="_blank">7628720</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree76287204bfc7f4af77792d7636f12d797930d2abtargetblank7628720a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/76287204bfc7f4af77792d7636f12d797930d2ab" target="_blank">7628720</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -656,6 +656,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/76287204bfc7f4af77792d7636f12d797930d2ab/analysis/Clase14_PCA.Rmd" target="_blank">7628720</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-01
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/5aafed258f3a7685091e5c6b3ac2cc2611cbbcb4/docs/Clase14_PCA.html" target="_blank">5aafed2</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -799,8 +833,9 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <div class="yellow">
 <p>Es importante recordar que el PCA reduce la dimensionalidad pero <strong>no reduce el número de variables en los datos</strong>. Esto significa que puedes explicar el 99% de la variabilidad de un set de datos con 1,000 variables usando solamente los tres componentes principales, pero aún necesitas esos 1,000 variables para construir los componentes principales.</p>
 </div>
-<div id="metabolitos-de-abulon" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> Metabolitos de abulon</h2>
+</div>
+<div id="metabolitos-de-abulon" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Metabolitos de abulon</h1>
 <p><img src="https://github.com/trippv/Miguel_Tripp/raw/master/repoBiostat/featured_ab.JPG" /></p>
 <p>Para este ejercicio utilizaremos la base de datos <code>Hful_meabolitos_ver2.csv</code> la cual se puede descargar <a href="https://raw.githubusercontent.com/trippv/Miguel_Tripp/master/repoBiostat/Hful_metabolitos_ver2.csv">aquí</a> contiene información de la concentración (Unidades arbitrarias) de diversos metabolitos endógenos de muestras de tejido de abulón (<em>Haliotis fulgens</em>) expuestos a un incremento en la temperatura. Para esto, se tomaron muestras de branquia de abulón a 18°C, 24°C, 30°C y 32°C. El PCA nos permitirá evaluar si hay diferencias en el perfíl de metabolítos entre cada temperatura.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
@@ -823,10 +858,8 @@ cols(
   Tyrosine = col_double(),
   Valine = col_double()
 )</code></pre>
-</div>
-</div>
-<div id="normalización-de-los-datos" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Normalización de los datos</h1>
+<div id="normalización-de-los-datos" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Normalización de los datos</h2>
 <p>Un aspecto fundamenta al aplicar un PCA es que las observaciones tienen que moverse al centro del eje de coordenadas, esto es, centrarlas para que tengan media de 0, para así eliminar posibles sesgos en las mediciones.</p>
 <p>Los datos también se escalan a una varianza unitaria para eliminar el efecto de las distintas unidades en las que puedan estar medidas los datos.</p>
 <p>Para entender este concepto, vamos a visualizar nuestros datos. Primero será necesario transformar la tabla a formato largo (<em>long</em>).</p>
@@ -855,8 +888,9 @@ ggplot(metabolitos_long_scale, aes(y = metabolito, x = concentracion))+
   geom_density()</code></pre>
 <p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Como puedes ver, al escalar los datos a pesar de las diferencias iniciales en la concentración, ahora todos tienen una media de <span class="math inline">\(0\)</span> lo que nos permite que todas las variables tengan contribución similar al PCA</p>
-<div id="pca-con-prcomp" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> PCA con <code>prcomp()</code></h2>
+</div>
+<div id="pca-con-prcomp" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> PCA con <code>prcomp()</code></h2>
 <p>Existe una gran número de alternativas para realizar un análisis de componentes principales en R, pero para fines practicos, iniciaremos usando la función de R base <code>prcomp()</code>.</p>
 <p>Dado que esta función trabaja sobre una matriz, le indicaremos que no tome en cuenta las primeras dos columnas de la tabla original:</p>
 <pre class="r"><code>metabolitos_pca &lt;- prcomp(metabolitos[,-c(1:2)], center = TRUE, scale. = TRUE)
@@ -956,8 +990,8 @@ Valine     -0.293708927 -0.28421331</code></pre>
 <p>el primer componente es el resultado de la siguiente combinación lineal de las variables originales:</p>
 <p><span class="math inline">\(PC1 = -0.070 ATP - 0.324 Acetate + 0.328 Alanine... etc\)</span></p>
 </div>
-<div id="visualización-del-pca" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Visualización del PCA</h2>
+<div id="visualización-del-pca" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Visualización del PCA</h2>
 <p>Una de las formas de visualizar los resultados de un PCA es mediante el llamado <code>biplot</code>. Este permite visualizar la posición de cada muestra en relación al PC1 y PC2 y como contribuye cada variable a cada componente principal.</p>
 <pre class="r"><code>biplot(metabolitos_pca, scale = 0)</code></pre>
 <p><img src="figure/Clase14_PCA.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
