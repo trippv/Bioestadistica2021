@@ -383,9 +383,9 @@ ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
   <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_dark.png">theme_dark()</option>
   <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_light.png">theme_light()</option>
   <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_void.png">theme_void()</option>
-  <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure//ggPlot_bw.png">theme_bw()</option>
+  <option value="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_bw.png">theme_bw()</option>
 </select>
-<img id="image" width="700" src="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/Clase5_ggplot.Rmd/ggPlot_test.png" />
+<img id="image" width="700" src="https://github.com/trippv/BioestadisticaR/raw/master/docs/figure/ggPlot_test.png" />
 
 
 
