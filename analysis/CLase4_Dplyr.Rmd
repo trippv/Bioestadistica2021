@@ -14,6 +14,15 @@ editor_options:
   chunk_output_type: console
 ---
 
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+
+
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
+
 # Generalidades
 
 Como hemos visto hasta este punto, las funciones base de R contienen herramientas poderosas para el análisis y visualización de datos. Sin embargo, existen herramientas especializadas para la manipulación y presentación de datos ("*data wrangling*") los cuales tienen el objetivo de facilitar estas tareas, haciendo los análisis mas eficientes y reproducibles.
@@ -35,13 +44,13 @@ El **Tidyverse** es una colección de paquetes de R que comparten una filosofía
 
 ## Instalación de Tidyverse
 
-Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales paquetes del Tidyverse instalando la librería **Tidyverse**.
+Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales elementos del Tidyverse instalando el paquete **Tidyverse**.
 
 ```{r, eval=FALSE}
 install.packages("tidyverse")
 ```
 
-y posteriormente se carga la librería lo que producira una salida como la siguiente:
+y posteriormente se carga el paquete lo que producirá una salida como la siguiente:
 
 ```{r}
 library(tidyverse)
@@ -92,18 +101,8 @@ knitr::include_graphics("https://www.databentobox.com/2019/11/01/dplyr-with-stri
 ```
 
 
-En esta clase, usaremos `dplyr` así como `readxl` para importar y modificar una tabla. Dplyr ya se encuentra disponible al momento de cargar el Tidyverse mientras que readxl necesita ser instalado y cargado de manera independiente, aunque es compatible con el resto de los paquetes del Tidyverse.
+En esta clase, usaremos **dplyr** así como **readr** para importar y modificar una tabla. Ambos paquetes ya se encuentran disponibles al momento de cargar el Tidyverse.
 
-```{r, eval=FALSE, warning=FALSE}
-install.packages("readxl")
-```
-
-
-Una vez instalados, es necesario cargar la librera a nuestro ambiente de trabajo
-
-```{r, results=FALSE, include=TRUE, warning=FALSE, message=FALSE}
-library(readxl)
-```
 
 # Los Datos
 
@@ -129,20 +128,16 @@ Para esta sección utilizaremos la base de datos de POKEMON de [KAGGLE](https://
 
 
 ```{r}
-pokemon <- read_excel("data/Pokemon_tabla.xls", sheet = "pokemon")
+pokemon <- read_csv("data/Pokemon_tabla.csv")
 pokemon
 ```
 
-usa **?read_excel** para ver todas las opciones para importar datos
+
 
 
 Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Esto se debe a que los datos tienen una estructura de **tibble**.
 
 
-
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
-</style>
 <div class = "blue">
 
 **¿Tibble?**
@@ -161,15 +156,38 @@ Un tibble puede usar nombres de columnas que no son nombres de variables válido
 
 
 ---
-<style>
-div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
-</style>
+
 <div class = "yellow">
 
 **¿Entonces es read.csv o read_csv?**
 
 Otro aspecto que vas a notar al trabajar con el tidyverse es que funciones que estan separadas con un punto (.) ahora se van a ver separadas con un guion bajo (_). Esto es una caracteristica de muchos de los paquetes del Tidyverse o compatibles con la filosofía Tidyverse y que nos permite distinguirlo de los paquetes del núcleo base de R. De manera que la función `read.csv()` de R base, se vuelve `read_csv()` en **readr**, y la función `t.test()` de R base, se vuelve `t_test()` en el paquete **rstatxs** (modulo 7)
 
+
+</div>
+
+
+---
+
+<div class = "blue">
+
+**¿Que hago si mis datos estan en Excell?**
+
+Si tus datos estan en formato de Microsoft Excell (*xls* o *xlsx*) puedes utilizar el paquete [**readxl**](https://readxl.tidyverse.org/) el cual, a pesar de que no esta incluido en el núcleo de Tidyverse, mantiene la misma filosofia y flujo de trabajo. Sin embargo es necesario instalarlo de manera independiente al Tidyverse.
+
+
+```{r, eval=FALSE, echo=TRUE}
+install.packages("readxl")
+library(readxl)
+```
+
+para uar readxl, la sintaxis es muy parecida a la de `read_csv()` de manera que podriamos abrir un archivo xls de la siguiente manera:
+
+```{r, eval=FALSE}
+pokemon <- read_xls("data/Pokemon_tabla.xls", sheet = "pokemon")
+```
+
+en donde `sheet` es el nombre de la hoja de excell donde se encuentran los datos
 
 </div>
 
@@ -238,6 +256,12 @@ select(pokemon, Type1, everything())
 
 ## `filter()`
 
+
+```{r, echo=FALSE, fig.cap= "@AllisonHorst", out.width = '75%'}
+knitr::include_graphics("https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/dplyr_filter.jpg")
+```
+
+
 Esta función nos permite seleccionar las **filas** que cumplan con las condiciones que especifiquemos
 
 Por ejemplo, filtrar los pokemon con un nivel de ataque _Attack_ superior  a 100
@@ -305,6 +329,7 @@ Tambien es posible filtrar una variable a partir de un caracter en especifico us
 filter(pokemon, str_detect(Name, "Pikachu"))
 ```
 
+---
 
 > Ejercicio: ¿Quien es ese pokemon?
 
@@ -457,7 +482,7 @@ poke_pipe <- pokemon %>%
 poke_pipe
 ```
 
-
+---
 
 
 
@@ -781,7 +806,7 @@ semi_join(canciones, artista, by = "autor")
 anti_join(canciones, artista, by = "autor")
 ```
 
-
+---
 > Ejercicio: Utiliza la función `read_csv()` para abrir el archivo **pokemon_extended.csv**. Posteriormente, genera una nueva tabla donde en una sola cadena unas la información del peso y altura de cada pokemon con el el resto de la tabla original, conservando solamente aquellos individuos presentes en ambas tablas, selecciona solamente las columnas Name, Type1, Total, HP, height_m, weight_gk y filtrar aquellos pokemon que tengan un peso superior al promedio global
 
 

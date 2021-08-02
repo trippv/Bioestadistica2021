@@ -16,10 +16,8 @@ editor_options:
 ---
 
 
-
-
-```{r, echo=FALSE, out.width = '65%'}
-knitr::include_graphics("https://ggplot2.tidyverse.org/logo.png")
+```{r, echo=FALSE, fig.cap= "@AllisonHorst", out.width = '75%'}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/ggplot2_blank.png")
 ```
 
 
@@ -84,7 +82,7 @@ El argumento _aes()_ es sinónimo de estética, ggplot2 considera que el eje X e
 
 Sin embargo, aún no vemos ninguna gráfica, ya que para esto es necesario indicar que tipo de geometria (_geom()_) de gráfica queremos utilizar.
 
-Para crear un diagrama de dispersión es necesario agregarle la geometria `geom_N()`. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo `+`
+Para crear un diagrama, por ejemplo, de dispersión es necesario agregarle la geometria `geom_point()`. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo `+`
 
 ```{r}
 ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))+
@@ -93,9 +91,9 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))+
 
 ## Aesthetics
 
-Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estetico a los grupos.
+Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estético a los grupos.
 
-por ejemplo, podemos asignarle un color diferente a cada especie 
+por ejemplo, podemos asignarle un color diferente a cada especie con el argumento *color*
 
 ```{r}
 ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
@@ -103,14 +101,14 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = speci
 ```
 
 
-Y asignarle una forma diferente a por sexo
+Y asignarle una forma diferente a por sexo con el argumento *shape*
 
 ```{r}
 ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex))+
   geom_point()
 ```
 
-o cambiar el tamaño
+o cambiar el tamaño con *size*
 
 ```{r}
 ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex, size = culmen_length_mm))+
@@ -118,7 +116,7 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = speci
 
 ```
 
-Es posible defininar los elementos estéticos (_aesthetics_) de manera global, lo que afectará a todas las geometrias, o se puede definir de manera indiviual por geometria
+Es posible definir los elementos estéticos (_aesthetics_) de manera global, lo que afectará a todas las geometrías que se vayan agregando, o se puede definir de manera indiviual por geometría
 
 
 De manera que se puede expresar de esta forma:
@@ -134,7 +132,7 @@ o de esta:
 ```{r}
 ggplot(data = penguins)+
   geom_point(aes(x = culmen_length_mm, y = body_mass_g, color = species))+
-  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species))
+  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species), method = "lm")
 ```
 
 
@@ -146,7 +144,7 @@ A continuación repasaremos algunas de las geometrias mas comunes:
 
 ## Graficar una variable continua
 
-### `geom_density()
+### `geom_density()`
 
 ```{r}
 c_plot <- ggplot(data= penguins, aes(x = culmen_length_mm, fill = island))
@@ -329,12 +327,12 @@ plot_test <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, 
 
 ggsave("docs/figure/ggPlot_test.png", plot_test)
 
-test_minimal <- plot_test+
+test_classic <- plot_test+
   theme_classic()+
   theme(legend.position = "none")+
   labs(title = "Theme classic")
 
-ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
+ggsave("docs/figure/ggPlot_classic.png", test_classic)
 
 test_dark <- plot_test+
   theme_dark()+
@@ -349,6 +347,7 @@ test_light <- plot_test+
   labs(title = "Theme light")
 ggsave("docs/figure/ggPlot_light.png", test_light)
 
+
 test_void <- plot_test+
   theme_void()+
   theme(legend.position = "none")+
@@ -359,8 +358,16 @@ ggsave("docs/figure/ggPlot_void.png", test_void)
 test_bw <- plot_test+
   theme_bw()+
   theme(legend.position = "none")+
-  labs(title = "Theme void")
+  labs(title = "Theme bw")
 ggsave("docs/figure/ggPlot_bw.png", test_bw)
+
+
+test_minimal <- plot_test+
+  theme_minimal()+
+  theme(legend.position = "none")+
+  labs(title = "Theme minimal")
+
+ggsave("docs/figure/ggPlot_minimal.png", test_minimal)
 
 
 #library(patchwork)
@@ -372,9 +379,10 @@ ggsave("docs/figure/ggPlot_bw.png", test_bw)
 
 <select id="imgList">
   <option value="./figure/ggplot_test.png">Simple</option>
+  <option value="./figure/ggPlot_classic.png">theme_classic()</option>
   <option value="./figure/ggPlot_minimal.png">theme_minimal()</option>
   <option value="./figure/ggPlot_dark.png">theme_dark()</option>
-  <option value="./figure/ggPlot_light.png">theme_ligh()</option>
+  <option value="./figure/ggPlot_light.png">theme_light()</option>
   <option value="./figure/ggPlot_void.png">theme_void()</option>
   <option value="./figure/ggPlot_bw.png">theme_bw()</option>
 </select>
@@ -436,23 +444,71 @@ ggplot(data = penguins, aes(x = culmen_length_mm, fill = island, col = island))+
 
 # Dividir variables en paneles con `facet_wrap()` y `facet_grid()`
 
+Ambas funciones son útiles cuando se desea organizar los gráficos con mas muchas variables. Aunque el resultado es similar, las diferecias entre ambas se ve reflejada en la siguiente figura:
+
+
+```{r, echo=FALSE, fig.cap= "tomado de: Wickham et al. ggplot2 book", out.width = '100%'}
+knitr::include_graphics("https://ggplot2-book.org/diagrams/position-facets.png")
+```
+
+
+
 ## Dividir paneles por una variable con `facet_wrap()`
+
+`facet_wrap()` genera una cinta de paneles y la envuelve en 2d. Esto es útil si tienes una sola variable con muchos niveles y deseas organizar los gráficos en forma mas eficiente ya sea en una cuadricula o una sola cinta. 
+
+Puede controlar la forma en que la cinta se envuelve en una cuadrícula con `ncol`, `nrow`, controle cuántas columnas y filas (solo necesita establecer una). `as.table` controla si las facetas se presentan como una tabla (TRUE), con los valores más altos en la parte inferior derecha, o un gráfico ( FALSE), con los valores más altos en la parte superior derecha. 
+
+por ejemplo:
 
 ```{r}
 ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
   geom_point()+
-  #ajustar el numero de columans con ncol
+  #ajustar el numero de columnas con ncol
   facet_wrap(~ island, ncol = 1)
 ```
 
-### Dividir paneles por dos variabels con `facet_grid()`
+
 
 ```{r}
 ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
   geom_point()+
-  #ajustar el numero de columans con ncol
+  #ajustar el numero de filas con nrow
+  facet_wrap(~ island, nrow = 1)
+```
+
+
+## Dividir paneles por dos variabels con `facet_grid()`
+
+Por otro lado, `facet_grid()` forma una matriz de paneles definidos por variables de facetas de filas y columnas. Es más útil cuando tiene dos variables discretas y todas las combinaciones de las variables existen en los datos. La forma en que se despliegan los paneles esta definida por la formula establecida con `~`
+
+por ejemplo:
+
+
+
+```{r}
+ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  facet_grid(sex ~ .)
+```
+Despliega los paneles por sexo
+
+```{r}
+ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  facet_grid(. ~ island)
+```
+
+Despliega los paneles por isla
+
+
+```{r}
+ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
   facet_grid(sex ~ island)
 ```
+
+Despliega la interacción sexo e isla
 
 # Unir dos o mas gráficos con **`patchwork`**
 
@@ -463,6 +519,13 @@ Actualmente existen diversos paquetes con los que es posible unir diverss gráfi
   * [ggpubr](https://rpkgs.datanovia.com/ggpubr/index.html)
 
 Uno de los paquetes mas sencillos es `patchwork` el cual permite unir diversos gráficos usando una sintaxis simple. Por ejemplo:
+
+
+
+```{r, echo=FALSE, fig.cap= "@AllisonHorst", out.width = '75%'}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/patchwork_blank.png")
+```
+
 
 ```{r, out.width = '120%'}
 # Grafico 1
@@ -526,6 +589,9 @@ ggsave("output/Plot_all_penguins.tiff", plot = plot_all, width = 180, height = 1
 ```
 
 ***
+
+# Ejercicios
+
 > **_Ejercicio1:_**
 
 En una sola cadena, filtra los pokemon de 1ra y 2da generación y realiza un gráfico de barras con la frecuencia de cada tipo (Type1) separando cada generación en un panel (facet) diferente

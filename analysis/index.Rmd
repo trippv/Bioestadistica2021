@@ -30,15 +30,22 @@ htmltools::img(src = knitr::image_uri("docs/figure/PosgradoLogo.png"),
 ```
 
 
-Intructor: Miguel A. Tripp Valdez
 
-correo1: [tripp\@cicese.edu.mx](mailto:tripp@cicese.edu.mx){.email}
 
-correo2: [miguel.tripp\@gmail.com](mailto:miguel.tripp@gmail.com){.email}
+
+Instructor:
+
+**Miguel A. Tripp Valdez**
+<!--- Inicia en html tabla para incluir liga con fa icons --->
+<p style="text-align: left;">
+    <a href="mailto:miguel.tripp@gmail.com" class="fa fa-envelope fa-lg"></a>
+    <a href="https://www.researchgate.net/profile/Miguel-Tripp" class="fab fa-researchgate fa-lg"></a>
+    <a href="https://github.com/trippv" class="fab fa-github fa-lg"></a>
+</p>
 
 # Modulos:
 
-## PARTE I: Intorducción a R
+## PARTE I: Introducción a R
 
 -   [Modulo 1: Introducción y comado básicos](Clase1_Basicos.html)
 
