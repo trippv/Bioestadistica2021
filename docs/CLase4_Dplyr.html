@@ -452,7 +452,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-31
+<strong>Last updated:</strong> 2021-08-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -543,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -656,6 +656,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/9ae8f9f69924116f27e412521bbe986c60fcebd2/analysis/CLase4_Dplyr.Rmd" target="_blank">9ae8f9f</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-01
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/2bc601affbc9f3bcec07e7fb128cea0084fb32ce/docs/CLase4_Dplyr.html" target="_blank">2bc601a</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1258,6 +1292,12 @@ Publish the initial files for myproject
 </div>
 </div>
 </div>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<style>
+div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
+</style>
 <div id="generalidades" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
 <p>Como hemos visto hasta este punto, las funciones base de R contienen herramientas poderosas para el análisis y visualización de datos. Sin embargo, existen herramientas especializadas para la manipulación y presentación de datos (“<em>data wrangling</em>”) los cuales tienen el objetivo de facilitar estas tareas, haciendo los análisis mas eficientes y reproducibles.</p>
@@ -1268,9 +1308,9 @@ Publish the initial files for myproject
 <p>El <strong>Tidyverse</strong> es una colección de paquetes de R que comparten una filosofía común para el manejo de datos de tipo tabular, a lo que se le conoce como <a href="https://r4ds.had.co.nz/tidy-data.html"><em>tidy data</em></a>. La filosofía básica de las funciones de los paquetes del Tidyverse es recibir los datos <em>Tidy</em> y devolver como resultados datos del mismo tipo <a href="https://www.analyticslane.com/2021/02/10/introduccion-al-tidyverse/">1</a> de esta manera es posible “encadenar” una serie de procesos para la manipulación compleja de los datos así como la presentación y visualización</p>
 <div id="instalación-de-tidyverse" class="section level2" number="2.1">
 <h2 number="2.1"><span class="header-section-number">2.1</span> Instalación de Tidyverse</h2>
-<p>Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales paquetes del Tidyverse instalando la librería <strong>Tidyverse</strong>.</p>
+<p>Como se mencionó anteriormente, Tidyverse no es en si un paquete sino una colección de paquetes. Sin embargo, es posible acceder a los principales elementos del Tidyverse instalando el paquete <strong>Tidyverse</strong>.</p>
 <pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
-<p>y posteriormente se carga la librería lo que producira una salida como la siguiente:</p>
+<p>y posteriormente se carga el paquete lo que producirá una salida como la siguiente:</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
 <pre><code>v ggplot2 3.3.5     v purrr   0.3.4
@@ -1309,10 +1349,7 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <li><code>%&gt;%</code></li>
 </ul>
 <p><img src="https://www.databentobox.com/2019/11/01/dplyr-with-string/featured_hub3fe62e60f0ee255ad23a6fe895bd4cc_207241_720x0_resize_lanczos_2.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>En esta clase, usaremos <code>dplyr</code> así como <code>readxl</code> para importar y modificar una tabla. Dplyr ya se encuentra disponible al momento de cargar el Tidyverse mientras que readxl necesita ser instalado y cargado de manera independiente, aunque es compatible con el resto de los paquetes del Tidyverse.</p>
-<pre class="r"><code>install.packages(&quot;readxl&quot;)</code></pre>
-<p>Una vez instalados, es necesario cargar la librera a nuestro ambiente de trabajo</p>
-<pre class="r"><code>library(readxl)</code></pre>
+<p>En esta clase, usaremos <strong>dplyr</strong> así como <strong>readr</strong> para importar y modificar una tabla. Ambos paquetes ya se encuentran disponibles al momento de cargar el Tidyverse.</p>
 </div>
 <div id="los-datos" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Los Datos</h1>
@@ -1331,10 +1368,27 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <li>SP Def: Defensa especial</li>
 <li>Speed: Velocidad. Determina cual Pokémon ataca primero en cada ronda</li>
 </ul>
-<pre class="r"><code>pokemon &lt;- read_excel(&quot;data/Pokemon_tabla.xls&quot;, sheet = &quot;pokemon&quot;)
-pokemon</code></pre>
+<pre class="r"><code>pokemon &lt;- read_csv(&quot;data/Pokemon_tabla.csv&quot;)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  `#` = col_double(),
+  Name = col_character(),
+  Type1 = col_character(),
+  Type2 = col_character(),
+  Total = col_double(),
+  HP = col_double(),
+  Attack = col_double(),
+  Defense = col_double(),
+  Sp_Atk = col_double(),
+  Sp_Def = col_double(),
+  Speed = col_double(),
+  Generation = col_double(),
+  Legendary = col_logical()
+)</code></pre>
+<pre class="r"><code>pokemon</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -1348,11 +1402,7 @@ pokemon</code></pre>
 10     7 Squirtle     Water &lt;NA&gt;    314    44     48      65     50     64    43
 # ... with 790 more rows, and 2 more variables: Generation &lt;dbl&gt;,
 #   Legendary &lt;lgl&gt;</code></pre>
-<p>usa <strong>?read_excel</strong> para ver todas las opciones para importar datos</p>
 <p>Nota que el encabezado de la tabla es diferente a los data frames que hemos utilizado hasta ahora. Esto se debe a que los datos tienen una estructura de <strong>tibble</strong>.</p>
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
-</style>
 <div class="blue">
 <p><strong>¿Tibble?</strong></p>
 <p>Los <strong>tibbles</strong> son data frames pero modifican algunas características antiguas para hacernos la vida más fácil. Los tibbles tienen un método de impresión en la consola refinado: solo muestran las primeras 10 filas y solo aquellas columnas que entran en el ancho de la pantalla. Esto simplifica y facilita trabajar con bases de datos grandes. Además del nombre, cada columna muestra su tipo. Esto último es una gran característica tomada de str().</p>
@@ -1360,12 +1410,19 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
 <p>Un tibble puede usar nombres de columnas que no son nombres de variables válidos en R (también conocidos como nombres no sintácticos). Por ejemplo, pueden empezar con un cáracter diferente a una letra o contener caracteres poco comunes, como espacios. Para referirse a estas variables, tienes que rodearlos de acentos graves: ```</p>
 </div>
 <hr />
-<style>
-div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
-</style>
 <div class="yellow">
 <p><strong>¿Entonces es read.csv o read_csv?</strong></p>
 <p>Otro aspecto que vas a notar al trabajar con el tidyverse es que funciones que estan separadas con un punto (.) ahora se van a ver separadas con un guion bajo (_). Esto es una caracteristica de muchos de los paquetes del Tidyverse o compatibles con la filosofía Tidyverse y que nos permite distinguirlo de los paquetes del núcleo base de R. De manera que la función <code>read.csv()</code> de R base, se vuelve <code>read_csv()</code> en <strong>readr</strong>, y la función <code>t.test()</code> de R base, se vuelve <code>t_test()</code> en el paquete <strong>rstatxs</strong> (modulo 7)</p>
+</div>
+<hr />
+<div class="blue">
+<p><strong>¿Que hago si mis datos estan en Excell?</strong></p>
+<p>Si tus datos estan en formato de Microsoft Excell (<em>xls</em> o <em>xlsx</em>) puedes utilizar el paquete <a href="https://readxl.tidyverse.org/"><strong>readxl</strong></a> el cual, a pesar de que no esta incluido en el núcleo de Tidyverse, mantiene la misma filosofia y flujo de trabajo. Sin embargo es necesario instalarlo de manera independiente al Tidyverse.</p>
+<pre class="r"><code>install.packages(&quot;readxl&quot;)
+library(readxl)</code></pre>
+<p>para uar readxl, la sintaxis es muy parecida a la de <code>read_csv()</code> de manera que podriamos abrir un archivo xls de la siguiente manera:</p>
+<pre class="r"><code>pokemon &lt;- read_xls(&quot;data/Pokemon_tabla.xls&quot;, sheet = &quot;pokemon&quot;)</code></pre>
+<p>en donde <code>sheet</code> es el nombre de la hoja de excell donde se encuentran los datos</p>
 </div>
 </div>
 <div id="uso-de-dplyr" class="section level1" number="5">
@@ -1398,7 +1455,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Al igual que en ejemplo anteriores, podemos seleccionar todo <em>excepto</em> una clumna especifica usando el operador “-” (resta)</p>
 <pre class="r"><code>select(pokemon, -Attack)</code></pre>
 <pre><code># A tibble: 800 x 12
-      ID Name     Type1 Type2 Total    HP Defense Sp_Atk Sp_Def Speed Generation
+     `#` Name     Type1 Type2 Total    HP Defense Sp_Atk Sp_Def Speed Generation
    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
  1     1 Bulbasa~ Grass Pois~   318    45      49     65     65    45          1
  2     2 Ivysaur  Grass Pois~   405    60      63     80     80    60          1
@@ -1430,7 +1487,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>De igual manera, se puede usar el operados <code>:</code> para descartar un intervalo de columnas</p>
 <pre class="r"><code>select(pokemon, -(Defense:Legendary))</code></pre>
 <pre><code># A tibble: 800 x 7
-      ID Name                      Type1 Type2  Total    HP Attack
+     `#` Name                      Type1 Type2  Total    HP Attack
    &lt;dbl&gt; &lt;chr&gt;                     &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
  1     1 Bulbasaur                 Grass Poison   318    45     49
  2     2 Ivysaur                   Grass Poison   405    60     62
@@ -1482,7 +1539,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Con la función <code>evrything()</code> se puede seleccionar todo, y con esto es factible cambiar el order de las columnas. Por ejemplo, si quieremos que la primera columna sea “Type1” ejecutamos:</p>
 <pre class="r"><code>select(pokemon, Type1, everything())</code></pre>
 <pre><code># A tibble: 800 x 13
-   Type1    ID Name         Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   Type1   `#` Name         Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1 Grass     1 Bulbasaur    Pois~   318    45     49      49     65     65    45
  2 Grass     2 Ivysaur      Pois~   405    60     62      63     80     80    60
@@ -1499,11 +1556,17 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 </div>
 <div id="filter" class="section level2" number="5.2">
 <h2 number="5.2"><span class="header-section-number">5.2</span> <code>filter()</code></h2>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/dplyr_filter.jpg" alt="@AllisonHorst" width="75%" />
+<p class="caption">
+<span class="citation">@AllisonHorst</span>
+</p>
+</div>
 <p>Esta función nos permite seleccionar las <strong>filas</strong> que cumplan con las condiciones que especifiquemos</p>
 <p>Por ejemplo, filtrar los pokemon con un nivel de ataque <em>Attack</em> superior a 100</p>
 <pre class="r"><code>filter(pokemon, Attack &gt; 100)</code></pre>
 <pre><code># A tibble: 170 x 13
-      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     6 CharizardM~ Fire   Drag~   634    78    130     111    130     85   100
  2     6 CharizardM~ Fire   Flyi~   634    78    104      78    159    115   100
@@ -1520,7 +1583,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Filtrar los pokemon que tengan un nivel de ataque mayor a 100 <strong>y</strong> que sean de tipo fuego</p>
 <pre class="r"><code>filter(pokemon, Attack &gt; 100, Type1 == &quot;Fire&quot;)</code></pre>
 <pre><code># A tibble: 13 x 13
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     6 CharizardMe~ Fire  Drag~   634    78    130     111    130     85   100
  2     6 CharizardMe~ Fire  Flyi~   634    78    104      78    159    115   100
@@ -1541,7 +1604,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
        Type1 == &quot;Fire&quot;,
        Generation == 1)</code></pre>
 <pre><code># A tibble: 4 x 13
-     ID Name          Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+    `#` Name          Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
   &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
 1     6 CharizardMeg~ Fire  Drag~   634    78    130     111    130     85   100
 2     6 CharizardMeg~ Fire  Flyi~   634    78    104      78    159    115   100
@@ -1551,7 +1614,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Ahora queremos filtrar los pokemon que tengan un nivel de ataque mayor a 100 <strong>o</strong> que sean de tipo fuego</p>
 <pre class="r"><code>filter(pokemon, Attack &gt; 100 | Type1 == &quot;Fire&quot;)</code></pre>
 <pre><code># A tibble: 209 x 13
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
  2     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
@@ -1568,7 +1631,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Si queremos filtrar distintas condiciones en una misma variable podemos usar el operador <code>%in%</code> por ejemplo para filtrar lo pokemons que sea de tipo1 de Fuego y Agua</p>
 <pre class="r"><code>filter(pokemon, Type1 %in% c(&quot;Fire&quot;, &quot;Water&quot;))</code></pre>
 <pre><code># A tibble: 164 x 13
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     4 Charmander   Fire  &lt;NA&gt;    309    39     52      43     60     50    65
  2     5 Charmeleon   Fire  &lt;NA&gt;    405    58     64      58     80     65    80
@@ -1586,7 +1649,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <pre class="r"><code>  filter(pokemon, 
          between(Attack,100,150))</code></pre>
 <pre><code># A tibble: 192 x 13
-      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     3 VenusaurMe~ Grass  Pois~   625    80    100     123    122    120    80
  2     6 CharizardM~ Fire   Drag~   634    78    130     111    130     85   100
@@ -1603,7 +1666,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>para hacer la selección opuesta, se puede agregar el operador <code>!</code></p>
 <pre class="r"><code>filter(pokemon, !between(Attack, 100, 150))</code></pre>
 <pre><code># A tibble: 608 x 13
-      ID Name       Type1 Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name       Type1 Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur  Grass Poison   318    45     49      49     65     65    45
  2     2 Ivysaur    Grass Poison   405    60     62      63     80     80    60
@@ -1621,7 +1684,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
        between(Attack, 0, 50),
        between(Speed, 20, 30))</code></pre>
 <pre><code># A tibble: 30 x 13
-      ID Name       Type1  Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name       Type1  Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1    11 Metapod    Bug    &lt;NA&gt;     205    50     20      55     25     25    30
  2    39 Jigglypuff Normal Fairy    270   115     45      20     45     25    20
@@ -1641,10 +1704,11 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 </ul>
 <pre class="r"><code>filter(pokemon, str_detect(Name, &quot;Pikachu&quot;))</code></pre>
 <pre><code># A tibble: 1 x 13
-     ID Name    Type1    Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+    `#` Name    Type1    Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
 1    25 Pikachu Electric &lt;NA&gt;    320    35     55      40     50     50    90
 # ... with 2 more variables: Generation &lt;dbl&gt;, Legendary &lt;lgl&gt;</code></pre>
+<hr />
 <blockquote>
 <p>Ejercicio: ¿Quien es ese pokemon?</p>
 </blockquote>
@@ -1665,7 +1729,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Por ejemplo, podemos generar una nueva columna llamada “At_Df_ratio” con la propoción de los valors de Ataque sobre Defensa</p>
 <pre class="r"><code>mutate(pokemon, At_df_ratio = Attack / Defense)</code></pre>
 <pre><code># A tibble: 800 x 14
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -1688,7 +1752,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
        #Añadir una nueva columna con el nombre de los datos
        data = &quot;Pokemon&quot;)</code></pre>
 <pre><code># A tibble: 800 x 16
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -1706,8 +1770,8 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <pre class="r"><code>pokemon_fct &lt;- mutate(pokemon, Type1 = factor(Type1))</code></pre>
 <p>Si vemos el tipo de datos, veremos la diferencia:</p>
 <pre class="r"><code>str(pokemon_fct)</code></pre>
-<pre><code>tibble [800 x 13] (S3: tbl_df/tbl/data.frame)
- $ ID        : num [1:800] 1 2 3 3 4 5 6 6 6 7 ...
+<pre><code>tibble [800 x 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ #         : num [1:800] 1 2 3 3 4 5 6 6 6 7 ...
  $ Name      : chr [1:800] &quot;Bulbasaur&quot; &quot;Ivysaur&quot; &quot;Venusaur&quot; &quot;VenusaurMega Venusaur&quot; ...
  $ Type1     : Factor w/ 18 levels &quot;Bug&quot;,&quot;Dark&quot;,&quot;Dragon&quot;,..: 10 10 10 10 7 7 7 7 7 18 ...
  $ Type2     : chr [1:800] &quot;Poison&quot; &quot;Poison&quot; &quot;Poison&quot; &quot;Poison&quot; ...
@@ -1719,7 +1783,23 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
  $ Sp_Def    : num [1:800] 65 80 100 120 50 65 85 85 115 64 ...
  $ Speed     : num [1:800] 45 60 80 80 65 80 100 100 100 43 ...
  $ Generation: num [1:800] 1 1 1 1 1 1 1 1 1 1 ...
- $ Legendary : logi [1:800] FALSE FALSE FALSE FALSE FALSE FALSE ...</code></pre>
+ $ Legendary : logi [1:800] FALSE FALSE FALSE FALSE FALSE FALSE ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   `#` = col_double(),
+  ..   Name = col_character(),
+  ..   Type1 = col_character(),
+  ..   Type2 = col_character(),
+  ..   Total = col_double(),
+  ..   HP = col_double(),
+  ..   Attack = col_double(),
+  ..   Defense = col_double(),
+  ..   Sp_Atk = col_double(),
+  ..   Sp_Def = col_double(),
+  ..   Speed = col_double(),
+  ..   Generation = col_double(),
+  ..   Legendary = col_logical()
+  .. )</code></pre>
 </div>
 <div id="rename" class="section level2" number="5.4">
 <h2 number="5.4"><span class="header-section-number">5.4</span> <code>rename()</code></h2>
@@ -1727,7 +1807,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <pre class="r"><code>rename(pokemon,
        Nombre = Name, Tipo1 = Type1)</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Nombre       Tipo1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Nombre       Tipo1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -1748,7 +1828,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Si queremos mostrar ordenados de menor a mayor los valores de nuestro conjunto de datos en función al valor de ataque:</p>
 <pre class="r"><code>arrange(pokemon, Attack)</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Name     Type1   Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name     Type1   Type2  Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1   113 Chansey  Normal  &lt;NA&gt;     450   250      5       5     35    105    50
  2   440 Happiny  Normal  &lt;NA&gt;     220   100      5       5     15     65    30
@@ -1765,7 +1845,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Este ordenara los datos de menor a mayor, si se quiere ordenar de mayor a menor se debe agregar el operador <code>-</code> o <code>desc()</code></p>
 <pre class="r"><code>arrange(pokemon, desc(Attack))</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1   150 MewtwoMega~ Psych~ Figh~   780   106    190     100    154    100   130
  2   214 HeracrossM~ Bug    Figh~   600    80    185     115     40    105    75
@@ -1781,7 +1861,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 #   Legendary &lt;lgl&gt;</code></pre>
 <pre class="r"><code>arrange(pokemon, -Attack)</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name        Type1  Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1   150 MewtwoMega~ Psych~ Figh~   780   106    190     100    154    100   130
  2   214 HeracrossM~ Bug    Figh~   600    80    185     115     40    105    75
@@ -1798,7 +1878,7 @@ div.yellow { background-color:#fbe089; border-radius: 5px; padding: 20px;}
 <p>Tambien es posible ordernar caracteres</p>
 <pre class="r"><code>arrange(pokemon, Name)</code></pre>
 <pre><code># A tibble: 800 x 13
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1   460 Abomasnow    Grass Ice     494    90     92      75     92     85    60
  2   460 AbomasnowMe~ Grass Ice     594    90    132     105    132    105    30
@@ -1885,6 +1965,7 @@ poke_pipe</code></pre>
  8 Crawdaunt             Water    120
  9 Palkia                Water    120
 10 Swampert              Water    110</code></pre>
+<hr />
 <blockquote>
 <p><strong>Ejercicio 1:</strong> A partir de la tabla <code>pokemon</code> crea una <strong>nueva</strong> tabla que contenga:</p>
 </blockquote>
@@ -1988,7 +2069,7 @@ poke_pipe</code></pre>
   mutate(promedio_grupo = mean(Attack))</code></pre>
 <pre><code># A tibble: 800 x 14
 # Groups:   Type1, Type2 [154]
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -2010,7 +2091,7 @@ poke_pipe</code></pre>
   group_by(Type1) %&gt;%
   summarise_all(mean, na.rm =TRUE)</code></pre>
 <pre><code># A tibble: 18 x 13
-   Type1       ID  Name Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+   Type1      `#`  Name Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1 Bug       334.    NA    NA  379.  56.9   71.0    70.7   53.9   64.8  61.7
  2 Dark      461.    NA    NA  446.  66.8   88.4    70.2   74.6   69.5  76.2
@@ -2064,7 +2145,7 @@ poke_pipe</code></pre>
     across(where(is.numeric), mean, na.rm = TRUE)
   )</code></pre>
 <pre><code># A tibble: 18 x 10
-   Type1       ID Total    HP Attack Defense Sp_Atk Sp_Def Speed Generation
+   Type1      `#` Total    HP Attack Defense Sp_Atk Sp_Def Speed Generation
    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
  1 Bug       334.  379.  56.9   71.0    70.7   53.9   64.8  61.7       3.22
  2 Dark      461.  446.  66.8   88.4    70.2   74.6   69.5  76.2       4.03
@@ -2184,7 +2265,7 @@ ifelse(x == 20, &quot;Si es&quot;, &quot;no es&quot;)</code></pre>
   mutate(Tipo = ifelse(Type1 == &quot;Grass&quot;, &quot;Planta&quot;, Type1)) %&gt;% 
   mutate(Rapidez = ifelse(Speed &gt;= 100, &quot;Muy rapido&quot;, &quot;lento&quot;))</code></pre>
 <pre><code># A tibble: 800 x 15
-      ID Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
+     `#` Name         Type1 Type2 Total    HP Attack Defense Sp_Atk Sp_Def Speed
    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
  1     1 Bulbasaur    Grass Pois~   318    45     49      49     65     65    45
  2     2 Ivysaur      Grass Pois~   405    60     62      63     80     80    60
@@ -2354,6 +2435,7 @@ artista</code></pre>
   cancion autor
   &lt;chr&gt;   &lt;chr&gt;
 1 Why     Yoko </code></pre>
+<hr />
 <blockquote>
 <p>Ejercicio: Utiliza la función <code>read_csv()</code> para abrir el archivo <strong>pokemon_extended.csv</strong>. Posteriormente, genera una nueva tabla donde en una sola cadena unas la información del peso y altura de cada pokemon con el el resto de la tabla original, conservando solamente aquellos individuos presentes en ambas tablas, selecciona solamente las columnas Name, Type1, Total, HP, height_m, weight_gk y filtrar aquellos pokemon que tengan un peso superior al promedio global</p>
 </blockquote>
@@ -2510,26 +2592,27 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] readxl_1.3.1    forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5    
- [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.0.4   
- [9] ggplot2_3.3.5   tidyverse_1.3.1 workflowr_1.6.2
+ [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.5     purrr_0.3.4    
+ [5] readr_1.4.0     tidyr_1.1.3     tibble_3.0.4    ggplot2_3.3.5  
+ [9] tidyverse_1.3.1 workflowr_1.6.2
 
 loaded via a namespace (and not attached):
  [1] tidyselect_1.1.1  xfun_0.23         bslib_0.2.5.1     haven_2.3.1      
  [5] colorspace_2.0-0  vctrs_0.3.8       generics_0.1.0    htmltools_0.5.1.1
  [9] yaml_2.2.1        utf8_1.2.1        rlang_0.4.11      jquerylib_0.1.4  
 [13] later_1.1.0.1     pillar_1.6.0      withr_2.4.2       glue_1.4.2       
-[17] DBI_1.1.0         dbplyr_2.1.1      modelr_0.1.8      lifecycle_1.0.0  
-[21] cellranger_1.1.0  munsell_0.5.0     gtable_0.3.0      rvest_1.0.0      
-[25] evaluate_0.14     knitr_1.30        ps_1.5.0          httpuv_1.5.4     
-[29] fansi_0.4.2       highr_0.8         broom_0.7.6       Rcpp_1.0.5       
-[33] promises_1.1.1    backports_1.2.1   scales_1.1.1      jsonlite_1.7.2   
-[37] fs_1.5.0          hms_1.0.0         digest_0.6.27     stringi_1.5.3    
-[41] rprojroot_2.0.2   grid_4.0.5        cli_2.5.0         tools_4.0.5      
-[45] magrittr_2.0.1    sass_0.4.0        crayon_1.4.1      whisker_0.4      
-[49] pkgconfig_2.0.3   ellipsis_0.3.1    xml2_1.3.2        reprex_2.0.0     
-[53] lubridate_1.7.10  rstudioapi_0.13   assertthat_0.2.1  rmarkdown_2.9    
-[57] httr_1.4.2        R6_2.5.0          git2r_0.27.1      compiler_4.0.5   </code></pre>
+[17] DBI_1.1.0         dbplyr_2.1.1      readxl_1.3.1      modelr_0.1.8     
+[21] lifecycle_1.0.0   cellranger_1.1.0  munsell_0.5.0     gtable_0.3.0     
+[25] rvest_1.0.0       evaluate_0.14     knitr_1.30        ps_1.5.0         
+[29] httpuv_1.5.4      fansi_0.4.2       highr_0.8         broom_0.7.6      
+[33] Rcpp_1.0.5        promises_1.1.1    backports_1.2.1   scales_1.1.1     
+[37] jsonlite_1.7.2    fs_1.5.0          hms_1.0.0         digest_0.6.27    
+[41] stringi_1.5.3     rprojroot_2.0.2   grid_4.0.5        cli_2.5.0        
+[45] tools_4.0.5       magrittr_2.0.1    sass_0.4.0        crayon_1.4.1     
+[49] whisker_0.4       pkgconfig_2.0.3   ellipsis_0.3.1    xml2_1.3.2       
+[53] reprex_2.0.0      lubridate_1.7.10  rstudioapi_0.13   assertthat_0.2.1 
+[57] rmarkdown_2.9     httr_1.4.2        R6_2.5.0          git2r_0.27.1     
+[61] compiler_4.0.5   </code></pre>
 </div>
 </div>
 </div>

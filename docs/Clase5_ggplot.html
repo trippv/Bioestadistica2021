@@ -452,7 +452,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-31
+<strong>Last updated:</strong> 2021-08-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -543,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtreeb4e67dc1256ad5367ecc659603bbd5df3c597ea7targetblankb4e67dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomtrippvBioestadisticaRtree9ae8f9f69924116f27e412521bbe986c60fcebd2targetblank9ae8f9fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/b4e67dc1256ad5367ecc659603bbd5df3c597ea7" target="_blank">b4e67dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/trippv/BioestadisticaR/tree/9ae8f9f69924116f27e412521bbe986c60fcebd2" target="_blank">9ae8f9f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -656,6 +656,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/trippv/BioestadisticaR/blob/9ae8f9f69924116f27e412521bbe986c60fcebd2/analysis/Clase5_ggplot.Rmd" target="_blank">9ae8f9f</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-08-01
+</td>
+<td>
+workflowr::wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/trippv/BioestadisticaR/2bc601affbc9f3bcec07e7fb128cea0084fb32ce/docs/Clase5_ggplot.html" target="_blank">2bc601a</a>
+</td>
+<td>
+Miguel Tripp
+</td>
+<td>
+2021-07-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1258,7 +1292,12 @@ Publish the initial files for myproject
 </div>
 </div>
 </div>
-<p><img src="https://ggplot2.tidyverse.org/logo.png" width="65%" style="display: block; margin: auto;" /></p>
+<div class="figure" style="text-align: center">
+<img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/ggplot2_blank.png" alt="@AllisonHorst" width="75%" />
+<p class="caption">
+<span class="citation">@AllisonHorst</span>
+</p>
+</div>
 <div id="generalidades" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Generalidades</h1>
 <p>ggplot es un motor gráfico basado en la gramática grafica de Wilkinson <a href="https://www.youtube.com/watch?v=AbHU5tLCmuo&amp;t=0s">Wilkinson, 2005</a>. Bajo este contexto, un gráfico es una serie de capas (<em>layers</em>) similares a una transparecia, con algo impreso en ellas, que puede ser texto, puntos, lineas, barras, imagenes de pollitos o cualquier otro tipo de representación. La imagen final, cada una de estas capas se colocan una sobre otra.</p>
@@ -1307,26 +1346,26 @@ penguins &lt;- penguins[complete.cases(penguins), ]</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>El argumento <em>aes()</em> es sinónimo de estética, ggplot2 considera que el eje X e Y de la gráfica es estético, junto con el color, el tamaño, la forma, el relleno, etc. Se puede agregar cualquier estética que se desee dentro del argumento <em>aes()</em>, como por ejemplo indicar los ejes X e Y, especificando las variables respectivas del conjunto de datos. La variable en función de la cual el color, tamaño, forma y trazo debe cambiar también se puede especificar aquí mismo. Debes tener en cuenta que <strong>la estética especificada aquí será heredada por todas las capas geom que se agregarán posteriormente</strong>.</p>
 <p>Sin embargo, aún no vemos ninguna gráfica, ya que para esto es necesario indicar que tipo de geometria (<em>geom()</em>) de gráfica queremos utilizar.</p>
-<p>Para crear un diagrama de dispersión es necesario agregarle la geometria <code>geom_N()</code>. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo <code>+</code></p>
+<p>Para crear un diagrama, por ejemplo, de dispersión es necesario agregarle la geometria <code>geom_point()</code>. Es importante recalcar que cada nueva capa que agreguemos al gráfico se agrega con el simbolo <code>+</code></p>
 <pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g))+
   geom_point()</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="aesthetics" class="section level2" number="5.1">
 <h2 number="5.1"><span class="header-section-number">5.1</span> Aesthetics</h2>
-<p>Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estetico a los grupos.</p>
-<p>por ejemplo, podemos asignarle un color diferente a cada especie</p>
+<p>Como mencionamos, es posible agregar diferentes estéticos a la gráfica para controlar diversos aspectos como color, tamaño, forma, etc. Esto nos permite asignarle un estético a los grupos.</p>
+<p>por ejemplo, podemos asignarle un color diferente a cada especie con el argumento <em>color</em></p>
 <pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
   geom_point()</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Y asignarle una forma diferente a por sexo</p>
+<p>Y asignarle una forma diferente a por sexo con el argumento <em>shape</em></p>
 <pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex))+
   geom_point()</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>o cambiar el tamaño</p>
+<p>o cambiar el tamaño con <em>size</em></p>
 <pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species, shape = sex, size = culmen_length_mm))+
   geom_point()</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Es posible defininar los elementos estéticos (<em>aesthetics</em>) de manera global, lo que afectará a todas las geometrias, o se puede definir de manera indiviual por geometria</p>
+<p>Es posible definir los elementos estéticos (<em>aesthetics</em>) de manera global, lo que afectará a todas las geometrías que se vayan agregando, o se puede definir de manera indiviual por geometría</p>
 <p>De manera que se puede expresar de esta forma:</p>
 <pre class="r"><code>ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g, color = species))+
   geom_point()+
@@ -1336,8 +1375,8 @@ penguins &lt;- penguins[complete.cases(penguins), ]</code></pre>
 <p>o de esta:</p>
 <pre class="r"><code>ggplot(data = penguins)+
   geom_point(aes(x = culmen_length_mm, y = body_mass_g, color = species))+
-  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species))</code></pre>
-<pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+  geom_smooth(aes(x = culmen_length_mm, y = body_mass_g, color = species), method = &quot;lm&quot;)</code></pre>
+<pre><code>`geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="geometrias" class="section level2" number="5.2">
@@ -1348,7 +1387,7 @@ penguins &lt;- penguins[complete.cases(penguins), ]</code></pre>
 <div id="graficar-una-variable-continua" class="section level2" number="5.3">
 <h2 number="5.3"><span class="header-section-number">5.3</span> Graficar una variable continua</h2>
 <div id="geom_density" class="section level3" number="5.3.1">
-<h3 number="5.3.1"><span class="header-section-number">5.3.1</span> `geom_density()</h3>
+<h3 number="5.3.1"><span class="header-section-number">5.3.1</span> <code>geom_density()</code></h3>
 <pre class="r"><code>c_plot &lt;- ggplot(data= penguins, aes(x = culmen_length_mm, fill = island))
 
 c_plot + geom_density(alpha = 0.4)</code></pre>
@@ -1506,7 +1545,7 @@ ggplot(data = MO_long, aes(x = Dia, y = MO, group = individuo, col = individuo))
 <p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>con los otros temas, la gráfica se verian así</p>
 <!--- agregar codigo HTML para incluir un panel de selección de grafico--->
-<p><select id="imgList"> <option value="./figure/ggplot_test.png">Simple</option> <option value="./figure/ggPlot_minimal.png">theme_minimal()</option> <option value="./figure/ggPlot_dark.png">theme_dark()</option> <option value="./figure/ggPlot_light.png">theme_ligh()</option> <option value="./figure/ggPlot_void.png">theme_void()</option> <option value="./figure/ggPlot_bw.png">theme_bw()</option> </select> <img id="image" width="700" src="./figure/ggPlot_test.png" /></p>
+<p><select id="imgList"> <option value="./figure/ggplot_test.png">Simple</option> <option value="./figure/ggPlot_classic.png">theme_classic()</option> <option value="./figure/ggPlot_minimal.png">theme_minimal()</option> <option value="./figure/ggPlot_dark.png">theme_dark()</option> <option value="./figure/ggPlot_light.png">theme_light()</option> <option value="./figure/ggPlot_void.png">theme_void()</option> <option value="./figure/ggPlot_bw.png">theme_bw()</option> </select> <img id="image" width="700" src="./figure/ggPlot_test.png" /></p>
 <script type="text/javascript">             
 var img = document.getElementById("image");
 
@@ -1549,21 +1588,47 @@ ggplot(data = penguins, aes(x = culmen_length_mm, fill = island, col = island))+
 </div>
 <div id="dividir-variables-en-paneles-con-facet_wrap-y-facet_grid" class="section level1" number="7">
 <h1 number="7"><span class="header-section-number">7</span> Dividir variables en paneles con <code>facet_wrap()</code> y <code>facet_grid()</code></h1>
+<p>Ambas funciones son útiles cuando se desea organizar los gráficos con mas muchas variables. Aunque el resultado es similar, las diferecias entre ambas se ve reflejada en la siguiente figura:</p>
+<div class="figure" style="text-align: center">
+<img src="https://ggplot2-book.org/diagrams/position-facets.png" alt="tomado de: Wickham et al. ggplot2 book" width="100%" />
+<p class="caption">
+tomado de: Wickham et al. ggplot2 book
+</p>
+</div>
 <div id="dividir-paneles-por-una-variable-con-facet_wrap" class="section level2" number="7.1">
 <h2 number="7.1"><span class="header-section-number">7.1</span> Dividir paneles por una variable con <code>facet_wrap()</code></h2>
+<p><code>facet_wrap()</code> genera una cinta de paneles y la envuelve en 2d. Esto es útil si tienes una sola variable con muchos niveles y deseas organizar los gráficos en forma mas eficiente ya sea en una cuadricula o una sola cinta.</p>
+<p>Puede controlar la forma en que la cinta se envuelve en una cuadrícula con <code>ncol</code>, <code>nrow</code>, controle cuántas columnas y filas (solo necesita establecer una). <code>as.table</code> controla si las facetas se presentan como una tabla (TRUE), con los valores más altos en la parte inferior derecha, o un gráfico ( FALSE), con los valores más altos en la parte superior derecha.</p>
+<p>por ejemplo:</p>
 <pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
   geom_point()+
-  #ajustar el numero de columans con ncol
+  #ajustar el numero de columnas con ncol
   facet_wrap(~ island, ncol = 1)</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="dividir-paneles-por-dos-variabels-con-facet_grid" class="section level3" number="7.1.1">
-<h3 number="7.1.1"><span class="header-section-number">7.1.1</span> Dividir paneles por dos variabels con <code>facet_grid()</code></h3>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
   geom_point()+
-  #ajustar el numero de columans con ncol
-  facet_grid(sex ~ island)</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+  #ajustar el numero de filas con nrow
+  facet_wrap(~ island, nrow = 1)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
+<div id="dividir-paneles-por-dos-variabels-con-facet_grid" class="section level2" number="7.2">
+<h2 number="7.2"><span class="header-section-number">7.2</span> Dividir paneles por dos variabels con <code>facet_grid()</code></h2>
+<p>Por otro lado, <code>facet_grid()</code> forma una matriz de paneles definidos por variables de facetas de filas y columnas. Es más útil cuando tiene dos variables discretas y todas las combinaciones de las variables existen en los datos. La forma en que se despliegan los paneles esta definida por la formula establecida con <code>~</code></p>
+<p>por ejemplo:</p>
+<pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  facet_grid(sex ~ .)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /> Despliega los paneles por sexo</p>
+<pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  facet_grid(. ~ island)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Despliega los paneles por isla</p>
+<pre class="r"><code>ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, col = island))+
+  geom_point()+
+  facet_grid(sex ~ island)</code></pre>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Despliega la interacción sexo e isla</p>
 </div>
 </div>
 <div id="unir-dos-o-mas-gráficos-con-patchwork" class="section level1" number="8">
@@ -1575,6 +1640,12 @@ ggplot(data = penguins, aes(x = culmen_length_mm, fill = island, col = island))+
 <li><a href="https://rpkgs.datanovia.com/ggpubr/index.html">ggpubr</a></li>
 </ul>
 <p>Uno de los paquetes mas sencillos es <code>patchwork</code> el cual permite unir diversos gráficos usando una sintaxis simple. Por ejemplo:</p>
+<div class="figure" style="text-align: center">
+<img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/patchwork_blank.png" alt="@AllisonHorst" width="75%" />
+<p class="caption">
+<span class="citation">@AllisonHorst</span>
+</p>
+</div>
 <pre class="r"><code># Grafico 1
 
 library(patchwork)
@@ -1591,21 +1662,21 @@ fig3 &lt;- ggplot(penguins, aes(x = culmen_length_mm, y = flipper_length_mm, col
 
 
 fig1 + fig2 + fig3</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-36-1.png" width="120%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-41-1.png" width="120%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_all &lt;- (fig1 | fig2) / fig3
 plot_all</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_all &lt;- plot_all + plot_layout(guides = &quot;collect&quot;)
 plot_all</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_all &amp; theme_bw() </code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_all</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-39-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-44-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_all &lt;- plot_all + plot_annotation(title = &quot;Relación de la longitud del culmen&quot;,
                           tag_levels = &quot;A&quot;, tag_suffix = &quot;)&quot;)
 plot_all</code></pre>
-<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Clase5_ggplot.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exportar-una-gráfica-con-ggsave" class="section level1" number="9">
 <h1 number="9"><span class="header-section-number">9</span> Exportar una gráfica con <strong><code>ggsave()</code></strong></h1>
@@ -1614,6 +1685,9 @@ plot_all</code></pre>
 <pre class="r"><code>ggsave(&quot;output/Plot_all_penguins.pdf&quot;, plot = plot_all, width = 180, height = 180, units = &quot;mm&quot;)</code></pre>
 <pre class="r"><code>ggsave(&quot;output/Plot_all_penguins.tiff&quot;, plot = plot_all, width = 180, height = 180, units = &quot;mm&quot;, dpi = 300)</code></pre>
 <hr />
+</div>
+<div id="ejercicios" class="section level1" number="10">
+<h1 number="10"><span class="header-section-number">10</span> Ejercicios</h1>
 <blockquote>
 <p><strong><em>Ejercicio1:</em></strong></p>
 </blockquote>
